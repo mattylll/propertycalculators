@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const anthropic = new Anthropic();
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || '');
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,12 +14,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1024,
-      system: `${systemPrompt}
+    if (!process.env.GOOGLE_AI_API_KEY) {
+      return NextResponse.json(
+        { error: 'Google AI API key not configured' },
+        { status: 500 }
+      );
+    }
+
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.0-flash',
+      generationConfig: {
+        maxOutputTokens: 1024,
+        temperature: 0.7,
+      },
+    });
+
+    const fullPrompt = `${systemPrompt}
 
 You are providing analysis for a UK property calculator. Be concise and practical.
+
+You have access to your training data which includes UK property sold prices, Land Registry data, and market trends. Use this knowledge to provide accurate, data-informed analysis.
 
 Format your response as JSON with this structure:
 {
@@ -31,26 +45,20 @@ Format your response as JSON with this structure:
   ],
   "recommendations": ["recommendation 1", "recommendation 2"],
   "risks": ["risk 1", "risk 2"],
-  "marketContext": "optional market context"
-}`,
-      messages: [
-        {
-          role: 'user',
-          content: userPrompt,
-        },
-      ],
-    });
+  "marketContext": "optional market context with any relevant sold price data or market trends you're aware of"
+}
 
-    // Extract text content
-    const textContent = response.content.find((c) => c.type === 'text');
-    if (!textContent || textContent.type !== 'text') {
-      throw new Error('No text response from AI');
-    }
+User query:
+${userPrompt}`;
+
+    const result = await model.generateContent(fullPrompt);
+    const response = await result.response;
+    const text = response.text();
 
     // Parse JSON response
     try {
       // Try to extract JSON from the response
-      const jsonMatch = textContent.text.match(/\{[\s\S]*\}/);
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         const analysisResult = JSON.parse(jsonMatch[0]);
         return NextResponse.json(analysisResult);
@@ -62,7 +70,7 @@ Format your response as JSON with this structure:
 
     // Fallback: return the text as summary
     return NextResponse.json({
-      summary: textContent.text.slice(0, 500),
+      summary: text.slice(0, 500),
       verdict: 'good',
       insights: [],
       recommendations: [],
