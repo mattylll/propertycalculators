@@ -3,11 +3,132 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import dynamic from 'next/dynamic';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calculator, LayoutDashboard, Menu, X, Sparkles } from 'lucide-react';
+
+// Dynamically import Clerk components to avoid SSR issues
+const ClerkComponents = dynamic(
+  () => import('@clerk/nextjs').then((mod) => ({
+    default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    SignInButton: mod.SignInButton,
+    SignedIn: mod.SignedIn,
+    SignedOut: mod.SignedOut,
+    UserButton: mod.UserButton,
+  })),
+  { ssr: false }
+);
+
+// Auth section component that only renders on client
+function AuthSection() {
+  const [mounted, setMounted] = React.useState(false);
+  const [clerkAvailable, setClerkAvailable] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+    // Check if Clerk is configured
+    const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+    setClerkAvailable(!!publishableKey);
+  }, []);
+
+  if (!mounted || !clerkAvailable) {
+    // Show simple sign in button that links to a sign in page or just return null
+    return (
+      <Link href="/dashboard">
+        <Button variant="default" size="sm" className="gap-1">
+          <Sparkles className="size-3" />
+          Get started
+        </Button>
+      </Link>
+    );
+  }
+
+  // Import and use Clerk components only when available
+  const { SignInButton, SignedIn, SignedOut, UserButton } = require('@clerk/nextjs');
+
+  return (
+    <>
+      <SignedOut>
+        <SignInButton mode="modal">
+          <Button variant="ghost" size="sm">
+            Sign in
+          </Button>
+        </SignInButton>
+        <SignInButton mode="modal">
+          <Button variant="default" size="sm" className="gap-1">
+            <Sparkles className="size-3" />
+            Get started
+          </Button>
+        </SignInButton>
+      </SignedOut>
+      <SignedIn>
+        <UserButton
+          appearance={{
+            elements: {
+              avatarBox: 'size-9 rounded-lg',
+            },
+          }}
+        />
+      </SignedIn>
+    </>
+  );
+}
+
+function MobileAuthSection({ onClose }: { onClose: () => void }) {
+  const [mounted, setMounted] = React.useState(false);
+  const [clerkAvailable, setClerkAvailable] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+    const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+    setClerkAvailable(!!publishableKey);
+  }, []);
+
+  if (!mounted || !clerkAvailable) {
+    return (
+      <Link href="/dashboard" onClick={onClose}>
+        <Button variant="default" size="sm" className="w-full justify-center gap-1">
+          <Sparkles className="size-3" />
+          Get started
+        </Button>
+      </Link>
+    );
+  }
+
+  const { SignInButton, SignedIn, SignedOut, UserButton } = require('@clerk/nextjs');
+
+  return (
+    <>
+      <SignedOut>
+        <SignInButton mode="modal">
+          <Button variant="outline" size="sm" className="w-full justify-center">
+            Sign in
+          </Button>
+        </SignInButton>
+        <SignInButton mode="modal">
+          <Button variant="default" size="sm" className="w-full justify-center gap-1">
+            <Sparkles className="size-3" />
+            Get started
+          </Button>
+        </SignInButton>
+      </SignedOut>
+      <SignedIn>
+        <div className="flex items-center justify-center gap-3 p-2">
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: 'size-9 rounded-lg',
+              },
+            }}
+          />
+          <span className="text-sm text-slate-900">Account</span>
+        </div>
+      </SignedIn>
+    </>
+  );
+}
 
 const navItems = [
   { href: '/calculators', label: 'Calculators', icon: Calculator },
@@ -60,28 +181,7 @@ const NavigationBar = () => {
 
         {/* Desktop Actions */}
         <div className="hidden items-center gap-3 md:flex">
-          <SignedOut>
-            <SignInButton mode="modal">
-              <Button variant="ghost" size="sm">
-                Sign in
-              </Button>
-            </SignInButton>
-            <SignInButton mode="modal">
-              <Button variant="default" size="sm" className="gap-1">
-                <Sparkles className="size-3" />
-                Get started
-              </Button>
-            </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: 'size-9 rounded-lg',
-                },
-              }}
-            />
-          </SignedIn>
+          <AuthSection />
         </div>
 
         {/* Mobile Menu Button */}
@@ -118,31 +218,7 @@ const NavigationBar = () => {
               );
             })}
             <div className="mt-4 flex flex-col gap-2 border-t border-[var(--pc-grey-border)] pt-4">
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <Button variant="outline" size="sm" className="w-full justify-center">
-                    Sign in
-                  </Button>
-                </SignInButton>
-                <SignInButton mode="modal">
-                  <Button variant="default" size="sm" className="w-full justify-center gap-1">
-                    <Sparkles className="size-3" />
-                    Get started
-                  </Button>
-                </SignInButton>
-              </SignedOut>
-              <SignedIn>
-                <div className="flex items-center justify-center gap-3 p-2">
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: 'size-9 rounded-lg',
-                      },
-                    }}
-                  />
-                  <span className="text-sm text-slate-900">Account</span>
-                </div>
-              </SignedIn>
+              <MobileAuthSection onClose={() => setMobileOpen(false)} />
             </div>
           </div>
         </div>
