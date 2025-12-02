@@ -9,71 +9,80 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calculator, LayoutDashboard, Menu, X, Sparkles } from 'lucide-react';
 
-// Dynamically import Clerk components to avoid SSR issues
-const ClerkComponents = dynamic(
-  () => import('@clerk/nextjs').then((mod) => ({
-    default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    SignInButton: mod.SignInButton,
-    SignedIn: mod.SignedIn,
-    SignedOut: mod.SignedOut,
-    UserButton: mod.UserButton,
-  })),
-  { ssr: false }
-);
-
-// Auth section component that only renders on client
-function AuthSection() {
-  const [mounted, setMounted] = React.useState(false);
-  const [clerkAvailable, setClerkAvailable] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-    // Check if Clerk is configured
-    const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-    setClerkAvailable(!!publishableKey);
-  }, []);
-
-  if (!mounted || !clerkAvailable) {
-    // Show simple sign in button that links to a sign in page or just return null
-    return (
+// Dynamically import the Clerk-dependent auth section
+const ClerkAuthSection = dynamic(
+  () => import('./clerk-auth-section').then((mod) => mod.ClerkAuthSection),
+  {
+    ssr: false,
+    loading: () => (
       <Link href="/dashboard">
         <Button variant="default" size="sm" className="gap-1">
           <Sparkles className="size-3" />
           Get started
         </Button>
       </Link>
-    );
+    ),
+  }
+);
+
+const ClerkMobileAuthSection = dynamic(
+  () => import('./clerk-auth-section').then((mod) => mod.ClerkMobileAuthSection),
+  {
+    ssr: false,
+    loading: () => (
+      <Link href="/dashboard">
+        <Button variant="default" size="sm" className="w-full justify-center gap-1">
+          <Sparkles className="size-3" />
+          Get started
+        </Button>
+      </Link>
+    ),
+  }
+);
+
+// Fallback auth section when Clerk is not configured
+function FallbackAuthSection() {
+  return (
+    <Link href="/dashboard">
+      <Button variant="default" size="sm" className="gap-1">
+        <Sparkles className="size-3" />
+        Get started
+      </Button>
+    </Link>
+  );
+}
+
+function FallbackMobileAuthSection({ onClose }: { onClose: () => void }) {
+  return (
+    <Link href="/dashboard" onClick={onClose}>
+      <Button variant="default" size="sm" className="w-full justify-center gap-1">
+        <Sparkles className="size-3" />
+        Get started
+      </Button>
+    </Link>
+  );
+}
+
+// Auth section that checks if Clerk is available
+function AuthSection() {
+  const [mounted, setMounted] = React.useState(false);
+  const [clerkAvailable, setClerkAvailable] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+    const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+    setClerkAvailable(!!publishableKey);
+  }, []);
+
+  if (!mounted) {
+    return null;
   }
 
-  // Import and use Clerk components only when available
-  const { SignInButton, SignedIn, SignedOut, UserButton } = require('@clerk/nextjs');
+  if (!clerkAvailable) {
+    return <FallbackAuthSection />;
+  }
 
-  return (
-    <>
-      <SignedOut>
-        <SignInButton mode="modal">
-          <Button variant="ghost" size="sm">
-            Sign in
-          </Button>
-        </SignInButton>
-        <SignInButton mode="modal">
-          <Button variant="default" size="sm" className="gap-1">
-            <Sparkles className="size-3" />
-            Get started
-          </Button>
-        </SignInButton>
-      </SignedOut>
-      <SignedIn>
-        <UserButton
-          appearance={{
-            elements: {
-              avatarBox: 'size-9 rounded-lg',
-            },
-          }}
-        />
-      </SignedIn>
-    </>
-  );
+  return <ClerkAuthSection />;
 }
 
 function MobileAuthSection({ onClose }: { onClose: () => void }) {
@@ -86,48 +95,15 @@ function MobileAuthSection({ onClose }: { onClose: () => void }) {
     setClerkAvailable(!!publishableKey);
   }, []);
 
-  if (!mounted || !clerkAvailable) {
-    return (
-      <Link href="/dashboard" onClick={onClose}>
-        <Button variant="default" size="sm" className="w-full justify-center gap-1">
-          <Sparkles className="size-3" />
-          Get started
-        </Button>
-      </Link>
-    );
+  if (!mounted) {
+    return null;
   }
 
-  const { SignInButton, SignedIn, SignedOut, UserButton } = require('@clerk/nextjs');
+  if (!clerkAvailable) {
+    return <FallbackMobileAuthSection onClose={onClose} />;
+  }
 
-  return (
-    <>
-      <SignedOut>
-        <SignInButton mode="modal">
-          <Button variant="outline" size="sm" className="w-full justify-center">
-            Sign in
-          </Button>
-        </SignInButton>
-        <SignInButton mode="modal">
-          <Button variant="default" size="sm" className="w-full justify-center gap-1">
-            <Sparkles className="size-3" />
-            Get started
-          </Button>
-        </SignInButton>
-      </SignedOut>
-      <SignedIn>
-        <div className="flex items-center justify-center gap-3 p-2">
-          <UserButton
-            appearance={{
-              elements: {
-                avatarBox: 'size-9 rounded-lg',
-              },
-            }}
-          />
-          <span className="text-sm text-slate-900">Account</span>
-        </div>
-      </SignedIn>
-    </>
-  );
+  return <ClerkMobileAuthSection onClose={onClose} />;
 }
 
 const navItems = [
