@@ -5,15 +5,18 @@
     "website": "https://nextjs-16-starter-shadcn.vercel.app/",
     "license": "MIT",
     "scripts": {
-        "dev": "next dev --turbopack",
+        "dev": "rimraf .next/dev/lock && next dev --turbopack",
         "build": "next build --turbopack",
         "start": "next start",
-        "lint": "next lint",
+        "lint": "eslint .",
         "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
         "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
         "type-check": "tsc --noEmit"
     },
     "dependencies": {
+        "@anthropic-ai/sdk": "^0.71.0",
+        "@clerk/clerk-react": "^5.55.0",
+        "@clerk/nextjs": "^6.35.1",
         "@hookform/resolvers": "^5.2.2",
         "@radix-ui/react-accessible-icon": "^1.1.8",
         "@radix-ui/react-accordion": "^1.2.12",
@@ -49,6 +52,7 @@
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "cmdk": "^1.1.1",
+        "convex": "^1.29.2",
         "date-fns": "^4.1.0",
         "embla-carousel-autoplay": "^8.6.0",
         "embla-carousel-react": "^8.6.0",

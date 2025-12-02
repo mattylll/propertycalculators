@@ -9,7 +9,11 @@ const withBundleAnalyzer = initializeBundleAnalyzer({
 
 // https://nextjs.org/docs/pages/api-reference/next-config-js
 const nextConfig: NextConfig = {
-    output: 'standalone'
+    output: 'standalone',
+    // Turbopack tries to infer the workspace root by scanning for lockfiles.
+    // Because this project lives inside a larger folder with its own package-lock.json,
+    // we pin the root to the current directory so `next dev --turbopack` stops walking up.
+
 };
 
 export default withBundleAnalyzer(nextConfig);

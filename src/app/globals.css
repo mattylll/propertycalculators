@@ -5,74 +5,171 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.87 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  /* ============================================
+     PropertyCalculators.ai Design System
+     AI-First Underwriting Intelligence Platform
+     ============================================ */
+
+  /* Backgrounds */
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #fafafa;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
+  /* Primary - Deep Navy (Trust, Institutional) */
+  --primary: #0f172a;
+  --primary-foreground: #ffffff;
+  --primary-hover: #1e293b;
+  --primary-light: #f1f5f9;
+
+  /* Secondary - Warm Neutral Grey */
+  --secondary: #f8fafc;
+  --secondary-foreground: #334155;
+
+  /* Muted */
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+
+  /* Accent - Electric Blue (AI Intelligence) */
+  --accent: #2563eb;
+  --accent-foreground: #ffffff;
+  --accent-hover: #1d4ed8;
+  --accent-light: #eff6ff;
+
+  /* Success */
+  --success: #059669;
+  --success-foreground: #ffffff;
+  --success-light: #ecfdf5;
+
+  /* Warning */
+  --warning: #d97706;
+  --warning-foreground: #ffffff;
+  --warning-light: #fffbeb;
+
+  /* Destructive */
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --destructive-light: #fef2f2;
+
+  /* Borders & Input */
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #2563eb;
+
+  /* Chart Colors - Institutional Palette */
+  --chart-1: #2563eb;
+  --chart-2: #0f172a;
+  --chart-3: #059669;
+  --chart-4: #d97706;
+  --chart-5: #7c3aed;
+
+  /* Radius */
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.87 0 0);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+
+  /* Sidebar */
+  --sidebar: #0f172a;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1e293b;
+  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-border: #334155;
+  --sidebar-ring: #2563eb;
+
+  /* ============================================
+     PropertyCalculators AI Design Tokens
+     ============================================ */
+
+  /* Core Brand Colors */
+  --pc-navy: #0f172a;
+  --pc-navy-light: #1e293b;
+  --pc-navy-lighter: #334155;
+
+  --pc-blue: #2563eb;
+  --pc-blue-hover: #1d4ed8;
+  --pc-blue-light: #eff6ff;
+  --pc-blue-muted: #dbeafe;
+
+  --pc-grey-warm: #64748b;
+  --pc-grey-light: #f8fafc;
+  --pc-grey-border: #e2e8f0;
+
+  /* Status Colors */
+  --pc-success: #059669;
+  --pc-success-light: #ecfdf5;
+  --pc-warning: #d97706;
+  --pc-warning-light: #fffbeb;
+  --pc-danger: #dc2626;
+  --pc-danger-light: #fef2f2;
+  --pc-info: #0891b2;
+  --pc-info-light: #ecfeff;
+
+  /* Category Colors (for calculator taxonomy) */
+  --pc-cat-development: #2563eb;
+  --pc-cat-hmo: #0891b2;
+  --pc-cat-leasehold: #7c3aed;
+  --pc-cat-titlesplit: #c2410c;
+  --pc-cat-landlord: #059669;
+  --pc-cat-bridging: #dc2626;
+  --pc-cat-sa: #db2777;
+  --pc-cat-commercial: #4f46e5;
+  --pc-cat-refurb: #d97706;
+  --pc-cat-niche: #475569;
+
+  /* Shadows & Effects */
+  --pc-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --pc-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --pc-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --pc-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --pc-shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --pc-shadow-card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+  /* AI-specific styling */
+  --pc-ai-glow: 0 0 20px rgba(37, 99, 235, 0.15);
+  --pc-ai-border: rgba(37, 99, 235, 0.3);
+  --pc-ai-gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+
+  /* Gradients */
+  --pc-gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --pc-gradient-accent: linear-gradient(135deg, #2563eb 0%, #0891b2 100%);
+  --pc-gradient-premium: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --popover: #0f172a;
+  --popover-foreground: #f8fafc;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f8fafc;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #334155;
+  --input: #334155;
+  --ring: #3b82f6;
+  --chart-1: #3b82f6;
+  --chart-2: #10b981;
+  --chart-3: #8b5cf6;
+  --chart-4: #f59e0b;
+  --chart-5: #94a3b8;
+  --sidebar: #0f172a;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1e293b;
+  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-border: #334155;
+  --sidebar-ring: #3b82f6;
 }
 
 .theme-login-one {
@@ -131,6 +228,7 @@
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-space-grotesk), var(--font-geist-sans), system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -174,6 +272,7 @@
     from {
       height: 0;
     }
+
     to {
       height: var(--radix-accordion-content-height);
     }
@@ -183,6 +282,7 @@
     from {
       height: var(--radix-accordion-content-height);
     }
+
     to {
       height: 0;
     }
@@ -193,7 +293,370 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-foreground;
+    min-height: 100vh;
+  }
+
+  /* Smooth focus transitions */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+    transition: box-shadow 0.15s ease;
+  }
+}
+
+@layer components {
+  /* ============================================
+     PropertyCalculators Component Classes
+     ============================================ */
+
+  /* Card System - Institutional, Clean */
+  .pc-card {
+    position: relative;
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    box-shadow: var(--pc-shadow-card);
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+
+  .pc-card:hover {
+    box-shadow: var(--pc-shadow-card-hover);
+  }
+
+  .pc-card-interactive:hover {
+    transform: translateY(-2px);
+    border-color: var(--pc-blue);
+  }
+
+  /* Category accent borders */
+  .pc-card-accent-development { border-left: 3px solid var(--pc-cat-development); }
+  .pc-card-accent-hmo { border-left: 3px solid var(--pc-cat-hmo); }
+  .pc-card-accent-leasehold { border-left: 3px solid var(--pc-cat-leasehold); }
+  .pc-card-accent-titlesplit { border-left: 3px solid var(--pc-cat-titlesplit); }
+  .pc-card-accent-landlord { border-left: 3px solid var(--pc-cat-landlord); }
+  .pc-card-accent-bridging { border-left: 3px solid var(--pc-cat-bridging); }
+  .pc-card-accent-sa { border-left: 3px solid var(--pc-cat-sa); }
+  .pc-card-accent-commercial { border-left: 3px solid var(--pc-cat-commercial); }
+  .pc-card-accent-refurb { border-left: 3px solid var(--pc-cat-refurb); }
+  .pc-card-accent-niche { border-left: 3px solid var(--pc-cat-niche); }
+
+  /* Glass effect for overlays */
+  .pc-glass {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(12px);
+  }
+
+  /* Bento Grid Layout */
+  .pc-bento-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .pc-bento-item {
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+  }
+
+  .pc-bento-item-featured {
+    grid-column: span 2;
+  }
+
+  /* Status Pills */
+  .pc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+  }
+
+  .pc-pill-success { background: var(--pc-success-light); color: var(--pc-success); }
+  .pc-pill-warning { background: var(--pc-warning-light); color: var(--pc-warning); }
+  .pc-pill-danger { background: var(--pc-danger-light); color: var(--pc-danger); }
+  .pc-pill-info { background: var(--pc-info-light); color: var(--pc-info); }
+  .pc-pill-neutral { background: var(--muted); color: var(--muted-foreground); }
+  .pc-pill-ai { background: var(--pc-blue-light); color: var(--pc-blue); }
+
+  /* AI Output Styling - Calm, Intelligent */
+  .pc-ai-output {
+    position: relative;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--pc-ai-border);
+    background: linear-gradient(135deg, var(--pc-blue-light) 0%, rgba(255, 255, 255, 1) 100%);
+    padding: 1.25rem;
+  }
+
+  .pc-ai-output::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--pc-ai-gradient);
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  }
+
+  .pc-ai-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--pc-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  .pc-ai-indicator::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--pc-blue);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* Gradient text */
+  .pc-text-gradient {
+    background: var(--pc-gradient-premium);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .pc-text-gradient-accent {
+    background: var(--pc-gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Shimmer animation for loading states */
+  .pc-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--muted) 0%,
+      var(--card) 50%,
+      var(--muted) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Button micro-interactions */
+  .pc-button-press:active {
+    transform: scale(0.98);
+  }
+
+  .pc-button-lift:hover {
+    transform: translateY(-1px);
+  }
+
+  /* Calculator 3-Step Layout */
+  .pc-calc-step {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    border: 1px solid var(--border);
+  }
+
+  .pc-calc-step-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .pc-calc-step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--pc-navy);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .pc-calc-step-active .pc-calc-step-number {
+    background: var(--pc-blue);
+  }
+
+  .pc-calc-step-complete .pc-calc-step-number {
+    background: var(--pc-success);
+  }
+
+  /* Input Groups */
+  .pc-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .pc-input-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--foreground);
+  }
+
+  .pc-input-hint {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+
+  /* Metric Display */
+  .pc-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .pc-metric-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .pc-metric-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pc-metric-value-lg {
+    font-size: 2rem;
+  }
+
+  .pc-metric-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .pc-metric-change-positive { color: var(--pc-success); }
+  .pc-metric-change-negative { color: var(--pc-danger); }
+
+  /* Risk Flags */
+  .pc-risk-flag {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+  }
+
+  .pc-risk-flag-high {
+    background: var(--pc-danger-light);
+    border-left: 3px solid var(--pc-danger);
+  }
+
+  .pc-risk-flag-medium {
+    background: var(--pc-warning-light);
+    border-left: 3px solid var(--pc-warning);
+  }
+
+  .pc-risk-flag-low {
+    background: var(--pc-success-light);
+    border-left: 3px solid var(--pc-success);
+  }
+
+  /* Recommendation Cards */
+  .pc-recommendation {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: var(--radius);
+    background: var(--pc-blue-light);
+    border: 1px solid var(--pc-blue-muted);
+  }
+
+  .pc-recommendation-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius);
+    background: var(--pc-blue);
+    color: white;
+    flex-shrink: 0;
+  }
+
+  /* Section Headers */
+  .pc-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .pc-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  .pc-section-subtitle {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    margin-top: 0.25rem;
+  }
+
+  /* Dividers */
+  .pc-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .pc-divider-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .pc-divider-label::before,
+  .pc-divider-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
   }
 }

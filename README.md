@@ -102,6 +102,8 @@ To enhance development experience, install the following VS Code extensions:
     # or with Bun
     bun dev
     ```
+    > **Note:** the script now clears any stale `.next/dev/lock` file before booting so restarts don't get stuck.  
+    > If you see "port 3000 in use", run `lsof -i :3000` to find and kill the leftover process (`kill <pid>`), then rerun the command.
 
 4. **Build for Production**:
     ```bash
