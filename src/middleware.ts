@@ -1,12 +1,10 @@
-import { clerkMiddleware } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Only use Clerk middleware if the publishable key is configured
-const isClerkConfigured = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
-export default function middleware(request: NextRequest) {
-  if (isClerkConfigured) {
+export default async function middleware(request: NextRequest) {
+  // Only use Clerk middleware if the publishable key is configured
+  if (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+    const { clerkMiddleware } = await import('@clerk/nextjs/server');
     return clerkMiddleware()(request, {} as any);
   }
   return NextResponse.next();
