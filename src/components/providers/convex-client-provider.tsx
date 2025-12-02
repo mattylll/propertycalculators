@@ -12,26 +12,47 @@ const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 const convex = convexUrl ? new ConvexReactClient(convexUrl) : null;
 
 export function ConvexClientProvider({ children }: { children: ReactNode }) {
-  // If Convex/Clerk not configured, just render children
-  if (!convex || !clerkKey) {
-    return <>{children}</>;
+  // If Clerk is configured, wrap with ClerkProvider
+  if (clerkKey) {
+    // If both Clerk and Convex are configured, use full setup
+    if (convex) {
+      return (
+        <ClerkProvider
+          publishableKey={clerkKey}
+          appearance={{
+            variables: {
+              colorPrimary: "#4C84FF",
+              colorBackground: "#FFFFFF",
+              colorInputBackground: "#F8FAFC",
+              colorInputText: "#0F172A",
+            },
+          }}
+        >
+          <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+            {children}
+          </ConvexProviderWithClerk>
+        </ClerkProvider>
+      );
+    }
+
+    // Clerk only (no Convex)
+    return (
+      <ClerkProvider
+        publishableKey={clerkKey}
+        appearance={{
+          variables: {
+            colorPrimary: "#4C84FF",
+            colorBackground: "#FFFFFF",
+            colorInputBackground: "#F8FAFC",
+            colorInputText: "#0F172A",
+          },
+        }}
+      >
+        {children}
+      </ClerkProvider>
+    );
   }
 
-  return (
-    <ClerkProvider
-      publishableKey={clerkKey}
-      appearance={{
-        variables: {
-          colorPrimary: "#4C84FF",
-          colorBackground: "#0A0A0A",
-          colorInputBackground: "#1A1F24",
-          colorInputText: "#F4F5F7",
-        },
-      }}
-    >
-      <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-        {children}
-      </ConvexProviderWithClerk>
-    </ClerkProvider>
-  );
+  // No Clerk configured, just render children
+  return <>{children}</>;
 }
