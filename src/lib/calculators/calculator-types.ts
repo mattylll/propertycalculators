@@ -285,6 +285,39 @@ export interface AIConfig {
 }
 
 // ============================================
+// SEO CONTENT DEFINITIONS
+// ============================================
+
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
+export interface CalculatorContent {
+  // Overview section - what this calculator does
+  overview: string;
+
+  // Methodology - how the calculation works
+  methodology: string;
+
+  // Key assumptions built into the calculation
+  assumptions: string[];
+
+  // How users can apply this information
+  useCases: string[];
+
+  // Frequently asked questions
+  faqs: FAQ[];
+
+  // Optional additional sections
+  disclaimer?: string;
+  relatedArticles?: Array<{
+    title: string;
+    url: string;
+  }>;
+}
+
+// ============================================
 // CALCULATOR DEFINITION
 // ============================================
 
@@ -315,6 +348,9 @@ export interface CalculatorDefinition {
 
   // AI configuration
   ai: AIConfig;
+
+  // Rich content for SEO
+  content: CalculatorContent;
 
   // Connections to other calculators
   connections: {

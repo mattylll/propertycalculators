@@ -432,6 +432,110 @@ function CalculatorRenderer({ calculator }: { calculator: CalculatorDefinition }
             </Card>
           </div>
         </div>
+
+        {/* Content Sections for SEO */}
+        {calculator.content && (
+          <div className="mt-16 space-y-12 border-t border-slate-200 pt-12">
+            {/* Overview Section */}
+            <section className="max-w-4xl">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4 font-[family-name:var(--font-space-grotesk)]">
+                About This Calculator
+              </h2>
+              <div className="prose prose-slate max-w-none">
+                <p className="text-slate-600 text-lg leading-relaxed">{calculator.content.overview}</p>
+              </div>
+            </section>
+
+            {/* Methodology Section */}
+            <section className="max-w-4xl">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4 font-[family-name:var(--font-space-grotesk)]">
+                How It Works
+              </h2>
+              <div className="prose prose-slate max-w-none">
+                <p className="text-slate-600 leading-relaxed whitespace-pre-line">{calculator.content.methodology}</p>
+              </div>
+            </section>
+
+            {/* Assumptions Section */}
+            {calculator.content.assumptions.length > 0 && (
+              <section className="max-w-4xl">
+                <h2 className="text-2xl font-bold text-slate-900 mb-4 font-[family-name:var(--font-space-grotesk)]">
+                  Key Assumptions
+                </h2>
+                <ul className="space-y-3">
+                  {calculator.content.assumptions.map((assumption, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[var(--pc-blue-light)] text-[var(--pc-blue)] flex items-center justify-center text-sm font-medium">
+                        {i + 1}
+                      </span>
+                      <span className="text-slate-600">{assumption}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Use Cases Section */}
+            {calculator.content.useCases.length > 0 && (
+              <section className="max-w-4xl">
+                <h2 className="text-2xl font-bold text-slate-900 mb-4 font-[family-name:var(--font-space-grotesk)]">
+                  When to Use This Calculator
+                </h2>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {calculator.content.useCases.map((useCase, i) => (
+                    <div key={i} className="flex items-start gap-3 p-4 rounded-lg bg-white border border-slate-200">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-slate-700">{useCase}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* FAQs Section */}
+            {calculator.content.faqs.length > 0 && (
+              <section className="max-w-4xl">
+                <h2 className="text-2xl font-bold text-slate-900 mb-6 font-[family-name:var(--font-space-grotesk)]">
+                  Frequently Asked Questions
+                </h2>
+                <div className="space-y-4">
+                  {calculator.content.faqs.map((faq, i) => (
+                    <div key={i} className="rounded-lg border border-slate-200 bg-white overflow-hidden">
+                      <details className="group">
+                        <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50 transition-colors">
+                          <h3 className="font-medium text-slate-900 pr-4">{faq.question}</h3>
+                          <span className="flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </span>
+                        </summary>
+                        <div className="px-4 pb-4">
+                          <p className="text-slate-600 leading-relaxed">{faq.answer}</p>
+                        </div>
+                      </details>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Disclaimer */}
+            {calculator.content.disclaimer && (
+              <section className="max-w-4xl">
+                <div className="rounded-lg bg-amber-50 border border-amber-200 p-4">
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-medium text-amber-800 mb-1">Important Disclaimer</p>
+                      <p className="text-sm text-amber-700">{calculator.content.disclaimer}</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
