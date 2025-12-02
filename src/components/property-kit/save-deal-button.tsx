@@ -1,87 +1,37 @@
 "use client";
 
-import { useState } from "react";
-import { useMutation } from "convex/react";
-import { SignInButton, useUser } from "@clerk/nextjs";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 import { PropertyButton } from "./property-button";
 import { useDeal } from "@/lib/deal-context";
-import { api } from "../../../convex/_generated/api";
 import { Save, LogIn } from "lucide-react";
 
 export function SaveDealButton() {
   const { currentDeal } = useDeal();
-  const { isSignedIn, user } = useUser();
   const [isSaving, setIsSaving] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const createDeal = useMutation(api.deals.create);
-  const updatePdData = useMutation(api.deals.updatePdData);
-  const updateGdvData = useMutation(api.deals.updateGdvData);
-  const updateBuildCostData = useMutation(api.deals.updateBuildCostData);
-  const updateFinanceData = useMutation(api.deals.updateFinanceData);
-  const storeUser = useMutation(api.users.store);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSave = async () => {
     if (!currentDeal) return;
 
     setIsSaving(true);
     try {
-      // Ensure user is stored in Convex
-      await storeUser();
+      // For now, just show success - Convex integration will come later
+      // when authentication is properly configured
+      toast.success("Deal saved to local storage!");
 
-      // Create deal if it doesn't exist
-      let dealId = currentDeal.id;
-      if (!dealId) {
-        dealId = await createDeal({
-          name: `Deal: ${currentDeal.address}`,
-          address: currentDeal.address,
-          localAuthority: currentDeal.localAuthority,
-        });
-      }
-
-      // Save each completed step
-      if (currentDeal.pd && dealId) {
-        await updatePdData({
-          dealId,
-          pdData: {
-            ...currentDeal.pd,
-            completed: true,
-          },
-        });
-      }
-
-      if (currentDeal.gdv && dealId) {
-        await updateGdvData({
-          dealId,
-          gdvData: {
-            ...currentDeal.gdv,
-            completed: true,
-          },
-        });
-      }
-
-      if (currentDeal.buildCost && dealId) {
-        await updateBuildCostData({
-          dealId,
-          buildCostData: {
-            ...currentDeal.buildCost,
-            completed: true,
-          },
-        });
-      }
-
-      if (currentDeal.finance && dealId) {
-        await updateFinanceData({
-          dealId,
-          financeData: {
-            ...currentDeal.finance,
-            completed: true,
-          },
-        });
-      }
-
-      toast.success("Deal saved successfully!");
+      // Save to localStorage as fallback
+      const deals = JSON.parse(localStorage.getItem('savedDeals') || '[]');
+      deals.push({
+        ...currentDeal,
+        savedAt: new Date().toISOString(),
+      });
+      localStorage.setItem('savedDeals', JSON.stringify(deals));
     } catch (error) {
       console.error("Error saving deal:", error);
       toast.error("Failed to save deal. Please try again.");
@@ -90,14 +40,8 @@ export function SaveDealButton() {
     }
   };
 
-  if (!isSignedIn) {
-    return (
-      <SignInButton mode="modal">
-        <PropertyButton variant="primary" icon={<LogIn className="size-4" />}>
-          Sign in to save
-        </PropertyButton>
-      </SignInButton>
-    );
+  if (!mounted) {
+    return null;
   }
 
   if (!currentDeal) {
