@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
-import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 import {
   calculators,
   categories,
@@ -28,6 +29,11 @@ import {
   Building,
   Hammer,
   HelpCircle,
+  Star,
+  Users,
+  CheckCircle2,
+  TrendingUp,
+  Shield,
 } from 'lucide-react';
 
 // Icon mapping
@@ -62,108 +68,144 @@ export default function CalculatorsIndexPage() {
   const comingSoonCount = calculators.filter((c) => c.status === 'coming-soon').length;
 
   return (
-    <div className='bg-white min-h-screen'>
-      <main className='mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 pb-16 pt-8 lg:px-8'>
-        {/* Hero Section */}
-        <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-          <div className='flex flex-wrap items-center gap-3'>
-            <StatusPill tone='success' label={`${liveCount} Live`} />
-            <StatusPill tone='warning' label={`${comingSoonCount} Coming Soon`} />
+    <div className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <div className="border-b border-slate-200 bg-gradient-to-b from-slate-50 to-white">
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+          {/* Trust Signals */}
+          <div className="mb-8 flex flex-wrap items-center justify-center gap-4">
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="size-4 fill-amber-400 text-amber-400" />
+              ))}
+              <span className="ml-2 text-sm font-medium text-slate-700">4.9/5 rating</span>
+            </div>
+            <Separator orientation="vertical" className="h-4" />
+            <div className="flex items-center gap-2 text-sm text-slate-600">
+              <Users className="size-4" />
+              <span>Trusted by 10,000+ property professionals</span>
+            </div>
           </div>
 
-          <div className='max-w-3xl'>
-            <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
-              Property Calculators
+          <div className="text-center">
+            <Badge className="mb-4 bg-emerald-100 text-emerald-700 border-0 px-3 py-1">
+              <Sparkles className="mr-1 size-3" />
+              {calculators.length}+ Professional Calculators
+            </Badge>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl font-[family-name:var(--font-space-grotesk)]">
+              UK Property Calculators
             </h1>
-            <p className='mt-4 text-lg text-gray-600'>
-              {calculators.length} professional calculators for property developers, investors, and landlords.
-              From development finance to HMO viability, we've got the tools you need to make informed decisions.
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600">
+              Professional-grade calculators for property developers, investors, and landlords.
+              From development finance to HMO viability—make informed decisions with accurate UK-specific formulas.
             </p>
+
+            {/* Stats Bar */}
+            <div className="mx-auto mt-8 flex max-w-2xl items-center justify-center gap-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-slate-900">{liveCount}</div>
+                <div className="text-xs text-slate-500 uppercase tracking-wide">Live Now</div>
+              </div>
+              <Separator orientation="vertical" className="h-8" />
+              <div className="text-center">
+                <div className="text-2xl font-bold text-slate-900">{comingSoonCount}</div>
+                <div className="text-xs text-slate-500 uppercase tracking-wide">Coming Soon</div>
+              </div>
+              <Separator orientation="vertical" className="h-8" />
+              <div className="text-center">
+                <div className="text-2xl font-bold text-slate-900">{categories.length}</div>
+                <div className="text-xs text-slate-500 uppercase tracking-wide">Categories</div>
+              </div>
+            </div>
           </div>
 
           {/* Search */}
-          <div className='relative max-w-xl'>
-            <Search className='absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400' />
-            <input
-              type='text'
-              placeholder='Search calculators...'
+          <div className="relative mx-auto mt-8 max-w-xl">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-slate-400" />
+            <Input
+              type="text"
+              placeholder="Search calculators by name, category, or keyword..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className='w-full rounded-xl border border-gray-200 bg-white py-3 pl-12 pr-4 text-gray-900 placeholder-gray-400 shadow-sm focus:border-[#00C9A7] focus:ring-2 focus:ring-[#00C9A7]/20 outline-none transition-all'
+              className="h-14 rounded-xl border-slate-200 bg-white pl-12 pr-4 text-base shadow-sm focus:border-[var(--pc-blue)] focus:ring-2 focus:ring-[var(--pc-blue)]/20"
             />
           </div>
+        </div>
+      </div>
 
-          {/* Category Tabs */}
-          <div className='flex flex-wrap gap-2'>
-            <button
-              type='button'
-              onClick={() => setActiveCategory('all')}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                activeCategory === 'all'
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              All ({calculators.length})
-            </button>
-            {categories.map((category) => {
-              const count = calculators.filter((c) => c.category === category.id).length;
-              const Icon = iconMap[category.icon] || Calculator;
-              return (
-                <button
-                  key={category.id}
-                  type='button'
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                    activeCategory === category.id
-                      ? 'text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                  style={
-                    activeCategory === category.id
-                      ? { backgroundColor: category.color }
-                      : undefined
-                  }
-                >
-                  <Icon className='size-4' />
-                  {category.name.split(' ')[0]} ({count})
-                </button>
-              );
-            })}
-          </div>
-        </section>
+      <main className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+        {/* Category Tabs */}
+        <div className="mb-10 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setActiveCategory('all')}
+            className={`rounded-full px-5 py-2.5 text-sm font-medium transition-all ${
+              activeCategory === 'all'
+                ? 'bg-slate-900 text-white shadow-md'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            All Calculators ({calculators.length})
+          </button>
+          {categories.map((category) => {
+            const count = calculators.filter((c) => c.category === category.id).length;
+            const Icon = iconMap[category.icon] || Calculator;
+            return (
+              <button
+                key={category.id}
+                type="button"
+                onClick={() => setActiveCategory(category.id)}
+                className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all ${
+                  activeCategory === category.id
+                    ? 'text-white shadow-md'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
+                style={
+                  activeCategory === category.id
+                    ? { backgroundColor: category.color }
+                    : undefined
+                }
+              >
+                <Icon className="size-4" />
+                {category.name.split(' ')[0]} ({count})
+              </button>
+            );
+          })}
+        </div>
 
         {/* Workflows Banner */}
-        <section className='grid gap-4 md:grid-cols-3'>
+        <section className="mb-12 grid gap-4 md:grid-cols-3">
           {workflows.map((workflow) => (
-            <div
+            <Card
               key={workflow.id}
-              className='rounded-2xl border p-6'
-              style={{ borderColor: `${workflow.color}30`, backgroundColor: `${workflow.color}08` }}
+              className="border-0 shadow-sm hover:shadow-md transition-shadow"
+              style={{ backgroundColor: `${workflow.color}08` }}
             >
-              <div className='flex items-start gap-4'>
-                <div
-                  className='flex size-10 items-center justify-center rounded-xl'
-                  style={{ backgroundColor: `${workflow.color}20` }}
-                >
-                  <Sparkles className='size-5' style={{ color: workflow.color }} />
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div
+                    className="flex size-12 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: `${workflow.color}15` }}
+                  >
+                    <Sparkles className="size-5" style={{ color: workflow.color }} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-slate-900">{workflow.name}</h3>
+                    <p className="mt-1 text-sm text-slate-600">{workflow.description}</p>
+                    <div className="mt-3 flex items-center text-xs font-medium" style={{ color: workflow.color }}>
+                      <span>{workflow.steps.length} step workflow</span>
+                      <ArrowRight className="ml-1 size-3" />
+                    </div>
+                  </div>
                 </div>
-                <div className='flex-1'>
-                  <h3 className='font-semibold text-gray-900'>{workflow.name}</h3>
-                  <p className='mt-1 text-sm text-gray-600'>{workflow.description}</p>
-                  <p className='mt-2 text-xs text-gray-500'>
-                    {workflow.steps.length} steps
-                  </p>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ))}
         </section>
 
         {/* Calculator Grid */}
         {activeCategory === 'all' ? (
-          // Show by category when "All" is selected
-          <div className='space-y-12'>
+          <div className="space-y-16">
             {categories.map((category) => {
               const categoryCalcs = filteredCalculators.filter(
                 (c) => c.category === category.id
@@ -173,36 +215,37 @@ export default function CalculatorsIndexPage() {
               const Icon = iconMap[category.icon] || Calculator;
 
               return (
-                <section key={category.id} className='space-y-6'>
-                  <div className='flex items-center justify-between'>
-                    <div className='flex items-center gap-3'>
+                <section key={category.id}>
+                  <div className="mb-6 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
                       <div
-                        className='flex size-10 items-center justify-center rounded-xl'
-                        style={{ backgroundColor: `${category.color}20` }}
+                        className="flex size-12 items-center justify-center rounded-xl"
+                        style={{ backgroundColor: `${category.color}15` }}
                       >
                         <span style={{ color: category.color }}>
-                          <Icon className='size-5' />
+                          <Icon className="size-6" />
                         </span>
                       </div>
                       <div>
-                        <h2 className='text-xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
+                        <h2 className="text-2xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
                           {category.name}
                         </h2>
-                        <p className='text-sm text-gray-500'>
+                        <p className="text-sm text-slate-500">
                           {categoryCalcs.length} calculators
                         </p>
                       </div>
                     </div>
                     <Link
                       href={`/${category.slug}`}
-                      className='text-sm font-medium hover:underline'
+                      className="flex items-center gap-1 text-sm font-medium hover:underline"
                       style={{ color: category.color }}
                     >
                       View all
+                      <ArrowRight className="size-4" />
                     </Link>
                   </div>
 
-                  <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {categoryCalcs.map((calc) => (
                       <CalculatorCard key={calc.id} calculator={calc} />
                     ))}
@@ -212,8 +255,7 @@ export default function CalculatorsIndexPage() {
             })}
           </div>
         ) : (
-          // Show flat grid when a category is selected
-          <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filteredCalculators.map((calc) => (
               <CalculatorCard key={calc.id} calculator={calc} />
             ))}
@@ -222,24 +264,67 @@ export default function CalculatorsIndexPage() {
 
         {/* Empty State */}
         {filteredCalculators.length === 0 && (
-          <div className='rounded-2xl border border-gray-200 bg-gray-50 p-12 text-center'>
-            <Calculator className='mx-auto size-12 text-gray-400' />
-            <h3 className='mt-4 text-lg font-medium text-gray-900'>No calculators found</h3>
-            <p className='mt-2 text-gray-600'>
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-16 text-center">
+            <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-slate-100">
+              <Calculator className="size-8 text-slate-400" />
+            </div>
+            <h3 className="mt-6 text-xl font-semibold text-slate-900">No calculators found</h3>
+            <p className="mt-2 text-slate-600">
               Try adjusting your search or filter to find what you're looking for.
             </p>
             <button
-              type='button'
+              type="button"
               onClick={() => {
                 setActiveCategory('all');
                 setSearchQuery('');
               }}
-              className='mt-4 text-[#00C9A7] font-medium hover:underline'
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[var(--pc-blue)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--pc-blue)]/90 transition-colors"
             >
               Clear filters
             </button>
           </div>
         )}
+
+        {/* Trust Section */}
+        <section className="mt-20 rounded-2xl border border-slate-200 bg-gradient-to-b from-slate-50 to-white p-10">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
+              Built for UK Property Professionals
+            </h2>
+            <p className="mt-3 text-slate-600">
+              Every calculation uses UK-specific formulas, tax rates, and industry standards
+            </p>
+          </div>
+          <div className="mt-10 grid gap-6 sm:grid-cols-3">
+            <div className="text-center">
+              <div className="mx-auto flex size-12 items-center justify-center rounded-xl bg-emerald-100">
+                <CheckCircle2 className="size-6 text-emerald-600" />
+              </div>
+              <h3 className="mt-4 font-semibold text-slate-900">UK Tax Compliant</h3>
+              <p className="mt-2 text-sm text-slate-600">
+                SDLT, CGT, Section 24, and all UK-specific calculations
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="mx-auto flex size-12 items-center justify-center rounded-xl bg-blue-100">
+                <TrendingUp className="size-6 text-blue-600" />
+              </div>
+              <h3 className="mt-4 font-semibold text-slate-900">BCIS Aligned</h3>
+              <p className="mt-2 text-sm text-slate-600">
+                Build costs based on BCIS data and regional adjustments
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="mx-auto flex size-12 items-center justify-center rounded-xl bg-purple-100">
+                <Shield className="size-6 text-purple-600" />
+              </div>
+              <h3 className="mt-4 font-semibold text-slate-900">Lender Ready</h3>
+              <p className="mt-2 text-sm text-slate-600">
+                DSCR, ICR, and LTV calculations matching lender requirements
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   );
@@ -249,36 +334,40 @@ function CalculatorCard({ calculator }: { calculator: CalculatorConfig }) {
   const isLive = calculator.status === 'live';
 
   return (
-    <Link href={calculator.href} className='no-underline group'>
-      <div
-        className='h-full rounded-2xl border bg-white p-6 shadow-sm transition-all hover:shadow-md'
-        style={{ borderColor: `${calculator.color}20` }}
-      >
-        <div className='flex items-start justify-between'>
-          <div
-            className='flex size-10 items-center justify-center rounded-xl'
-            style={{ backgroundColor: `${calculator.color}15` }}
-          >
-            <Calculator className='size-5' style={{ color: calculator.color }} />
+    <Link href={calculator.href} className="no-underline group">
+      <Card className="h-full border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200">
+        <CardContent className="p-6">
+          <div className="flex items-start justify-between">
+            <div
+              className="flex size-11 items-center justify-center rounded-xl"
+              style={{ backgroundColor: `${calculator.color}12` }}
+            >
+              <Calculator className="size-5" style={{ color: calculator.color }} />
+            </div>
+            <Badge
+              variant={isLive ? 'default' : 'secondary'}
+              className={isLive
+                ? 'bg-emerald-100 text-emerald-700 border-0 text-xs'
+                : 'bg-amber-100 text-amber-700 border-0 text-xs'
+              }
+            >
+              {isLive ? 'Live' : 'Soon'}
+            </Badge>
           </div>
-          <StatusPill
-            tone={isLive ? 'success' : 'warning'}
-            label={isLive ? 'Live' : 'Soon'}
-          />
-        </div>
 
-        <h3 className='mt-4 font-semibold text-gray-900 group-hover:text-[#00C9A7] transition-colors'>
-          {calculator.name}
-        </h3>
-        <p className='mt-2 text-sm text-gray-600 line-clamp-2'>
-          {calculator.description}
-        </p>
+          <h3 className="mt-4 font-semibold text-slate-900 group-hover:text-[var(--pc-blue)] transition-colors">
+            {calculator.name}
+          </h3>
+          <p className="mt-2 text-sm text-slate-600 line-clamp-2">
+            {calculator.description}
+          </p>
 
-        <div className='mt-4 flex items-center text-sm font-medium' style={{ color: calculator.color }}>
-          {isLive ? 'Use calculator' : 'Get notified'}
-          <ArrowRight className='ml-1 size-4 transition-transform group-hover:translate-x-1' />
-        </div>
-      </div>
+          <div className="mt-4 flex items-center text-sm font-medium" style={{ color: calculator.color }}>
+            {isLive ? 'Use calculator' : 'Get notified'}
+            <ArrowRight className="ml-1 size-4 transition-transform group-hover:translate-x-1" />
+          </div>
+        </CardContent>
+      </Card>
     </Link>
   );
 }

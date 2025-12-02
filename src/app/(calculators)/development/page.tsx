@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import {
-  ArrowLeft,
   ArrowRight,
   Building2,
   Home,
@@ -16,11 +15,17 @@ import {
   TrendingUp,
   Banknote,
   HelpCircle,
+  ChevronRight,
+  Star,
+  Users,
+  Sparkles,
+  Clock,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 // Development types that a borrower might use
 const developmentTypes = [
@@ -106,7 +111,6 @@ const workflowSteps = [
     name: 'Development Type',
     description: 'Select your development strategy',
     icon: HelpCircle,
-    color: '#00C9A7',
   },
   {
     step: 2,
@@ -115,7 +119,6 @@ const workflowSteps = [
     description: 'Calculate end values',
     icon: TrendingUp,
     href: '/development/gdv-calculator',
-    color: '#00C9A7',
   },
   {
     step: 3,
@@ -124,7 +127,6 @@ const workflowSteps = [
     description: 'Estimate construction costs',
     icon: Calculator,
     href: '/development/build-cost-calculator',
-    color: '#00C9A7',
   },
   {
     step: 4,
@@ -133,7 +135,6 @@ const workflowSteps = [
     description: 'Structure your funding',
     icon: Banknote,
     href: '/development/development-finance-calculator',
-    color: '#00C9A7',
   },
 ];
 
@@ -142,58 +143,95 @@ export default function DevelopmentPage() {
   const selectedDev = developmentTypes.find((t) => t.id === selectedType);
 
   return (
-    <div className="bg-white min-h-screen">
-      <main className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8">
-        {/* Back Link */}
-        <Link
-          href="/calculators"
-          className="inline-flex items-center gap-2 text-slate-600 hover:text-[var(--pc-blue)] transition-colors text-sm font-medium"
-        >
-          <ArrowLeft className="size-4" />
-          All Calculators
-        </Link>
+    <div className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <div className="border-b border-slate-200 bg-gradient-to-b from-slate-50 to-white">
+        <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+          {/* Breadcrumb */}
+          <nav className="mb-8">
+            <ol className="flex items-center gap-2 text-sm">
+              <li>
+                <Link href="/" className="text-slate-500 hover:text-slate-700 transition-colors">
+                  Home
+                </Link>
+              </li>
+              <ChevronRight className="size-4 text-slate-400" />
+              <li>
+                <Link href="/calculators" className="text-slate-500 hover:text-slate-700 transition-colors">
+                  Calculators
+                </Link>
+              </li>
+              <ChevronRight className="size-4 text-slate-400" />
+              <li className="font-medium text-slate-900">Development</li>
+            </ol>
+          </nav>
 
-        {/* Hero Section */}
-        <section className="space-y-4">
-          <Badge className="bg-emerald-100 text-emerald-700 border-0">
-            Construction Capital Engine
-          </Badge>
-          <h1 className="text-4xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
-            Development Finance Calculator
-          </h1>
-          <p className="text-lg text-slate-600 max-w-3xl">
-            Calculate your development's viability from GDV through to finance. Works for any
-            development type—new builds, PD conversions, refurbs, and more.
-          </p>
-        </section>
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-4">
+                <Badge className="bg-emerald-100 text-emerald-700 border-0">
+                  <Sparkles className="mr-1 size-3" />
+                  AI-Powered Workflow
+                </Badge>
+              </div>
+              <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl font-[family-name:var(--font-space-grotesk)]">
+                Development Finance Calculator
+              </h1>
+              <p className="mt-4 text-lg text-slate-600 max-w-2xl">
+                Calculate your development's viability from GDV through to finance. Works for any
+                development type—new builds, PD conversions, refurbs, and more.
+              </p>
 
+              {/* Trust Signals */}
+              <div className="mt-6 flex flex-wrap items-center gap-4">
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="size-4 fill-amber-400 text-amber-400" />
+                  ))}
+                  <span className="ml-2 text-sm font-medium text-slate-700">4.9/5</span>
+                </div>
+                <Separator orientation="vertical" className="h-4" />
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <Users className="size-4" />
+                  <span>Used by 3,000+ developers</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <main className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
         {/* Workflow Progress */}
-        <section className="py-4">
-          <div className="flex items-center justify-between max-w-3xl">
+        <section className="mb-12">
+          <div className="flex items-center justify-between max-w-4xl mx-auto">
             {workflowSteps.map((step, index) => (
               <div key={step.id} className="flex items-center">
                 <div className="flex flex-col items-center">
                   <div
                     className={cn(
-                      'flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all',
+                      'flex h-14 w-14 items-center justify-center rounded-2xl border-2 transition-all',
                       step.step === 1
-                        ? 'bg-[var(--pc-blue)] border-[var(--pc-blue)] text-white'
-                        : 'border-slate-200 text-slate-400 bg-white'
+                        ? 'bg-[var(--pc-blue)] border-[var(--pc-blue)] text-white shadow-lg'
+                        : 'border-slate-200 text-slate-400 bg-white hover:border-slate-300'
                     )}
                   >
-                    <step.icon className="h-5 w-5" />
+                    <step.icon className="h-6 w-6" />
                   </div>
                   <span
                     className={cn(
-                      'mt-2 text-xs font-medium',
+                      'mt-3 text-sm font-medium text-center',
                       step.step === 1 ? 'text-[var(--pc-blue)]' : 'text-slate-400'
                     )}
                   >
                     {step.name}
                   </span>
+                  <span className="text-xs text-slate-400 text-center mt-1 hidden sm:block">
+                    {step.description}
+                  </span>
                 </div>
                 {index < workflowSteps.length - 1 && (
-                  <div className="w-16 h-0.5 bg-slate-200 mx-2 mt-[-20px]" />
+                  <div className="w-12 sm:w-20 h-0.5 bg-slate-200 mx-2 mt-[-40px]" />
                 )}
               </div>
             ))}
@@ -201,10 +239,11 @@ export default function DevelopmentPage() {
         </section>
 
         {/* Step 1: Development Type Selection */}
-        <section className="space-y-6">
-          <div>
-            <h2 className="text-2xl font-semibold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
-              Step 1: What type of development?
+        <section className="mb-12">
+          <div className="mb-8">
+            <Badge className="mb-3 bg-slate-100 text-slate-700 border-0">Step 1</Badge>
+            <h2 className="text-2xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
+              What type of development?
             </h2>
             <p className="mt-2 text-slate-600">
               Select your development strategy to get the most accurate calculations.
@@ -218,34 +257,32 @@ export default function DevelopmentPage() {
                 <Card
                   key={type.id}
                   className={cn(
-                    'cursor-pointer transition-all hover:shadow-md',
+                    'cursor-pointer transition-all duration-200 hover:shadow-lg',
                     isSelected
-                      ? 'ring-2 ring-[var(--pc-blue)] border-[var(--pc-blue)]'
-                      : 'hover:border-slate-300'
+                      ? 'ring-2 ring-[var(--pc-blue)] border-[var(--pc-blue)] shadow-lg'
+                      : 'border-slate-200 hover:border-slate-300'
                   )}
                   onClick={() => setSelectedType(type.id)}
                 >
-                  <CardHeader className="pb-3">
+                  <CardContent className="p-6">
                     <div className="flex items-start justify-between">
                       <div
                         className={cn(
-                          'flex h-10 w-10 items-center justify-center rounded-lg',
+                          'flex h-12 w-12 items-center justify-center rounded-xl transition-colors',
                           isSelected ? 'bg-[var(--pc-blue)]' : 'bg-slate-100'
                         )}
                       >
                         <type.icon
-                          className={cn('h-5 w-5', isSelected ? 'text-white' : 'text-slate-600')}
+                          className={cn('h-6 w-6', isSelected ? 'text-white' : 'text-slate-600')}
                         />
                       </div>
-                      {isSelected && <CheckCircle2 className="h-5 w-5 text-[var(--pc-blue)]" />}
+                      {isSelected && <CheckCircle2 className="h-6 w-6 text-[var(--pc-blue)]" />}
                     </div>
-                    <CardTitle className="text-lg mt-3">{type.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-slate-600 mb-3">{type.description}</p>
-                    <div className="flex flex-wrap gap-1">
+                    <h3 className="text-lg font-semibold text-slate-900 mt-4">{type.name}</h3>
+                    <p className="text-sm text-slate-600 mt-2">{type.description}</p>
+                    <div className="flex flex-wrap gap-1.5 mt-4">
                       {type.examples.map((example) => (
-                        <Badge key={example} variant="secondary" className="text-xs">
+                        <Badge key={example} variant="secondary" className="text-xs bg-slate-100">
                           {example}
                         </Badge>
                       ))}
@@ -259,69 +296,82 @@ export default function DevelopmentPage() {
 
         {/* Selected Type Details + Next Steps */}
         {selectedDev && (
-          <section className="space-y-6">
-            <Card className="bg-slate-50 border-slate-200">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--pc-blue)]">
-                    <selectedDev.icon className="h-6 w-6 text-white" />
+          <section className="mb-12">
+            <Card className="bg-gradient-to-br from-slate-50 to-white border-slate-200">
+              <CardContent className="p-8">
+                <div className="flex flex-col lg:flex-row lg:items-start gap-6">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--pc-blue)] shrink-0">
+                    <selectedDev.icon className="h-8 w-8 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-slate-900">{selectedDev.name}</h3>
-                    <p className="mt-1 text-slate-600">{selectedDev.description}</p>
+                    <h3 className="text-2xl font-bold text-slate-900">{selectedDev.name}</h3>
+                    <p className="mt-2 text-slate-600">{selectedDev.description}</p>
 
-                    <div className="mt-4 grid gap-4 sm:grid-cols-3">
-                      <div className="bg-white rounded-lg p-3 border border-slate-200">
-                        <p className="text-xs text-slate-500 uppercase tracking-wide">
-                          Typical Timeline
-                        </p>
-                        <p className="mt-1 font-semibold text-slate-900">
+                    <div className="mt-6 grid gap-4 sm:grid-cols-3">
+                      <div className="bg-white rounded-xl p-4 border border-slate-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Clock className="size-4 text-slate-400" />
+                          <p className="text-xs text-slate-500 uppercase tracking-wide font-medium">
+                            Timeline
+                          </p>
+                        </div>
+                        <p className="text-lg font-semibold text-slate-900">
                           {selectedDev.typical.timeline}
                         </p>
                       </div>
-                      <div className="bg-white rounded-lg p-3 border border-slate-200">
-                        <p className="text-xs text-slate-500 uppercase tracking-wide">Finance</p>
-                        <p className="mt-1 font-semibold text-slate-900">
+                      <div className="bg-white rounded-xl p-4 border border-slate-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Banknote className="size-4 text-slate-400" />
+                          <p className="text-xs text-slate-500 uppercase tracking-wide font-medium">
+                            Finance
+                          </p>
+                        </div>
+                        <p className="text-lg font-semibold text-slate-900">
                           {selectedDev.typical.finance}
                         </p>
                       </div>
-                      <div className="bg-white rounded-lg p-3 border border-slate-200">
-                        <p className="text-xs text-slate-500 uppercase tracking-wide">
-                          Target Margin
-                        </p>
-                        <p className="mt-1 font-semibold text-slate-900">
+                      <div className="bg-white rounded-xl p-4 border border-slate-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <TrendingUp className="size-4 text-slate-400" />
+                          <p className="text-xs text-slate-500 uppercase tracking-wide font-medium">
+                            Target Margin
+                          </p>
+                        </div>
+                        <p className="text-lg font-semibold text-slate-900">
                           {selectedDev.typical.margin}
                         </p>
                       </div>
+                    </div>
+
+                    <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                      <Link href={`/development/gdv-calculator?type=${selectedType}`} className="flex-1">
+                        <Button size="lg" className="w-full gap-2 bg-[var(--pc-blue)] hover:bg-[var(--pc-blue)]/90">
+                          Continue to GDV Calculator
+                          <ArrowRight className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                      <Link href="/development/build-cost-calculator" className="flex-1">
+                        <Button variant="outline" size="lg" className="w-full gap-2">
+                          Skip to Build Costs
+                          <ArrowRight className="h-4 w-4" />
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
-
-            {/* Workflow Continue */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href={`/development/gdv-calculator?type=${selectedType}`} className="flex-1">
-                <Button variant="default" size="lg" className="w-full gap-2">
-                  Continue to GDV Calculator
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-              <Link href="/development/build-cost-calculator" className="flex-1">
-                <Button variant="outline" size="lg" className="w-full gap-2">
-                  Skip to Build Costs
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
           </section>
         )}
 
         {/* Quick Access to Individual Calculators */}
-        <section className="space-y-6 pt-8 border-t border-slate-200">
-          <h2 className="text-2xl font-semibold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
-            Or jump to a specific calculator
-          </h2>
+        <section className="pt-8 border-t border-slate-200 mb-12">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
+              Or jump to a specific calculator
+            </h2>
+            <p className="mt-1 text-slate-600">Access any development calculator directly</p>
+          </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
@@ -331,6 +381,7 @@ export default function DevelopmentPage() {
                 href: '/development/gdv-calculator',
                 icon: TrendingUp,
                 status: 'live',
+                color: '#10B981',
               },
               {
                 name: 'Build Cost Calculator',
@@ -338,6 +389,7 @@ export default function DevelopmentPage() {
                 href: '/development/build-cost-calculator',
                 icon: Calculator,
                 status: 'live',
+                color: '#3B82F6',
               },
               {
                 name: 'Development Finance',
@@ -345,6 +397,7 @@ export default function DevelopmentPage() {
                 href: '/development/development-finance-calculator',
                 icon: Banknote,
                 status: 'live',
+                color: '#8B5CF6',
               },
               {
                 name: 'Profit on Cost',
@@ -352,21 +405,24 @@ export default function DevelopmentPage() {
                 href: '/development/profit-on-cost-calculator',
                 icon: TrendingUp,
                 status: 'coming-soon',
+                color: '#F59E0B',
               },
             ].map((calc) => (
               <Link key={calc.href} href={calc.href} className="group no-underline">
-                <Card className="h-full transition-all hover:shadow-md hover:border-[var(--pc-blue)]">
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100">
-                        <calc.icon className="h-5 w-5 text-emerald-600" />
+                <Card className="h-full border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div
+                        className="flex h-12 w-12 items-center justify-center rounded-xl"
+                        style={{ backgroundColor: `${calc.color}15` }}
+                      >
+                        <calc.icon className="h-6 w-6" style={{ color: calc.color }} />
                       </div>
                       <Badge
-                        variant={calc.status === 'live' ? 'default' : 'secondary'}
                         className={
                           calc.status === 'live'
-                            ? 'bg-emerald-100 text-emerald-700 border-0'
-                            : ''
+                            ? 'bg-emerald-100 text-emerald-700 border-0 text-xs'
+                            : 'bg-amber-100 text-amber-700 border-0 text-xs'
                         }
                       >
                         {calc.status === 'live' ? 'Live' : 'Soon'}
@@ -375,7 +431,11 @@ export default function DevelopmentPage() {
                     <h3 className="font-semibold text-slate-900 group-hover:text-[var(--pc-blue)] transition-colors">
                       {calc.name}
                     </h3>
-                    <p className="mt-1 text-sm text-slate-600">{calc.description}</p>
+                    <p className="mt-2 text-sm text-slate-600">{calc.description}</p>
+                    <div className="mt-4 flex items-center text-sm font-medium" style={{ color: calc.color }}>
+                      Use calculator
+                      <ArrowRight className="ml-1 size-4 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </CardContent>
                 </Card>
               </Link>
@@ -384,8 +444,8 @@ export default function DevelopmentPage() {
         </section>
 
         {/* Additional Calculators */}
-        <section className="space-y-6">
-          <h3 className="text-lg font-semibold text-slate-900">More Development Tools</h3>
+        <section>
+          <h3 className="text-lg font-semibold text-slate-900 mb-4">More Development Tools</h3>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[
               { name: 'Residual Land Value', href: '/development/residual-land-value-calculator' },
@@ -398,12 +458,17 @@ export default function DevelopmentPage() {
               <Link
                 key={calc.href}
                 href={calc.href}
-                className="flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:border-[var(--pc-blue)] hover:bg-slate-50 transition-all group"
+                className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all group"
               >
-                <span className="font-medium text-slate-700 group-hover:text-[var(--pc-blue)]">
-                  {calc.name}
-                </span>
-                <Badge variant="secondary" className="text-xs">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-10 items-center justify-center rounded-lg bg-slate-100">
+                    <Calculator className="size-5 text-slate-600" />
+                  </div>
+                  <span className="font-medium text-slate-700 group-hover:text-[var(--pc-blue)] transition-colors">
+                    {calc.name}
+                  </span>
+                </div>
+                <Badge variant="secondary" className="text-xs bg-slate-100">
                   Soon
                 </Badge>
               </Link>
