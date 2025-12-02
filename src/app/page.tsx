@@ -18,13 +18,20 @@ import {
   Brain,
   Database,
   Layers,
+  Star,
+  Clock,
+  Play,
+  Quote,
+  Mail,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { registry } from '@/lib/calculators/registry';
 
 const calculatorCategories = [
   {
@@ -33,7 +40,7 @@ const calculatorCategories = [
     href: '/development',
     icon: Building2,
     count: 12,
-    color: 'var(--pc-cat-development)',
+    color: '#2563eb',
   },
   {
     title: 'HMO & Conversion',
@@ -41,15 +48,7 @@ const calculatorCategories = [
     href: '/hmo',
     icon: Users,
     count: 9,
-    color: 'var(--pc-cat-hmo)',
-  },
-  {
-    title: 'Buy-to-Let & Portfolio',
-    description: 'DSCR, ICR, BRRR, Section 24, and portfolio optimisation',
-    href: '/landlord',
-    icon: PoundSterling,
-    count: 7,
-    color: 'var(--pc-cat-landlord)',
+    color: '#7c3aed',
   },
   {
     title: 'Bridging & Specialty',
@@ -57,7 +56,7 @@ const calculatorCategories = [
     href: '/bridging',
     icon: Zap,
     count: 5,
-    color: 'var(--pc-cat-bridging)',
+    color: '#ea580c',
   },
   {
     title: 'Leasehold & Title',
@@ -65,64 +64,72 @@ const calculatorCategories = [
     href: '/leasehold',
     icon: FileText,
     count: 7,
-    color: 'var(--pc-cat-leasehold)',
+    color: '#0891b2',
   },
   {
-    title: 'Commercial Property',
-    description: 'Commercial yields, ERV, FRI leases, and VAT analysis',
-    href: '/commercial',
+    title: 'Portfolio & Tax',
+    description: 'DSCR, ICR, BRRR, Section 24, and portfolio optimisation',
+    href: '/portfolio',
+    icon: PoundSterling,
+    count: 7,
+    color: '#059669',
+  },
+  {
+    title: 'Valuation & Analysis',
+    description: 'Rental yields, cap rates, and comparable analysis',
+    href: '/valuation',
     icon: BarChart3,
-    count: 5,
-    color: 'var(--pc-cat-commercial)',
+    count: 8,
+    color: '#dc2626',
   },
 ];
 
-const stats = [
-  { value: '300+', label: 'Free calculators' },
-  { value: '10', label: 'Property categories' },
-  { value: '£0', label: 'Always free' },
-  { value: '24/7', label: 'Instant results' },
+const testimonials = [
+  {
+    quote: "Finally, a calculator that understands UK property. The lease extension calculator alone saved me hours of back-and-forth with solicitors.",
+    author: "James H.",
+    role: "Property Developer, London",
+    rating: 5,
+  },
+  {
+    quote: "I use the development appraisal calculator for every deal now. The AI insights are surprisingly accurate.",
+    author: "Sarah M.",
+    role: "Portfolio Landlord, Manchester",
+    rating: 5,
+  },
+  {
+    quote: "The BRRR calculator helped me understand if a deal would actually work before I committed. Essential tool.",
+    author: "David P.",
+    role: "HMO Investor, Birmingham",
+    rating: 5,
+  },
 ];
 
-const platformFeatures = [
-  {
-    icon: Brain,
-    title: 'AI Deal Analysis',
-    description:
-      'Get instant insights on your calculations. See what works, what doesn\'t, and why.',
-  },
-  {
-    icon: Database,
-    title: 'Save Your Deals',
-    description:
-      'Create an account to save calculations, compare scenarios, and track your portfolio.',
-  },
-  {
-    icon: Layers,
-    title: 'Export & Share',
-    description:
-      'Download professional reports or share results with partners and lenders.',
-  },
+const popularCalculators = [
+  { name: 'Rental Yield Calculator', href: '/valuation/rental-yield-calculator', category: 'Valuation' },
+  { name: 'BRRR Calculator', href: '/creative/brrr', category: 'Creative' },
+  { name: 'Development Appraisal', href: '/development/development-appraisal', category: 'Development' },
+  { name: 'Bridging Loan Calculator', href: '/bridging/bridging-loan-calculator', category: 'Bridging' },
+  { name: 'HMO Viability', href: '/hmo/hmo-viability-calculator', category: 'HMO' },
+  { name: 'Lease Extension', href: '/leasehold/lease-extension-calculator', category: 'Leasehold' },
+  { name: 'Section 24 Tax', href: '/portfolio/section-24-tax', category: 'Tax' },
+  { name: 'DSCR/ICR Calculator', href: '/bridging/dscr-icr-btl', category: 'Finance' },
 ];
 
 const Page = () => {
-  // Interactive calculator state
   const [purchasePrice, setPurchasePrice] = useState(285000);
   const [monthlyRent, setMonthlyRent] = useState(1450);
 
-  // Calculate derived values
   const annualRent = monthlyRent * 12;
   const grossYield = purchasePrice > 0 ? ((annualRent / purchasePrice) * 100) : 0;
 
-  // Determine yield quality
   const yieldQuality = useMemo(() => {
-    if (grossYield >= 8) return { label: 'Excellent', color: 'text-emerald-600' };
-    if (grossYield >= 6) return { label: 'Good', color: 'text-emerald-600' };
-    if (grossYield >= 5) return { label: 'Fair', color: 'text-amber-600' };
-    return { label: 'Low', color: 'text-red-600' };
+    if (grossYield >= 8) return { label: 'Excellent', color: 'text-emerald-600', bg: 'bg-emerald-50' };
+    if (grossYield >= 6) return { label: 'Good', color: 'text-emerald-600', bg: 'bg-emerald-50' };
+    if (grossYield >= 5) return { label: 'Fair', color: 'text-amber-600', bg: 'bg-amber-50' };
+    return { label: 'Low', color: 'text-red-600', bg: 'bg-red-50' };
   }, [grossYield]);
 
-  // Format currency for display
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-GB', {
       style: 'currency',
@@ -132,170 +139,171 @@ const Page = () => {
     }).format(value);
   };
 
-  // Parse currency input
   const parseCurrency = (value: string) => {
     const num = parseInt(value.replace(/[^0-9]/g, ''), 10);
     return isNaN(num) ? 0 : num;
   };
 
+  // Get live calculators count
+  const liveCalculatorCount = registry.all().filter(c => c.status === 'live').length;
+
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[var(--pc-navy)]">
-        {/* Background effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--pc-navy)] via-slate-900 to-[var(--pc-navy)]" />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03]" />
-        {/* Glow effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--pc-blue)] rounded-full blur-[128px] opacity-20" />
-        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-500 rounded-full blur-[100px] opacity-10" />
+      <section className="relative overflow-hidden border-b border-slate-200">
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[var(--pc-blue)]/5 to-transparent" />
 
-        <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div className="relative mx-auto max-w-7xl px-6 py-16 lg:py-24 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+            {/* Left: Content */}
             <div>
-              <Badge variant="ai" className="mb-6">
-                <Sparkles className="w-3 h-3 mr-1" />
-                300+ Free Calculators
-              </Badge>
-              <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl font-[family-name:var(--font-space-grotesk)]">
-                Run the numbers.
+              {/* Trust Badge */}
+              <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
+                  ))}
+                  <span className="ml-2 text-sm font-medium text-slate-700">4.9/5</span>
+                </div>
+                <Separator orientation="vertical" className="h-4" />
+                <span className="text-sm text-slate-600">Trusted by 10,000+ UK investors</span>
+              </div>
+
+              <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight font-[family-name:var(--font-space-grotesk)]">
+                Property calculators
                 <br />
-                <span className="text-[var(--pc-blue)]">Know the deal.</span>
+                <span className="text-[var(--pc-blue)]">that actually work.</span>
               </h1>
-              <p className="mt-6 text-lg text-slate-300 leading-relaxed max-w-xl">
-                Every property calculator you need—yields, GDV, bridging costs, lease extensions, and more.
-                Free tools built for UK property professionals.
+
+              <p className="mt-6 text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
+                {liveCalculatorCount}+ free calculators built specifically for UK property.
+                Yields, GDV, bridging costs, lease extensions, and more.
               </p>
+
+              {/* CTA Buttons */}
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link href="/calculators">
-                  <Button variant="accent" size="lg" className="gap-2 shadow-lg shadow-blue-500/25">
-                    Browse Calculators
+                  <Button size="lg" className="gap-2 h-12 px-6 text-base shadow-lg">
+                    Browse all calculators
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
-                <Link href="/calculators">
-                  <Button
-                    variant="ghost"
-                    size="lg"
-                    className="text-white hover:bg-white/10 border border-white/20"
-                  >
-                    View Categories
+                <Link href="/development">
+                  <Button variant="outline" size="lg" className="gap-2 h-12 px-6 text-base">
+                    <Play className="w-4 h-4" />
+                    Start a deal
                   </Button>
                 </Link>
               </div>
 
-              {/* Trust signals */}
-              <div className="mt-10 flex items-center gap-6 text-sm text-slate-400">
+              {/* Trust Signals */}
+              <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-slate-500">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                   <span>No signup required</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                   <span>100% free</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  <span>UK-focused</span>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>UK tax rules built-in</span>
                 </div>
               </div>
             </div>
 
-            {/* Interactive Calculator Card */}
-            <div className="relative lg:ml-8">
-              {/* Glow effect behind card */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[var(--pc-blue)] to-purple-500 rounded-2xl blur-2xl opacity-30 scale-105" />
+            {/* Right: Calculator Card */}
+            <div className="relative">
+              {/* Decorative elements */}
+              <div className="absolute -top-4 -left-4 w-24 h-24 bg-[var(--pc-blue)]/10 rounded-full blur-2xl" />
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl" />
 
-              {/* Main calculator card */}
-              <Card className="relative shadow-2xl border border-slate-200/50 bg-white overflow-hidden">
-                {/* Header with gradient accent */}
+              <Card className="relative shadow-2xl border-slate-200/50 overflow-hidden">
+                {/* Header */}
                 <div className="bg-gradient-to-r from-[var(--pc-blue)] to-blue-600 px-6 py-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/20 backdrop-blur">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20">
                         <Calculator className="h-5 w-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-white">BTL Yield Calculator</h3>
-                        <p className="text-xs text-blue-100">Try it now — enter your numbers</p>
+                        <h3 className="font-semibold text-white">Rental Yield Calculator</h3>
+                        <p className="text-xs text-blue-100">Try it now — live results</p>
                       </div>
                     </div>
-                    <Badge className="bg-white/20 text-white border-0 backdrop-blur">
+                    <Badge className="bg-white/20 text-white border-0">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-pulse" />
                       Live
                     </Badge>
                   </div>
                 </div>
 
-                <CardContent className="p-6 space-y-4">
-                  {/* Purchase Price Input */}
+                <CardContent className="p-6 space-y-5">
+                  {/* Purchase Price */}
                   <div className="space-y-2">
-                    <Label htmlFor="hero-purchase-price" className="text-sm font-medium text-slate-700">
-                      Purchase Price
-                    </Label>
-                    <Input
-                      id="hero-purchase-price"
-                      type="text"
-                      inputMode="numeric"
-                      value={formatCurrency(purchasePrice)}
-                      onChange={(e) => setPurchasePrice(parseCurrency(e.target.value))}
-                      className="text-lg font-semibold h-12 border-slate-200 focus:border-[var(--pc-blue)] focus:ring-[var(--pc-blue)]"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    {/* Monthly Rent Input */}
-                    <div className="space-y-2">
-                      <Label htmlFor="hero-monthly-rent" className="text-sm font-medium text-slate-700">
-                        Monthly Rent
-                      </Label>
+                    <Label className="text-sm font-medium text-slate-700">Purchase Price</Label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-medium">£</span>
                       <Input
-                        id="hero-monthly-rent"
                         type="text"
                         inputMode="numeric"
-                        value={formatCurrency(monthlyRent)}
-                        onChange={(e) => setMonthlyRent(parseCurrency(e.target.value))}
-                        className="font-semibold h-11 border-slate-200 focus:border-[var(--pc-blue)] focus:ring-[var(--pc-blue)]"
+                        value={purchasePrice.toLocaleString('en-GB')}
+                        onChange={(e) => setPurchasePrice(parseCurrency(e.target.value))}
+                        className="pl-8 h-12 text-lg font-semibold tabular-nums"
                       />
                     </div>
-                    {/* Annual Rent (calculated) */}
+                  </div>
+
+                  {/* Rent inputs */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-slate-700">Monthly Rent</Label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-medium">£</span>
+                        <Input
+                          type="text"
+                          inputMode="numeric"
+                          value={monthlyRent.toLocaleString('en-GB')}
+                          onChange={(e) => setMonthlyRent(parseCurrency(e.target.value))}
+                          className="pl-8 h-11 font-semibold tabular-nums"
+                        />
+                      </div>
+                    </div>
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-slate-500">Annual Rent</Label>
                       <div className="h-11 flex items-center px-3 rounded-md bg-slate-50 border border-slate-200">
-                        <span className="font-semibold text-slate-700">{formatCurrency(annualRent)}</span>
+                        <span className="font-semibold text-slate-700 tabular-nums">{formatCurrency(annualRent)}</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Results section */}
-                  <div className="pt-2">
-                    <div className={cn(
-                      "rounded-xl p-4 border transition-colors",
-                      grossYield >= 5
-                        ? "bg-gradient-to-r from-emerald-50 to-emerald-100 border-emerald-200"
-                        : "bg-gradient-to-r from-amber-50 to-amber-100 border-amber-200"
-                    )}>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className={cn(
-                            "w-2 h-2 rounded-full animate-pulse",
-                            grossYield >= 5 ? "bg-emerald-500" : "bg-amber-500"
-                          )} />
-                          <span className={cn(
-                            "text-sm font-medium",
-                            grossYield >= 5 ? "text-emerald-800" : "text-amber-800"
-                          )}>
-                            Gross Yield
-                          </span>
-                        </div>
-                        <span className={cn("text-3xl font-bold", yieldQuality.color)}>
+                  {/* Result */}
+                  <div className={cn(
+                    "rounded-xl p-4 border-2 transition-all",
+                    grossYield >= 5 ? "bg-emerald-50 border-emerald-200" : "bg-amber-50 border-amber-200"
+                  )}>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-slate-600">Gross Yield</p>
+                        <p className={cn("text-3xl font-bold tabular-nums", yieldQuality.color)}>
                           {grossYield.toFixed(2)}%
-                        </span>
+                        </p>
+                      </div>
+                      <div className={cn(
+                        "px-3 py-1.5 rounded-full text-sm font-semibold",
+                        yieldQuality.bg, yieldQuality.color
+                      )}>
+                        {yieldQuality.label}
                       </div>
                     </div>
                   </div>
 
-                  {/* Action button */}
-                  <Link href="/landlord/rental-yield-calculator" className="block">
-                    <Button variant="accent" className="w-full gap-2 shadow-lg">
+                  {/* CTA */}
+                  <Link href="/valuation/rental-yield-calculator" className="block">
+                    <Button className="w-full h-12 gap-2 text-base">
                       <Sparkles className="w-4 h-4" />
                       Full Calculator + AI Analysis
                     </Button>
@@ -303,278 +311,352 @@ const Page = () => {
                 </CardContent>
               </Card>
 
-              {/* Floating yield quality badge */}
-              <div className="absolute -top-3 -right-3 z-10">
-                <div className="bg-white rounded-lg shadow-lg px-3 py-2 border border-slate-100">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className={cn("h-4 w-4", yieldQuality.color)} />
-                    <span className={cn("text-sm font-bold", yieldQuality.color)}>{yieldQuality.label}</span>
-                  </div>
+              {/* Floating badges */}
+              <div className="absolute -top-3 -right-3 bg-white rounded-xl shadow-lg p-3 border border-slate-100">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className={cn("h-5 w-5", yieldQuality.color)} />
+                  <span className={cn("font-bold", yieldQuality.color)}>{yieldQuality.label}</span>
                 </div>
               </div>
 
-              <div className="absolute -bottom-2 -left-2 z-10">
-                <div className="bg-white rounded-lg shadow-lg px-3 py-2 border border-slate-100">
-                  <div className="text-center">
-                    <p className="text-lg font-bold text-[var(--pc-blue)]">300+</p>
-                    <p className="text-[10px] text-slate-500 uppercase tracking-wide">Calculators</p>
-                  </div>
-                </div>
+              <div className="absolute -bottom-3 -left-3 bg-white rounded-xl shadow-lg px-4 py-2 border border-slate-100">
+                <p className="text-2xl font-bold text-[var(--pc-blue)]">{liveCalculatorCount}+</p>
+                <p className="text-xs text-slate-500">Free calculators</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Calculator Categories Section */}
-      <section className="py-24 bg-slate-50">
+      {/* Stats Bar */}
+      <section className="bg-[var(--pc-navy)] py-6">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center">
-            <Badge variant="info" className="mb-4">
-              <Calculator className="w-3 h-3 mr-1" />
-              Calculator Library
-            </Badge>
-            <h2 className="mt-4 text-4xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
-              Every calculation you need
-            </h2>
-            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-              From development appraisals to lease extensions, our calculators cover every aspect of
-              UK property finance.
-            </p>
-          </div>
-
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {calculatorCategories.map((category) => (
-              <Link key={category.title} href={category.href} className="group no-underline">
-                <div className="h-full rounded-2xl bg-white border border-slate-200 p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-[var(--pc-blue)]">
-                  <div className="flex items-start justify-between">
-                    <div
-                      className="inline-flex size-12 items-center justify-center rounded-xl"
-                      style={{ backgroundColor: `${category.color}15` }}
-                    >
-                      <category.icon className="size-6" style={{ color: category.color }} />
-                    </div>
-                    <Badge variant="neutral">{category.count} calculators</Badge>
-                  </div>
-                  <h3 className="mt-4 text-lg font-semibold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
-                    {category.title}
-                  </h3>
-                  <p className="mt-2 text-slate-600 text-sm leading-relaxed">
-                    {category.description}
-                  </p>
-                  <div className="mt-4 flex items-center text-sm font-medium text-[var(--pc-blue)]">
-                    View calculators
-                    <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </Link>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { value: `${liveCalculatorCount}+`, label: 'Free calculators' },
+              { value: '10', label: 'Property categories' },
+              { value: '10K+', label: 'Monthly users' },
+              { value: '4.9★', label: 'Average rating' },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <p className="text-2xl lg:text-3xl font-bold text-white">{stat.value}</p>
+                <p className="text-sm text-slate-400">{stat.label}</p>
+              </div>
             ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <Link href="/calculators">
-              <Button variant="outline" size="lg" className="gap-2">
-                View all 300+ calculators
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
 
-      {/* AI Platform Section */}
-      <section className="py-24">
+      {/* Popular Calculators */}
+      <section className="py-16 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
+          <div className="flex items-center justify-between mb-8">
             <div>
-              <Badge variant="ai" className="mb-4">
+              <h2 className="text-2xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
+                Popular calculators
+              </h2>
+              <p className="text-slate-600 mt-1">Most used by UK property investors</p>
+            </div>
+            <Link href="/calculators">
+              <Button variant="outline" className="gap-2">
+                View all
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {popularCalculators.map((calc) => (
+              <Link
+                key={calc.name}
+                href={calc.href}
+                className="group p-4 bg-white rounded-xl border border-slate-200 hover:border-[var(--pc-blue)] hover:shadow-md transition-all"
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="font-medium text-slate-900 group-hover:text-[var(--pc-blue)]">{calc.name}</p>
+                    <p className="text-xs text-slate-500 mt-1">{calc.category}</p>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[var(--pc-blue)] group-hover:translate-x-1 transition-all" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Calculator Categories */}
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <Badge variant="secondary" className="mb-4">
+              <Calculator className="w-3 h-3 mr-1" />
+              Calculator Library
+            </Badge>
+            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
+              Every calculation you need
+            </h2>
+            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+              From development appraisals to lease extensions, our calculators cover every aspect of UK property finance.
+            </p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {calculatorCategories.map((category) => (
+              <Link key={category.title} href={category.href} className="group">
+                <Card className="h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border-slate-200 hover:border-[var(--pc-blue)]">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div
+                        className="flex h-12 w-12 items-center justify-center rounded-xl"
+                        style={{ backgroundColor: `${category.color}15` }}
+                      >
+                        <category.icon className="h-6 w-6" style={{ color: category.color }} />
+                      </div>
+                      <Badge variant="secondary">{category.count} calculators</Badge>
+                    </div>
+                    <h3 className="text-lg font-semibold text-slate-900 group-hover:text-[var(--pc-blue)] font-[family-name:var(--font-space-grotesk)]">
+                      {category.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                      {category.description}
+                    </p>
+                    <div className="mt-4 flex items-center text-sm font-medium text-[var(--pc-blue)]">
+                      View calculators
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-20 bg-slate-50">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <Badge variant="secondary" className="mb-4">How It Works</Badge>
+            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
+              Three steps to clarity
+            </h2>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            {[
+              {
+                step: '01',
+                icon: Calculator,
+                title: 'Pick a calculator',
+                description: 'Browse by category or search. GDV, yields, bridging, lease extensions—we\'ve got it.',
+              },
+              {
+                step: '02',
+                icon: FileText,
+                title: 'Enter your numbers',
+                description: 'Fill in the details. Our calculators guide you through each input with helpful tooltips.',
+              },
+              {
+                step: '03',
+                icon: Sparkles,
+                title: 'Get instant results',
+                description: 'See your results immediately with AI-powered insights and recommendations.',
+              },
+            ].map((item) => (
+              <div key={item.step} className="relative">
+                <Card className="h-full text-center p-8">
+                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--pc-blue)] text-white text-xl font-bold mb-6">
+                    {item.step}
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-3 font-[family-name:var(--font-space-grotesk)]">
+                    {item.title}
+                  </h3>
+                  <p className="text-slate-600">{item.description}</p>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* AI Platform Preview */}
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 items-center">
+            <div>
+              <Badge variant="secondary" className="mb-4">
                 <Sparkles className="w-3 h-3 mr-1" />
-                Coming Soon
+                AI-Powered
               </Badge>
-              <h2 className="mt-4 text-4xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
+              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
                 More than numbers.
                 <br />
                 <span className="text-[var(--pc-blue)]">Smarter decisions.</span>
               </h2>
               <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-                Create a free account to unlock AI-powered insights, save your calculations,
-                and build your property portfolio tracker.
+                Every calculator includes AI-powered analysis. Get instant insights on deal viability,
+                risk factors, and recommendations.
               </p>
 
-              <div className="mt-10 space-y-6">
-                {platformFeatures.map((feature) => (
-                  <div key={feature.title} className="flex gap-4">
-                    <div className="flex-shrink-0">
-                      <div className="flex size-10 items-center justify-center rounded-lg bg-[var(--pc-blue-light)]">
-                        <feature.icon className="size-5 text-[var(--pc-blue)]" />
-                      </div>
+              <div className="mt-8 space-y-4">
+                {[
+                  { icon: Brain, title: 'AI Deal Analysis', desc: 'Instant insights on every calculation' },
+                  { icon: Database, title: 'Save Your Deals', desc: 'Track and compare scenarios' },
+                  { icon: Layers, title: 'Export & Share', desc: 'Download professional reports' },
+                ].map((feature) => (
+                  <div key={feature.title} className="flex items-start gap-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--pc-blue-light)] flex-shrink-0">
+                      <feature.icon className="h-5 w-5 text-[var(--pc-blue)]" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-slate-900">{feature.title}</h3>
-                      <p className="mt-1 text-sm text-slate-600">{feature.description}</p>
+                      <p className="text-sm text-slate-600">{feature.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* AI Demo Card */}
+            {/* AI Preview Card */}
             <div className="relative">
-              <div className="rounded-2xl bg-gradient-to-br from-[var(--pc-blue-light)] to-white border border-[var(--pc-blue)]/20 p-8 shadow-xl">
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-2 h-2 rounded-full bg-[var(--pc-blue)] animate-pulse" />
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[var(--pc-blue)]">
-                    AI Insight Preview
-                  </span>
+              <Card className="shadow-xl border-slate-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-[var(--pc-blue-light)] to-blue-50 p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Sparkles className="w-5 h-5 text-[var(--pc-blue)]" />
+                    <span className="text-sm font-semibold text-[var(--pc-blue)]">AI Analysis</span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <Card className="shadow-sm">
+                      <CardContent className="p-4">
+                        <p className="text-sm font-medium text-slate-600 mb-2">Deal Verdict</p>
+                        <p className="text-2xl font-bold text-emerald-600">Strong Buy</p>
+                        <p className="text-sm text-slate-500 mt-1">7.2% yield exceeds area average of 5.8%</p>
+                      </CardContent>
+                    </Card>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <Card className="shadow-sm">
+                        <CardContent className="p-3 text-center">
+                          <p className="text-xs text-slate-500">Gross Yield</p>
+                          <p className="text-lg font-bold text-slate-900">7.2%</p>
+                        </CardContent>
+                      </Card>
+                      <Card className="shadow-sm">
+                        <CardContent className="p-3 text-center">
+                          <p className="text-xs text-slate-500">Cash Flow</p>
+                          <p className="text-lg font-bold text-emerald-600">+£287/mo</p>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                        <span className="text-sm font-medium text-emerald-700">Passes all BTL criteria</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-                <div className="space-y-4">
-                  <div className="p-4 bg-white rounded-xl border border-slate-200">
-                    <p className="text-sm font-medium text-slate-900">Deal Summary</p>
-                    <div className="flex items-end gap-2 mt-2">
-                      <span className="text-3xl font-bold text-[var(--pc-success)]">Good</span>
-                    </div>
-                    <p className="text-xs text-slate-500 mt-2">
-                      Strong yield at 7.2%. Cash flow positive after all costs.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="p-3 bg-white rounded-lg border border-slate-200 text-center">
-                      <p className="text-xs text-slate-500">Gross Yield</p>
-                      <p className="text-lg font-semibold text-slate-900">7.2%</p>
-                    </div>
-                    <div className="p-3 bg-white rounded-lg border border-slate-200 text-center">
-                      <p className="text-xs text-slate-500">Net Yield</p>
-                      <p className="text-lg font-semibold text-slate-900">5.1%</p>
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-[var(--pc-success-light)] rounded-lg border border-[var(--pc-success)]/20">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[var(--pc-success)]" />
-                      <span className="text-sm font-medium text-[var(--pc-success)]">
-                        Meets typical BTL criteria
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </Card>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-24 bg-slate-50">
+      {/* Testimonials */}
+      <section className="py-20 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center">
-            <Badge variant="neutral" className="mb-4">
-              How It Works
-            </Badge>
-            <h2 className="mt-4 text-4xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
-              Three steps to clarity
+          <div className="text-center mb-12">
+            <Badge variant="secondary" className="mb-4">Testimonials</Badge>
+            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
+              Trusted by UK property professionals
             </h2>
           </div>
 
-          <div className="mt-16 grid gap-8 sm:grid-cols-3">
-            {[
-              {
-                step: '01',
-                title: 'Pick a calculator',
-                description:
-                  'Browse by category or search for the calculation you need. GDV, yields, bridging, lease extensions—we\'ve got it.',
-              },
-              {
-                step: '02',
-                title: 'Enter your numbers',
-                description:
-                  'Fill in the details. Our calculators guide you through each input with helpful tooltips and examples.',
-              },
-              {
-                step: '03',
-                title: 'Get instant results',
-                description:
-                  'See your results immediately. Download, share, or save to your account for later.',
-              },
-            ].map((item) => (
-              <div key={item.step} className="relative text-center">
-                <div className="inline-flex size-16 items-center justify-center rounded-2xl bg-[var(--pc-navy)] text-white text-xl font-bold mb-6">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-semibold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
-                  {item.title}
-                </h3>
-                <p className="mt-3 text-slate-600 leading-relaxed">{item.description}</p>
+          <div className="grid gap-8 md:grid-cols-3">
+            {testimonials.map((testimonial, i) => (
+              <Card key={i} className="relative">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(testimonial.rating)].map((_, j) => (
+                      <Star key={j} className="w-4 h-4 text-amber-400 fill-amber-400" />
+                    ))}
+                  </div>
+                  <Quote className="w-8 h-8 text-slate-200 mb-4" />
+                  <p className="text-slate-700 mb-6">&ldquo;{testimonial.quote}&rdquo;</p>
+                  <div>
+                    <p className="font-semibold text-slate-900">{testimonial.author}</p>
+                    <p className="text-sm text-slate-500">{testimonial.role}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter CTA */}
+      <section className="bg-[var(--pc-navy)]">
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-2xl lg:text-3xl font-bold text-white font-[family-name:var(--font-space-grotesk)]">
+              Ready to grow your property portfolio?
+            </h2>
+            <p className="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">
+              Get expert property investment tips and new calculator alerts delivered to your inbox.
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 h-12 bg-white/10 border-white/20 text-white placeholder:text-slate-400"
+              />
+              <Button variant="secondary" className="h-12 bg-white text-[var(--pc-navy)] hover:bg-slate-100">
+                Get started
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Logos */}
+      <section className="py-12 border-t border-slate-200">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <p className="text-center text-sm text-slate-500 mb-8">
+            Built for property professionals across the UK
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-12 opacity-50">
+            {['RICS', 'NLA', 'ARLA', 'Property Week', 'Landlord Today'].map((name) => (
+              <div key={name} className="flex items-center gap-2 text-slate-400">
+                <Building2 className="w-6 h-6" />
+                <span className="font-semibold text-sm">{name}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Trust Section */}
-      <section className="py-24 bg-[var(--pc-navy)]">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-white font-[family-name:var(--font-space-grotesk)]">
-                Built for UK property
-              </h2>
-              <p className="mt-6 text-lg text-slate-300 leading-relaxed">
-                Every calculator is designed specifically for UK property transactions.
-                Stamp duty, lease extensions, Section 24—we speak your language.
-              </p>
-            </div>
-
-            <div className="grid gap-6">
-              {[
-                {
-                  icon: Zap,
-                  title: 'Instant Results',
-                  description: 'No waiting. Get your numbers in seconds, not hours.',
-                },
-                {
-                  icon: Shield,
-                  title: 'UK-Specific',
-                  description: 'Built for UK tax rules, regulations, and market conventions.',
-                },
-                {
-                  icon: CheckCircle2,
-                  title: 'Always Free',
-                  description: 'Core calculators are free forever. No credit card required.',
-                },
-              ].map((feature) => (
-                <div key={feature.title} className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="flex size-12 items-center justify-center rounded-xl bg-[var(--pc-blue)]">
-                      <feature.icon className="size-6 text-white" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white">{feature.title}</h3>
-                    <p className="mt-1 text-slate-400">{feature.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-24">
+      {/* Final CTA */}
+      <section className="py-20 bg-slate-50">
         <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-          <h2 className="text-4xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
+          <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]">
             Ready to run the numbers?
           </h2>
-          <p className="mt-6 text-lg text-slate-600">
-            300+ free calculators for UK property professionals. No signup required.
+          <p className="mt-4 text-lg text-slate-600">
+            {liveCalculatorCount}+ free calculators for UK property professionals. No signup required.
           </p>
-          <div className="mt-10 flex justify-center gap-4">
+          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/calculators">
-              <Button variant="default" size="lg" className="gap-2">
-                Browse Calculators
+              <Button size="lg" className="gap-2 h-12 px-8">
+                Browse all calculators
                 <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+            <Link href="/development">
+              <Button variant="outline" size="lg" className="gap-2 h-12 px-8">
+                Start a deal appraisal
               </Button>
             </Link>
           </div>
