@@ -27,7 +27,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { registry } from '@/lib/calculators/registry';
 
 const calculatorCategories = [
   {
@@ -140,9 +139,6 @@ const Page = () => {
     return isNaN(num) ? 0 : num;
   };
 
-  // Get live calculators count
-  const liveCalculatorCount = registry.all().filter(c => c.status === 'live').length;
-
   return (
     <div className="bg-white">
       {/* Hero Section */}
@@ -174,8 +170,8 @@ const Page = () => {
               </h1>
 
               <p className="mt-6 text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
-                {liveCalculatorCount}+ free calculators built specifically for UK property.
-                Yields, GDV, bridging costs, lease extensions, and more.
+                300+ property calculators for UK property developers and investors.
+                Yields, GDV, ROI, bridging costs, lease extensions, title splits and more.
               </p>
 
               {/* CTA Buttons */}
@@ -317,7 +313,7 @@ const Page = () => {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { value: `${liveCalculatorCount}+`, label: 'Free calculators' },
+              { value: '300+', label: 'Free calculators' },
               { value: '10', label: 'Property categories' },
               { value: '10K+', label: 'Monthly users' },
               { value: '4.9★', label: 'Average rating' },
@@ -629,7 +625,7 @@ const Page = () => {
             Ready to run the numbers?
           </h2>
           <p className="mt-4 text-lg text-slate-600">
-            {liveCalculatorCount}+ free calculators for UK property professionals. No signup required.
+            300+ free calculators for UK property professionals. No signup required.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/calculators">
