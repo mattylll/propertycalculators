@@ -88,16 +88,12 @@ export default function CalculatorsIndexPage() {
           </div>
 
           <div className="text-center">
-            <Badge className="mb-4 bg-emerald-100 text-emerald-700 border-0 px-3 py-1">
-              <Sparkles className="mr-1 size-3" />
-              {calculators.length}+ Professional Calculators
-            </Badge>
             <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl font-[family-name:var(--font-space-grotesk)]">
-              UK Property Calculators
+              Property Calculators
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600">
-              Professional-grade calculators for property developers, investors, and landlords.
-              From development finance to HMO viability—make informed decisions with accurate UK-specific formulas.
+              300+ property calculators for property developers and investors for UK property.
+              Yields, GDV, ROI, bridging costs, lease extensions, title splits and much more.
             </p>
 
             {/* Stats Bar */}
