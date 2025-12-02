@@ -9,20 +9,16 @@ import {
   PoundSterling,
   BarChart3,
   CheckCircle2,
-  Shield,
   Zap,
   Sparkles,
-  TrendingUp,
   Users,
   FileText,
   Brain,
   Database,
   Layers,
   Star,
-  Clock,
   Play,
   Quote,
-  Mail,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -311,18 +307,6 @@ const Page = () => {
                 </CardContent>
               </Card>
 
-              {/* Floating badges */}
-              <div className="absolute -top-3 -right-3 bg-white rounded-xl shadow-lg p-3 border border-slate-100">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className={cn("h-5 w-5", yieldQuality.color)} />
-                  <span className={cn("font-bold", yieldQuality.color)}>{yieldQuality.label}</span>
-                </div>
-              </div>
-
-              <div className="absolute -bottom-3 -left-3 bg-white rounded-xl shadow-lg px-4 py-2 border border-slate-100">
-                <p className="text-2xl font-bold text-[var(--pc-blue)]">{liveCalculatorCount}+</p>
-                <p className="text-xs text-slate-500">Free calculators</p>
-              </div>
             </div>
           </div>
         </div>
