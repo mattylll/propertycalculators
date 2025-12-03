@@ -223,7 +223,7 @@ const DashboardPage = () => {
                     Browse Calculators
                   </h3>
                   <p className="mt-2 text-sm text-slate-600">
-                    Access 300+ property calculators for any analysis you need.
+                    Access our full library of property calculators for any analysis you need.
                   </p>
                   <div className="mt-4 flex items-center text-sm font-medium text-emerald-600">
                     Browse all

@@ -145,7 +145,7 @@ const Page = () => {
   const faqSchema = generateFAQSchema([
     {
       question: "What property calculators are available?",
-      answer: "We offer 300+ free calculators including GDV, build cost, rental yield, lease extension, BRRR, bridging loan, service charge, ground rent, CIL, and many more specialist UK property calculators."
+      answer: "We offer 30+ free calculators including GDV, build cost, rental yield, lease extension, BRRR, bridging loan, HMO viability, and many more specialist UK property calculators."
     },
     {
       question: "Are the calculators free to use?",
@@ -199,7 +199,7 @@ const Page = () => {
               </h1>
 
               <p className="mt-6 text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
-                300+ property calculators for UK property developers and investors.
+                Free property calculators for UK developers and investors.
                 Yields, GDV, ROI, bridging costs, lease extensions, title splits and more.
               </p>
 
@@ -342,7 +342,7 @@ const Page = () => {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { value: '300+', label: 'Free calculators' },
+              { value: '30+', label: 'Free calculators' },
               { value: '10', label: 'Property categories' },
               { value: '10K+', label: 'Monthly users' },
               { value: '4.9★', label: 'Average rating' },
@@ -654,7 +654,7 @@ const Page = () => {
             Ready to run the numbers?
           </h2>
           <p className="mt-4 text-lg text-slate-600">
-            300+ free calculators for UK property professionals. No signup required.
+            Free calculators for UK property professionals. No signup required.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/calculators">

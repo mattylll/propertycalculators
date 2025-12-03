@@ -92,8 +92,8 @@ export default function CalculatorsIndexPage() {
               Property Calculators
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600">
-              300+ property calculators for property developers and investors for UK property.
-              Yields, GDV, ROI, bridging costs, lease extensions, title splits and much more.
+              Free property calculators for UK developers and investors.
+              Yields, GDV, ROI, bridging costs, lease extensions, title splits and more.
             </p>
 
             {/* Stats Bar */}

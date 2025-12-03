@@ -1,7 +1,7 @@
 /**
  * Calculator Factory
  *
- * A scalable pattern for generating 300+ calculators from configuration.
+ * A scalable pattern for generating calculators from configuration.
  * Each calculator is defined by a schema that specifies inputs, calculations,
  * outputs, AI prompts, and recommended next calculators.
  */
