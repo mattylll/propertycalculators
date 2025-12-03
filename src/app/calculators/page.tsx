@@ -174,7 +174,7 @@ export default function CalculatorsIndexPage() {
           {workflows.map((workflow) => (
             <Card
               key={workflow.id}
-              className="border-0 shadow-sm hover:shadow-md transition-shadow"
+              className="border-0 shadow-sm opacity-75"
               style={{ backgroundColor: `${workflow.color}08` }}
             >
               <CardContent className="p-6">
@@ -186,11 +186,15 @@ export default function CalculatorsIndexPage() {
                     <Sparkles className="size-5" style={{ color: workflow.color }} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-slate-900">{workflow.name}</h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold text-slate-900">{workflow.name}</h3>
+                      <Badge variant="secondary" className="text-xs bg-amber-100 text-amber-700 border-0">
+                        Coming Soon
+                      </Badge>
+                    </div>
                     <p className="mt-1 text-sm text-slate-600">{workflow.description}</p>
-                    <div className="mt-3 flex items-center text-xs font-medium" style={{ color: workflow.color }}>
+                    <div className="mt-3 flex items-center text-xs font-medium text-slate-400">
                       <span>{workflow.steps.length} step workflow</span>
-                      <ArrowRight className="ml-1 size-3" />
                     </div>
                   </div>
                 </div>

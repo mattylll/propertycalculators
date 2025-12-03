@@ -103,14 +103,14 @@ const testimonials = [
 ];
 
 const popularCalculators = [
-  { name: 'Rental Yield Calculator', href: '/valuation/rental-yield-calculator', category: 'Valuation' },
-  { name: 'BRRR Calculator', href: '/creative/brrr', category: 'Creative' },
-  { name: 'Development Appraisal', href: '/development/development-appraisal', category: 'Development' },
+  { name: 'BRRR Calculator', href: '/landlord/brrr-calculator', category: 'Landlord' },
+  { name: 'GDV Calculator', href: '/development/gdv-calculator', category: 'Development' },
   { name: 'Bridging Loan Calculator', href: '/bridging/bridging-loan-calculator', category: 'Bridging' },
   { name: 'HMO Viability', href: '/hmo/hmo-viability-calculator', category: 'HMO' },
   { name: 'Lease Extension', href: '/leasehold/lease-extension-calculator', category: 'Leasehold' },
-  { name: 'Section 24 Tax', href: '/portfolio/section-24-tax', category: 'Tax' },
-  { name: 'DSCR/ICR Calculator', href: '/bridging/dscr-icr-btl', category: 'Finance' },
+  { name: 'Section 24 Tax', href: '/landlord/section-24-tax-impact-calculator', category: 'Landlord' },
+  { name: 'BTL DSCR Calculator', href: '/landlord/btl-dscr-calculator', category: 'Landlord' },
+  { name: 'Build Cost Calculator', href: '/development/build-cost-calculator', category: 'Development' },
 ];
 
 const Page = () => {
