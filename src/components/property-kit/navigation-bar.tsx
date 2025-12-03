@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Calculator, LayoutDashboard, Menu, X, Sparkles } from 'lucide-react';
+import { Calculator, LayoutDashboard, Menu, X, Sparkles, BookOpen } from 'lucide-react';
 
 // Dynamically import the Clerk-dependent auth section
 const ClerkAuthSection = dynamic(
@@ -108,6 +108,7 @@ function MobileAuthSection({ onClose }: { onClose: () => void }) {
 
 const navItems = [
   { href: '/calculators', label: 'Calculators', icon: Calculator },
+  { href: '/blog', label: 'Blog', icon: BookOpen },
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
 ];
 

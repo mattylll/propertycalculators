@@ -180,7 +180,7 @@ const BuildCostCalculatorPage = () => {
                                 type='number'
                                 unit='sqm'
                                 value={form.totalGia}
-                                helperText='Gross internal area'
+                                helper='Gross internal area'
                                 onChange={(e) => handleInputChange('totalGia', e.target.value)}
                             />
                             <FloatingField
@@ -245,7 +245,7 @@ const BuildCostCalculatorPage = () => {
                                 type='number'
                                 unit='%'
                                 value={form.contingency}
-                                helperText='Typical: 7.5-15%'
+                                helper='Typical: 7.5-15%'
                                 onChange={(e) => handleInputChange('contingency', e.target.value)}
                             />
                             <FloatingField
@@ -254,7 +254,7 @@ const BuildCostCalculatorPage = () => {
                                 type='number'
                                 unit='%'
                                 value={form.professionalFees}
-                                helperText='Architects, engineers, PM'
+                                helper='Architects, engineers, PM'
                                 onChange={(e) => handleInputChange('professionalFees', e.target.value)}
                             />
                         </div>
@@ -272,7 +272,7 @@ const BuildCostCalculatorPage = () => {
                 <div className='flex flex-col gap-6'>
                     <AiOutputCard
                         title='Build Cost Analysis'
-                        status={status}
+                        accent={status}
                         response={aiCopy}
                         highlights={[
                             { label: 'TOTAL COST', value: formatCurrencyCompact(metrics.totalCost) },

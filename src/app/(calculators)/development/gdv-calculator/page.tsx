@@ -329,7 +329,7 @@ Respond in JSON:
                                         label='Postcode'
                                         name='postcode'
                                         value={form.postcode}
-                                        helperText='e.g. WC1R 4PS, M1 1AA'
+                                        helper='e.g. WC1R 4PS, M1 1AA'
                                         onChange={(e) => handleInputChange('postcode', e.target.value.toUpperCase())}
                                     />
                                     <div className='space-y-2'>
@@ -466,7 +466,7 @@ Respond in JSON:
                                     type='number'
                                     unit='%'
                                     value={form.newBuildPremium}
-                                    helperText='Typical range: 10-20%'
+                                    helper='Typical range: 10-20%'
                                     onChange={(e) => handleInputChange('newBuildPremium', e.target.value)}
                                 />
 

@@ -188,7 +188,7 @@ const FinanceCalculatorPage = () => {
                                 name='purchasePrice'
                                 type='number'
                                 value={form.purchasePrice}
-                                helperText='Site acquisition cost'
+                                helper='Site acquisition cost'
                                 onChange={(e) => handleInputChange('purchasePrice', e.target.value)}
                             />
                             <FloatingField
@@ -196,7 +196,7 @@ const FinanceCalculatorPage = () => {
                                 name='buildCost'
                                 type='number'
                                 value={form.buildCost}
-                                helperText='Total construction budget'
+                                helper='Total construction budget'
                                 onChange={(e) => handleInputChange('buildCost', e.target.value)}
                             />
                         </div>
@@ -205,7 +205,7 @@ const FinanceCalculatorPage = () => {
                             name='gdv'
                             type='number'
                             value={form.gdv}
-                            helperText='Expected end value'
+                            helper='Expected end value'
                             onChange={(e) => handleInputChange('gdv', e.target.value)}
                         />
                         <div className='grid gap-4 md:grid-cols-2'>
@@ -215,7 +215,7 @@ const FinanceCalculatorPage = () => {
                                 type='number'
                                 unit='months'
                                 value={form.termMonths}
-                                helperText='Build + sales period'
+                                helper='Build + sales period'
                                 onChange={(e) => handleInputChange('termMonths', e.target.value)}
                             />
                             <FloatingField
@@ -224,7 +224,7 @@ const FinanceCalculatorPage = () => {
                                 type='number'
                                 unit='%'
                                 value={form.targetLtc}
-                                helperText='Senior debt leverage'
+                                helper='Senior debt leverage'
                                 onChange={(e) => handleInputChange('targetLtc', e.target.value)}
                             />
                         </div>
@@ -249,7 +249,7 @@ const FinanceCalculatorPage = () => {
                 <div className='flex flex-col gap-6'>
                     <AiOutputCard
                         title='Finance Recommendation'
-                        status={status}
+                        accent={status}
                         response={aiCopy}
                         highlights={[
                             { label: 'SENIOR DEBT', value: formatCurrencyCompact(metrics.seniorDebtAmount) },

@@ -27,6 +27,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { SchemaScript } from '@/components/schema-script';
+import { generateWebsiteSchema, generateOrganizationSchema, generateFAQSchema } from '@/lib/schema';
 
 const calculatorCategories = [
   {
@@ -139,8 +141,35 @@ const Page = () => {
     return isNaN(num) ? 0 : num;
   };
 
+  // FAQ Schema data
+  const faqSchema = generateFAQSchema([
+    {
+      question: "What property calculators are available?",
+      answer: "We offer 300+ free calculators including GDV, build cost, rental yield, lease extension, BRRR, bridging loan, service charge, ground rent, CIL, and many more specialist UK property calculators."
+    },
+    {
+      question: "Are the calculators free to use?",
+      answer: "Yes, all our property calculators are completely free to use. Some advanced AI-powered analysis features require a free account."
+    },
+    {
+      question: "Are the calculators accurate for UK property?",
+      answer: "Yes, all calculators are specifically designed for UK property using BCIS data, Land Registry information, and current market rates."
+    },
+    {
+      question: "Can I save my calculations?",
+      answer: "Yes, create a free account to save your calculations, track multiple deals, and access AI-powered market validation."
+    }
+  ]);
+
   return (
     <div className="bg-white">
+      {/* Schema Markup */}
+      <SchemaScript schema={[
+        generateWebsiteSchema(),
+        generateOrganizationSchema(),
+        faqSchema
+      ]} />
+
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-slate-200">
         {/* Background */}

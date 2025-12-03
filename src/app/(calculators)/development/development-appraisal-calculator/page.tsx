@@ -225,7 +225,7 @@ const PdCalculatorPage = () => {
                                 <FloatingField
                                     key={field.name}
                                     label={field.label}
-                                    helperText={field.helper}
+                                    helper={field.helper}
                                     name={field.name}
                                     value={form[field.name] as string}
                                     onChange={(event) => handleInputChange(field.name, event.target.value)}
@@ -240,7 +240,7 @@ const PdCalculatorPage = () => {
                                     name={field.name}
                                     unit={field.unit}
                                     type={field.type}
-                                    helperText={field.helper}
+                                    helper={field.helper}
                                     value={form[field.name] as string}
                                     onChange={(event) => handleInputChange(field.name, event.target.value)}
                                 />
@@ -254,7 +254,7 @@ const PdCalculatorPage = () => {
                                     name={field.name}
                                     unit={field.unit}
                                     type={field.type}
-                                    helperText={field.helper}
+                                    helper={field.helper}
                                     value={form[field.name] as string}
                                     onChange={(event) => handleInputChange(field.name, event.target.value)}
                                 />
@@ -289,7 +289,7 @@ const PdCalculatorPage = () => {
 
                 <div className='flex flex-col gap-6'>
                     <AiOutputCard
-                        status={status}
+                        accent={status}
                         response={aiCopy}
                         highlights={[
                             {

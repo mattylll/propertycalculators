@@ -7,20 +7,23 @@ import { cn } from '@/lib/utils';
 type FloatingFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix'> & {
     label: string;
     helperText?: string;
+    helper?: string; // Alias for helperText
     error?: string;
     prefix?: React.ReactNode;
     suffix?: React.ReactNode;
     unit?: string;
+    unitPosition?: 'prefix' | 'suffix';
     compact?: boolean;
 };
 
 const FloatingField = React.forwardRef<HTMLInputElement, FloatingFieldProps>(
     (
-        { label, helperText, error, prefix, suffix, unit, compact = false, className, onFocus, onBlur, onInput, onChange, value, defaultValue, ...props },
+        { label, helperText, helper, error, prefix, suffix, unit, unitPosition = 'suffix', compact = false, className, onFocus, onBlur, onInput, onChange, value, defaultValue, ...props },
         ref
     ) => {
         const [isFocused, setIsFocused] = React.useState(false);
         const [filled, setFilled] = React.useState(Boolean(value ?? defaultValue));
+        const displayHelperText = helperText || helper;
 
         React.useEffect(() => {
             if (value !== undefined) {
@@ -62,6 +65,7 @@ const FloatingField = React.forwardRef<HTMLInputElement, FloatingFieldProps>(
                         error && 'border-red-500 ring-2 ring-red-500/20'
                     )}>
                     {prefix ? <span className='text-gray-500'>{prefix}</span> : null}
+                    {unit && unitPosition === 'prefix' ? <span className='text-sm text-gray-500'>{unit}</span> : null}
                     <input
                         ref={ref}
                         {...props}
@@ -85,10 +89,10 @@ const FloatingField = React.forwardRef<HTMLInputElement, FloatingFieldProps>(
                         )}>
                         {label}
                     </span>
-                    {unit ? <span className='text-sm text-gray-500'>{unit}</span> : suffix}
+                    {unit && unitPosition === 'suffix' ? <span className='text-sm text-gray-500'>{unit}</span> : suffix}
                 </div>
                 <div className='flex justify-between text-xs'>
-                    {helperText ? <p className='text-gray-500'>{helperText}</p> : <span />}
+                    {displayHelperText ? <p className='text-gray-500'>{displayHelperText}</p> : <span />}
                     {error ? <p className='text-red-500'>{error}</p> : null}
                 </div>
             </label>

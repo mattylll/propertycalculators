@@ -34,7 +34,7 @@ const bentoCardVariants = cva('rounded-2xl border transition-all duration-200', 
 type BentoCardProps = React.ComponentProps<typeof Card> &
     VariantProps<typeof bentoCardVariants> & {
         eyebrow?: string;
-        title: string;
+        title?: string;
         description?: string;
         metric?: string;
         meta?: React.ReactNode;
@@ -52,7 +52,9 @@ const BentoCard = React.forwardRef<HTMLDivElement, BentoCardProps>(
                         ) : null}
                         <div className='flex items-start justify-between gap-3'>
                             <div>
-                                <CardTitle className='font-semibold text-xl text-gray-900 lg:text-2xl font-[family-name:var(--font-space-grotesk)]'>{title}</CardTitle>
+                                {title ? (
+                                    <CardTitle className='font-semibold text-xl text-gray-900 lg:text-2xl font-[family-name:var(--font-space-grotesk)]'>{title}</CardTitle>
+                                ) : null}
                                 {description ? (
                                     <CardDescription className='mt-2 text-sm text-gray-600'>
                                         {description}

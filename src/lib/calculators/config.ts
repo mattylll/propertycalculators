@@ -218,7 +218,7 @@ const developmentCalculators: CalculatorConfig[] = [
     icon: 'Percent',
     color: '#00C9A7',
     href: '/development/profit-on-cost-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['profit on cost UK', 'developer margin calculator'],
   },
   {
@@ -231,7 +231,7 @@ const developmentCalculators: CalculatorConfig[] = [
     icon: 'Map',
     color: '#00C9A7',
     href: '/development/residual-land-value-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['residual land value', 'land value calculator', 'site value'],
   },
   {
@@ -299,6 +299,19 @@ const developmentCalculators: CalculatorConfig[] = [
     status: 'coming-soon',
     keywords: ['cost to complete', 'project cost forecast'],
   },
+  {
+    id: 'cil',
+    slug: 'cil-calculator',
+    name: 'CIL Calculator',
+    shortName: 'CIL',
+    description: 'Calculate Community Infrastructure Levy for your development project based on local authority rates and floor area',
+    category: 'development',
+    icon: 'Building2',
+    color: '#00C9A7',
+    href: '/development/cil-calculator',
+    status: 'live',
+    keywords: ['CIL calculator', 'community infrastructure levy', 'CIL rates', 'section 106'],
+  },
 ];
 
 // ============================================
@@ -316,7 +329,7 @@ const hmoCalculators: CalculatorConfig[] = [
     icon: 'Home',
     color: '#3B82F6',
     href: '/hmo/hmo-viability-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['HMO viability', 'does HMO stack', 'HMO calculator UK'],
   },
   {
@@ -329,7 +342,7 @@ const hmoCalculators: CalculatorConfig[] = [
     icon: 'Banknote',
     color: '#3B82F6',
     href: '/hmo/hmo-finance-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['HMO finance calculator UK', 'HMO mortgage calculator'],
   },
   {
@@ -355,7 +368,7 @@ const hmoCalculators: CalculatorConfig[] = [
     icon: 'Flame',
     color: '#3B82F6',
     href: '/hmo/hmo-fire-safety-cost-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['HMO fire safety cost', 'fire door calculator'],
   },
   {
@@ -368,7 +381,7 @@ const hmoCalculators: CalculatorConfig[] = [
     icon: 'FileCheck',
     color: '#3B82F6',
     href: '/hmo/hmo-licence-fee-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['HMO licensing cost', 'HMO licence fee calculator'],
   },
   {
@@ -440,8 +453,34 @@ const leaseholdCalculators: CalculatorConfig[] = [
     icon: 'FileText',
     color: '#8B5CF6',
     href: '/leasehold/lease-extension-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['lease extension calculator', 'how much to extend lease'],
+  },
+  {
+    id: 'service-charge',
+    slug: 'service-charge-calculator',
+    name: 'Service Charge Calculator',
+    shortName: 'Service Chg',
+    description: 'Calculate annual service charges for leasehold properties including management fees, insurance, and maintenance reserves',
+    category: 'leasehold',
+    icon: 'Receipt',
+    color: '#8B5CF6',
+    href: '/leasehold/service-charge-calculator',
+    status: 'live',
+    keywords: ['service charge calculator', 'leasehold service charge', 'flat service charge estimate', 'service charge breakdown'],
+  },
+  {
+    id: 'ground-rent',
+    slug: 'ground-rent-calculator',
+    name: 'Ground Rent Calculator',
+    shortName: 'Ground Rent',
+    description: 'Calculate ground rent obligations, escalation costs, and impact on property value for leasehold properties',
+    category: 'leasehold',
+    icon: 'Coins',
+    color: '#8B5CF6',
+    href: '/leasehold/ground-rent-calculator',
+    status: 'live',
+    keywords: ['ground rent calculator', 'leasehold ground rent', 'ground rent escalation', 'ground rent value impact'],
   },
   {
     id: 'marriage-value',
@@ -453,7 +492,7 @@ const leaseholdCalculators: CalculatorConfig[] = [
     icon: 'Heart',
     color: '#8B5CF6',
     href: '/leasehold/marriage-value-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['marriage value formula', 'lease extension marriage value'],
   },
   {
@@ -538,7 +577,7 @@ const titlesplitCalculators: CalculatorConfig[] = [
     icon: 'Split',
     color: '#F97316',
     href: '/titlesplit/title-split-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['title split calculator', 'can I title split'],
   },
   {
@@ -614,6 +653,32 @@ const titlesplitCalculators: CalculatorConfig[] = [
 
 const landlordCalculators: CalculatorConfig[] = [
   {
+    id: 'buy-to-let',
+    slug: 'buy-to-let-calculator',
+    name: 'Buy to Let Calculator',
+    shortName: 'BTL',
+    description: 'Calculate buy-to-let profitability, rental yield, monthly cashflow and ROI for investment properties',
+    category: 'landlord',
+    icon: 'Home',
+    color: '#22C55E',
+    href: '/landlord/buy-to-let-calculator',
+    status: 'live',
+    keywords: ['buy to let calculator', 'BTL investment calculator', 'rental property calculator', 'landlord profit calculator'],
+  },
+  {
+    id: 'stamp-duty',
+    slug: 'stamp-duty-calculator',
+    name: 'Stamp Duty Calculator',
+    shortName: 'SDLT',
+    description: 'Calculate Stamp Duty Land Tax for property purchases including additional property surcharge',
+    category: 'landlord',
+    icon: 'Receipt',
+    color: '#22C55E',
+    href: '/landlord/stamp-duty-calculator',
+    status: 'live',
+    keywords: ['stamp duty calculator', 'SDLT calculator', 'stamp duty land tax', 'additional property stamp duty'],
+  },
+  {
     id: 'btl-dscr',
     slug: 'btl-dscr-calculator',
     name: 'BTL DSCR Calculator',
@@ -623,7 +688,7 @@ const landlordCalculators: CalculatorConfig[] = [
     icon: 'Calculator',
     color: '#22C55E',
     href: '/landlord/btl-dscr-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['DSCR calculator UK BTL', 'debt service coverage ratio'],
   },
   {
@@ -649,7 +714,7 @@ const landlordCalculators: CalculatorConfig[] = [
     icon: 'RefreshCw',
     color: '#22C55E',
     href: '/landlord/brrr-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['BRRR calculator UK', 'buy refurbish refinance'],
   },
   {
@@ -662,7 +727,7 @@ const landlordCalculators: CalculatorConfig[] = [
     icon: 'Key',
     color: '#22C55E',
     href: '/landlord/rent-to-rent-profit-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['rent to rent profit', 'R2R calculator'],
   },
   {
@@ -688,7 +753,7 @@ const landlordCalculators: CalculatorConfig[] = [
     icon: 'FileWarning',
     color: '#22C55E',
     href: '/landlord/section-24-tax-impact-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['Section 24 calculator landlord UK', 'mortgage interest relief'],
   },
   {
@@ -721,7 +786,7 @@ const bridgingCalculators: CalculatorConfig[] = [
     icon: 'Zap',
     color: '#EF4444',
     href: '/bridging/bridging-loan-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['bridging loan calculator', 'bridge finance calculator UK'],
   },
   {
@@ -734,7 +799,7 @@ const bridgingCalculators: CalculatorConfig[] = [
     icon: 'Hammer',
     color: '#EF4444',
     href: '/bridging/refurbishment-bridge-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['refurbishment bridging', 'heavy refurb bridge'],
   },
   {
@@ -747,7 +812,7 @@ const bridgingCalculators: CalculatorConfig[] = [
     icon: 'ArrowRight',
     color: '#EF4444',
     href: '/bridging/bridge-to-let-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['bridge to let calculator', 'bridging to BTL'],
   },
   {
@@ -760,7 +825,7 @@ const bridgingCalculators: CalculatorConfig[] = [
     icon: 'Gavel',
     color: '#EF4444',
     href: '/bridging/auction-bridge-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['auction bridging calculator', 'auction finance calculator'],
   },
   {
@@ -793,7 +858,7 @@ const saCalculators: CalculatorConfig[] = [
     icon: 'BedDouble',
     color: '#EC4899',
     href: '/sa/serviced-accommodation-profit-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['SA viability calculator', 'serviced accommodation profit'],
   },
   {
@@ -806,7 +871,7 @@ const saCalculators: CalculatorConfig[] = [
     icon: 'Banknote',
     color: '#EC4899',
     href: '/sa/sa-finance-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['SA mortgage calculator', 'serviced accommodation finance'],
   },
   {
@@ -852,7 +917,7 @@ const commercialCalculators: CalculatorConfig[] = [
     icon: 'Building',
     color: '#6366F1',
     href: '/commercial/commercial-yield-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['commercial property yield UK', 'cap rate calculator'],
   },
   {
@@ -865,7 +930,7 @@ const commercialCalculators: CalculatorConfig[] = [
     icon: 'PoundSterling',
     color: '#6366F1',
     href: '/commercial/erv-rent-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['ERV calculator UK', 'estimated rental value'],
   },
   {
@@ -924,7 +989,7 @@ const refurbCalculators: CalculatorConfig[] = [
     icon: 'Hammer',
     color: '#F59E0B',
     href: '/refurb/refurb-cost-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['refurb cost per m2 UK', 'renovation cost calculator'],
   },
   {
@@ -932,13 +997,13 @@ const refurbCalculators: CalculatorConfig[] = [
     slug: 'loft-conversion-calculator',
     name: 'Loft Conversion Calculator',
     shortName: 'Loft',
-    description: 'Calculate loft conversion costs and added value',
+    description: 'Calculate loft conversion costs, added value and ROI for your property',
     category: 'refurb',
     icon: 'Home',
     color: '#F59E0B',
     href: '/refurb/loft-conversion-calculator',
-    status: 'coming-soon',
-    keywords: ['loft conversion ROI', 'loft conversion cost calculator'],
+    status: 'live',
+    keywords: ['loft conversion ROI', 'loft conversion cost calculator', 'loft conversion value added'],
   },
   {
     id: 'epc-upgrade',
@@ -950,7 +1015,7 @@ const refurbCalculators: CalculatorConfig[] = [
     icon: 'Leaf',
     color: '#F59E0B',
     href: '/refurb/epc-upgrade-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['EPC upgrade cost', 'energy efficiency calculator'],
   },
   {
