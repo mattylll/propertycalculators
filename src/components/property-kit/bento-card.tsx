@@ -6,19 +6,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/reg
 import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
 
-const bentoCardVariants = cva('rounded-2xl border transition-all duration-200', {
+const bentoCardVariants = cva('rounded-2xl border-2 transition-all duration-300', {
     variants: {
         variant: {
-            primary: 'bg-white border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]',
-            secondary: 'bg-gray-50 border-gray-200 shadow-sm hover:shadow-md',
-            ai: 'bg-white border-gray-200 border-l-4 border-l-[#00C9A7] shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_30px_rgba(0,201,167,0.12)]',
-            micro: 'bg-white border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md',
-            glass: 'bg-white border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]',
-            teal: 'bg-white border-gray-200 border-l-4 border-l-[#00C9A7] shadow-sm hover:shadow-lg',
-            blue: 'bg-white border-gray-200 border-l-4 border-l-[#3B82F6] shadow-sm hover:shadow-lg',
-            purple: 'bg-white border-gray-200 border-l-4 border-l-[#8B5CF6] shadow-sm hover:shadow-lg',
-            orange: 'bg-white border-gray-200 border-l-4 border-l-[#F97316] shadow-sm hover:shadow-lg',
-            green: 'bg-white border-gray-200 border-l-4 border-l-[#22C55E] shadow-sm hover:shadow-lg'
+            primary: 'bg-white border-slate-200 shadow-sm hover:shadow-xl hover:border-slate-300',
+            secondary: 'bg-gradient-to-br from-slate-50 to-white border-slate-200 shadow-sm hover:shadow-lg',
+            ai: 'bg-gradient-to-br from-emerald-50/50 to-white border-emerald-200 shadow-sm hover:shadow-lg hover:shadow-emerald-500/10 hover:border-emerald-300',
+            micro: 'bg-white border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md',
+            glass: 'bg-white/90 backdrop-blur-sm border-slate-200/60 shadow-sm hover:shadow-xl',
+            teal: 'bg-gradient-to-br from-teal-50/50 to-white border-teal-200 shadow-sm hover:shadow-lg hover:shadow-teal-500/10 hover:border-teal-300',
+            blue: 'bg-gradient-to-br from-blue-50/50 to-white border-blue-200 shadow-sm hover:shadow-lg hover:shadow-blue-500/10 hover:border-blue-300',
+            purple: 'bg-gradient-to-br from-purple-50/50 to-white border-purple-200 shadow-sm hover:shadow-lg hover:shadow-purple-500/10 hover:border-purple-300',
+            orange: 'bg-gradient-to-br from-orange-50/50 to-white border-orange-200 shadow-sm hover:shadow-lg hover:shadow-orange-500/10 hover:border-orange-300',
+            green: 'bg-gradient-to-br from-green-50/50 to-white border-green-200 shadow-sm hover:shadow-lg hover:shadow-green-500/10 hover:border-green-300'
         },
         emphasis: {
             default: '',

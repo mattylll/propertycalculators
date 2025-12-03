@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from 'react';
 
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/new-york-v4/ui/select';
@@ -248,25 +248,27 @@ Respond in JSON:
         }
     };
 
+    const getRiskVariant = (): 'success' | 'warning' | 'neutral' => {
+        switch (metrics.riskLevel) {
+            case 'low': return 'success';
+            case 'medium': return 'warning';
+            case 'high': return 'warning';
+            case 'onerous': return 'warning';
+            default: return 'neutral';
+        }
+    };
+
     return (
-        <div className='bg-white min-h-screen'>
-            <main className='mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                {/* Header */}
-                <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                    <div className='flex flex-wrap items-center gap-3'>
-                        <StatusPill tone='success' label='Ground Rent Calculator' />
-                        <StatusPill tone='neutral' label='Leasehold Tools' />
-                    </div>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
-                            Ground Rent Calculator
-                        </h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Calculate ground rent obligations, project future escalations, and assess the impact on your property.
-                            Understand if your ground rent is onerous.
-                        </p>
-                    </div>
-                </section>
+        <CalculatorPageLayout
+            title="Ground Rent Calculator"
+            description="Calculate ground rent obligations, project future escalations, and assess the impact on your property. Understand if your ground rent is onerous."
+            category="Leasehold"
+            categorySlug="leasehold"
+            categoryColor="#06B6D4"
+            badges={[
+                { label: getRiskBadge().label, variant: getRiskVariant() },
+            ]}
+        >
 
                 {/* Reform Notice */}
                 <Card className='border-blue-200 bg-blue-50'>
@@ -639,8 +641,7 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
-            </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 

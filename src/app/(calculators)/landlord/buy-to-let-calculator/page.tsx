@@ -6,9 +6,9 @@ import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
 import { formatCurrency, formatCurrencyCompact } from '@/lib/calculators/format';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -276,27 +276,14 @@ Respond in JSON:
     };
 
     return (
-        <div className='bg-white min-h-screen'>
-            <main className='mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                {/* Header */}
-                <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                    <div className='flex flex-wrap items-center gap-3'>
-                        <StatusPill tone='success' label='Buy to Let Calculator' />
-                        <StatusPill tone='neutral' label='Landlord Tools' />
-                    </div>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
-                            Buy to Let Calculator
-                        </h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Calculate rental yield, monthly cashflow, and ROI for your buy-to-let investment property.
-                            Validate your figures with AI-powered market analysis.
-                        </p>
-                    </div>
-                </section>
-
-                {/* Main Content */}
-                <div className='grid gap-8 lg:grid-cols-2'>
+        <CalculatorPageLayout
+            title="Buy to Let Calculator"
+            description="Calculate rental yield, monthly cashflow, and ROI for your buy-to-let investment property. Validate your figures with AI-powered market analysis."
+            category="Landlord"
+            categorySlug="landlord"
+            categoryColor="#10B981"
+        >
+            <div className='grid gap-8 lg:grid-cols-2'>
                     {/* Left: Inputs */}
                     <div className='space-y-6'>
                         <BentoCard variant='glass' title='Property details' description='Enter your investment figures'>
@@ -666,8 +653,7 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
-            </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 

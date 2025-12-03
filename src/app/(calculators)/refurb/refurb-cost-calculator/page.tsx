@@ -6,7 +6,7 @@ import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -232,27 +232,15 @@ const RefurbCostCalculatorPage = () => {
     };
 
     return (
-        <div className='bg-white min-h-screen'>
-            <main className='mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                {/* Header */}
-                <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                    <div className='flex flex-wrap items-center gap-3'>
-                        <StatusPill tone='success' label='Refurb Calculator' />
-                        <StatusPill tone='neutral' label='Renovation' />
-                    </div>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
-                            Refurb Cost Calculator
-                        </h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Estimate refurbishment costs per square metre with regional adjustments.
-                            Select individual works to build your budget.
-                        </p>
-                    </div>
-                </section>
-
-                {/* Main Content */}
-                <div className='grid gap-8 lg:grid-cols-2'>
+        <CalculatorPageLayout
+            title="Refurb Cost Calculator"
+            description="Estimate refurbishment costs per square metre with regional adjustments. Select individual works to build your budget."
+            category="Refurb"
+            categorySlug="refurb"
+            categoryColor="#EF4444"
+            badges={[{ label: 'Refurb Calculator', variant: 'success' }]}
+        >
+            <div className='grid gap-8 lg:grid-cols-2'>
                     {/* Left: Inputs */}
                     <div className='space-y-6'>
                         <BentoCard variant='glass' title='Property details' description='Enter refurb scope'>
@@ -552,8 +540,7 @@ const RefurbCostCalculatorPage = () => {
                         </BentoCard>
                     </div>
                 </div>
-            </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 

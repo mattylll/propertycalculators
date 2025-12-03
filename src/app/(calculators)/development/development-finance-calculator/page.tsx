@@ -7,7 +7,7 @@ import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { CalculatorStepper } from '@/components/property-kit/calculator-stepper';
 import { formatCurrency, formatCurrencyCompact, formatPercent, formatMonths } from '@/lib/calculators/format';
 import { Switch } from '@/registry/new-york-v4/ui/switch';
@@ -142,42 +142,39 @@ const FinanceCalculatorPage = () => {
               : 'text-red-500';
 
     return (
-        <div className='bg-white min-h-screen'>
-        <main className='mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 pb-16 pt-8 lg:px-8'>
-            <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                <div className='flex flex-wrap items-center gap-3'>
-                    <StatusPill tone='info' label='Step 04 · Finance Structure' />
-                    <StatusPill tone='neutral' label='Construction Capital engine' />
-                </div>
-                <div className='grid gap-6 lg:grid-cols-[1.3fr_0.7fr]'>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>AI Finance Calculator</h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Structure your development finance with senior debt, mezzanine options, and equity analysis.
-                            The AI assesses lender appetite and generates indicative terms for Construction Capital review.
-                        </p>
-                        <div className='mt-6'>
-                            <CalculatorStepper currentStepIndex={4} />
-                        </div>
-                    </div>
-                    <BentoCard
-                        variant='micro'
-                        title='Finance layers'
-                        description='We structure optimal capital stack for your deal.'>
-                        <ul className='space-y-2 text-sm text-gray-600'>
-                            <li className='flex items-center gap-2'>
-                                <Banknote className='size-4 text-[#00C9A7]' /> Senior debt (55-70% LTC)
-                            </li>
-                            <li className='flex items-center gap-2'>
-                                <TrendingUp className='size-4 text-[#00C9A7]' /> Mezzanine (stretch to 80-85%)
-                            </li>
-                            <li className='flex items-center gap-2'>
-                                <PiggyBank className='size-4 text-[#00C9A7]' /> Equity requirement
-                            </li>
-                        </ul>
-                    </BentoCard>
-                </div>
-            </section>
+        <CalculatorPageLayout
+            title="AI Finance Calculator"
+            description="Structure your development finance with senior debt, mezzanine options, and equity analysis. The AI assesses lender appetite and generates indicative terms for Construction Capital review."
+            category="Development"
+            categorySlug="development"
+            categoryColor="#8B5CF6"
+            badges={[
+                { label: 'Step 04 · Finance Structure', variant: 'info' },
+                { label: 'Construction Capital engine', variant: 'neutral' }
+            ]}
+        >
+            <div className='mb-6'>
+                <CalculatorStepper currentStepIndex={4} />
+            </div>
+
+            <div className='mb-10'>
+                <BentoCard
+                    variant='micro'
+                    title='Finance layers'
+                    description='We structure optimal capital stack for your deal.'>
+                    <ul className='space-y-2 text-sm text-gray-600'>
+                        <li className='flex items-center gap-2'>
+                            <Banknote className='size-4 text-[#00C9A7]' /> Senior debt (55-70% LTC)
+                        </li>
+                        <li className='flex items-center gap-2'>
+                            <TrendingUp className='size-4 text-[#00C9A7]' /> Mezzanine (stretch to 80-85%)
+                        </li>
+                        <li className='flex items-center gap-2'>
+                            <PiggyBank className='size-4 text-[#00C9A7]' /> Equity requirement
+                        </li>
+                    </ul>
+                </BentoCard>
+            </div>
 
             <section className='grid gap-8 lg:grid-cols-2'>
                 <BentoCard variant='glass' title='Deal economics' description='Core numbers to structure finance.'>
@@ -320,8 +317,7 @@ const FinanceCalculatorPage = () => {
                     />
                 </BentoGrid>
             </section>
-        </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 

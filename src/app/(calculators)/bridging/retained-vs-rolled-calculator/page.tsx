@@ -13,7 +13,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
     ArrowRight,
-    Zap,
+    ArrowLeftRight,
     PoundSterling,
     Percent,
     Calendar,
@@ -22,11 +22,12 @@ import {
     AlertTriangle,
     Info,
     Sparkles,
-    Clock,
     Banknote,
+    TrendingUp,
+    TrendingDown,
 } from 'lucide-react';
 
-type BridgingFormState = {
+type FormState = {
     loanAmount: string;
     propertyValue: string;
     monthlyRate: string;
@@ -35,19 +36,18 @@ type BridgingFormState = {
     exitFee: string;
     valuationFee: string;
     legalFees: string;
-    interestType: 'retained' | 'rolled' | 'serviced';
     postcode: string;
 };
 
 type AIAnalysis = {
     summary: string;
-    verdict: 'strong' | 'good' | 'marginal' | 'weak' | 'poor';
+    verdict: 'retained' | 'rolled' | 'either';
     insights: Array<{ type: 'positive' | 'negative' | 'warning' | 'neutral'; title: string; message: string }>;
     recommendations: string[];
     marketContext: string;
 };
 
-const initialForm: BridgingFormState = {
+const initialForm: FormState = {
     loanAmount: '200,000',
     propertyValue: '300,000',
     monthlyRate: '0.85',
@@ -56,7 +56,6 @@ const initialForm: BridgingFormState = {
     exitFee: '1',
     valuationFee: '500',
     legalFees: '2,000',
-    interestType: 'retained',
     postcode: '',
 };
 
@@ -69,24 +68,7 @@ const parseNumber = (value: string) => {
     return isNaN(num) ? 0 : num;
 };
 
-// Indicative bridging rates by LTV
-const BRIDGING_RATE_BANDS = [
-    { maxLtv: 50, minRate: 0.55, maxRate: 0.75, label: '50% LTV or less' },
-    { maxLtv: 60, minRate: 0.65, maxRate: 0.85, label: '51-60% LTV' },
-    { maxLtv: 65, minRate: 0.70, maxRate: 0.90, label: '61-65% LTV' },
-    { maxLtv: 70, minRate: 0.75, maxRate: 0.95, label: '66-70% LTV' },
-    { maxLtv: 75, minRate: 0.85, maxRate: 1.10, label: '71-75% LTV' },
-];
-
-const getIndicativeBridgingRate = (ltv: number) => {
-    const band = BRIDGING_RATE_BANDS.find(b => ltv <= b.maxLtv);
-    if (!band) {
-        return { minRate: 0.95, maxRate: 1.25, label: '75%+ LTV' };
-    }
-    return band;
-};
-
-const deriveBridgingMetrics = (form: BridgingFormState) => {
+const deriveMetrics = (form: FormState) => {
     const loanAmount = parseNumber(form.loanAmount);
     const propertyValue = parseNumber(form.propertyValue);
     const monthlyRate = parseNumber(form.monthlyRate) / 100;
@@ -99,74 +81,76 @@ const deriveBridgingMetrics = (form: BridgingFormState) => {
     // LTV
     const ltv = propertyValue > 0 ? (loanAmount / propertyValue) * 100 : 0;
 
-    // Monthly interest
-    const monthlyInterest = loanAmount * monthlyRate;
-    const totalInterest = monthlyInterest * termMonths;
-
     // Fees
     const arrangementFee = loanAmount * arrangementFeePercent;
     const exitFee = loanAmount * exitFeePercent;
-    const totalFees = arrangementFee + exitFee + valuationFee + legalFees;
+    const otherFees = valuationFee + legalFees;
 
-    // Total cost
-    const totalCost = totalInterest + totalFees;
+    // RETAINED INTEREST CALCULATION
+    // Interest is deducted upfront from the loan advance
+    const retainedMonthlyInterest = loanAmount * monthlyRate;
+    const retainedTotalInterest = retainedMonthlyInterest * termMonths;
+    const retainedNetAdvance = loanAmount - retainedTotalInterest - arrangementFee;
+    const retainedGrossRedemption = loanAmount + exitFee;
+    const retainedTotalCost = retainedTotalInterest + arrangementFee + exitFee + otherFees;
 
-    // Net amount received (for retained interest)
-    let netAdvance = loanAmount;
-    if (form.interestType === 'retained') {
-        netAdvance = loanAmount - totalInterest - arrangementFee;
-    } else if (form.interestType === 'rolled') {
-        netAdvance = loanAmount - arrangementFee;
-    } else {
-        netAdvance = loanAmount - arrangementFee;
+    // ROLLED INTEREST CALCULATION
+    // Interest compounds monthly and is added to the redemption
+    let rolledBalance = loanAmount;
+    for (let month = 0; month < termMonths; month++) {
+        rolledBalance = rolledBalance * (1 + monthlyRate);
     }
+    const rolledTotalInterest = rolledBalance - loanAmount;
+    const rolledNetAdvance = loanAmount - arrangementFee;
+    const rolledGrossRedemption = rolledBalance + exitFee;
+    const rolledTotalCost = rolledTotalInterest + arrangementFee + exitFee + otherFees;
 
-    // Gross redemption (what you pay back)
-    let grossRedemption = loanAmount;
-    if (form.interestType === 'rolled') {
-        grossRedemption = loanAmount + totalInterest + exitFee;
-    } else if (form.interestType === 'retained') {
-        grossRedemption = loanAmount + exitFee;
-    } else {
-        grossRedemption = loanAmount + exitFee;
-    }
+    // Difference analysis
+    const dayOneDifference = rolledNetAdvance - retainedNetAdvance;
+    const redemptionDifference = rolledGrossRedemption - retainedGrossRedemption;
+    const totalCostDifference = rolledTotalCost - retainedTotalCost;
 
-    // Effective annual rate (simple approximation)
-    const effectiveAnnualRate = propertyValue > 0 ? ((totalCost / loanAmount) / (termMonths / 12)) * 100 : 0;
-
-    // Daily rate
-    const dailyRate = monthlyRate / 30;
+    // Which is better?
+    // Retained is better if: you have enough equity and want to minimize total cost
+    // Rolled is better if: you need maximum cash day 1 and can afford higher exit cost
+    const betterOption = totalCostDifference > 0 ? 'retained' : 'rolled';
 
     return {
         loanAmount,
         propertyValue,
         ltv,
-        monthlyInterest,
-        totalInterest,
+        termMonths,
+        monthlyRate: monthlyRate * 100,
         arrangementFee,
         exitFee,
-        valuationFee,
-        legalFees,
-        totalFees,
-        totalCost,
-        netAdvance,
-        grossRedemption,
-        effectiveAnnualRate,
-        dailyRate,
-        termMonths,
+        otherFees,
+        // Retained
+        retainedTotalInterest,
+        retainedNetAdvance,
+        retainedGrossRedemption,
+        retainedTotalCost,
+        // Rolled
+        rolledTotalInterest,
+        rolledNetAdvance,
+        rolledGrossRedemption,
+        rolledTotalCost,
+        // Comparison
+        dayOneDifference,
+        redemptionDifference,
+        totalCostDifference,
+        betterOption,
     };
 };
 
-const BridgingLoanCalculatorPage = () => {
-    const [form, setForm] = useState<BridgingFormState>(initialForm);
+const RetainedVsRolledCalculatorPage = () => {
+    const [form, setForm] = useState<FormState>(initialForm);
     const [isValidating, setIsValidating] = useState(false);
     const [aiAnalysis, setAiAnalysis] = useState<AIAnalysis | null>(null);
     const [hasCalculated, setHasCalculated] = useState(false);
 
-    const metrics = useMemo(() => deriveBridgingMetrics(form), [form]);
-    const indicativeRate = useMemo(() => getIndicativeBridgingRate(metrics.ltv), [metrics.ltv]);
+    const metrics = useMemo(() => deriveMetrics(form), [form]);
 
-    const handleInputChange = (name: keyof BridgingFormState, value: string) => {
+    const handleInputChange = (name: keyof FormState, value: string) => {
         if (['loanAmount', 'propertyValue', 'valuationFee', 'legalFees'].includes(name)) {
             const numValue = parseNumber(value);
             setForm((prev) => ({ ...prev, [name]: formatNumber(numValue) }));
@@ -197,31 +181,38 @@ const BridgingLoanCalculatorPage = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     systemPrompt: `You are an expert UK bridging finance advisor.
-You provide accurate, data-driven analysis for bridging loan decisions.
-Focus on exit strategy viability and market conditions.`,
-                    userPrompt: `Analyse this bridging loan in ${form.postcode}:
+You help developers and investors choose between retained and rolled-up interest options.
+Focus on cash flow requirements, exit strategy timing, and total cost of finance.`,
+                    userPrompt: `Compare retained vs rolled interest for this bridging loan in ${form.postcode}:
 
 Loan amount: ${formatCurrency(metrics.loanAmount)}
 Property value: ${formatCurrency(metrics.propertyValue)}
 LTV: ${metrics.ltv.toFixed(1)}%
 Monthly rate: ${form.monthlyRate}%
 Term: ${form.termMonths} months
-Interest type: ${form.interestType}
-Total cost: ${formatCurrency(metrics.totalCost)}
-Gross redemption: ${formatCurrency(metrics.grossRedemption)}
 
-Please assess:
-1. Is the LTV and rate competitive for current market?
-2. Key risks with this bridging strategy
-3. Exit strategy considerations
+RETAINED INTEREST:
+- Net Day 1: ${formatCurrency(metrics.retainedNetAdvance)}
+- Gross Redemption: ${formatCurrency(metrics.retainedGrossRedemption)}
+- Total Cost: ${formatCurrency(metrics.retainedTotalCost)}
+
+ROLLED INTEREST:
+- Net Day 1: ${formatCurrency(metrics.rolledNetAdvance)}
+- Gross Redemption: ${formatCurrency(metrics.rolledGrossRedemption)}
+- Total Cost: ${formatCurrency(metrics.rolledTotalCost)}
+
+Day 1 difference: ${formatCurrency(metrics.dayOneDifference)} more with rolled
+Total cost difference: ${formatCurrency(Math.abs(metrics.totalCostDifference))} ${metrics.betterOption === 'retained' ? 'saved with retained' : 'extra with rolled'}
+
+Please advise which option is better and why.
 
 Respond in JSON:
 {
-  "summary": "2-3 sentence assessment",
-  "verdict": "strong" | "good" | "marginal" | "weak" | "poor",
+  "summary": "2-3 sentence recommendation",
+  "verdict": "retained" | "rolled" | "either",
   "insights": [{"type": "positive" | "negative" | "warning", "title": "title", "message": "detail"}],
   "recommendations": ["rec1", "rec2"],
-  "marketContext": "current bridging market context"
+  "marketContext": "when to choose each option"
 }`,
                 }),
             });
@@ -239,26 +230,17 @@ Respond in JSON:
 
     const getVerdictColor = (verdict: string) => {
         switch (verdict) {
-            case 'strong': return 'bg-emerald-100 text-emerald-700';
-            case 'good': return 'bg-emerald-100 text-emerald-700';
-            case 'marginal': return 'bg-amber-100 text-amber-700';
-            case 'weak': return 'bg-orange-100 text-orange-700';
-            case 'poor': return 'bg-red-100 text-red-700';
+            case 'retained': return 'bg-emerald-100 text-emerald-700';
+            case 'rolled': return 'bg-blue-100 text-blue-700';
+            case 'either': return 'bg-amber-100 text-amber-700';
             default: return 'bg-slate-100 text-slate-700';
         }
     };
 
-    const getLtvStatus = () => {
-        if (metrics.ltv <= 60) return { label: 'Conservative', color: 'success' as const };
-        if (metrics.ltv <= 70) return { label: 'Standard', color: 'info' as const };
-        if (metrics.ltv <= 75) return { label: 'High', color: 'warning' as const };
-        return { label: 'Very High', color: 'danger' as const };
-    };
-
     return (
         <CalculatorPageLayout
-            title="Bridging Loan Calculator"
-            description="Calculate bridging loan costs including interest, fees, and total repayment. Compare retained vs rolled interest options."
+            title="Retained vs Rolled Interest Calculator"
+            description="Compare retained (deducted upfront) vs rolled (compounded) interest options for bridging loans. See how each affects your Day 1 cash and exit costs."
             category="Bridging"
             categorySlug="bridging"
             categoryColor="#F59E0B"
@@ -301,7 +283,7 @@ Respond in JSON:
                                         step='0.01'
                                         value={form.monthlyRate}
                                         unit='%'
-                                        helper={`Indicative: ${indicativeRate.minRate.toFixed(2)}-${indicativeRate.maxRate.toFixed(2)}% at ${metrics.ltv.toFixed(0)}% LTV`}
+                                        helper='Typical: 0.55-1.10% pm'
                                         onChange={(e) => handleInputChange('monthlyRate', e.target.value)}
                                     />
                                     <FloatingField
@@ -359,74 +341,31 @@ Respond in JSON:
                                     />
                                 </div>
 
-                                {/* Interest Type Selector */}
-                                <div className='space-y-2'>
-                                    <label className='text-sm font-medium text-gray-700'>Interest Type</label>
-                                    <div className='grid grid-cols-3 gap-2'>
-                                        {(['retained', 'rolled', 'serviced'] as const).map((type) => (
-                                            <button
-                                                key={type}
-                                                type='button'
-                                                onClick={() => handleInputChange('interestType', type)}
-                                                className={`px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                                                    form.interestType === type
-                                                        ? 'bg-[var(--pc-blue)] text-white'
-                                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                                }`}
-                                            >
-                                                {type.charAt(0).toUpperCase() + type.slice(1)}
-                                            </button>
-                                        ))}
-                                    </div>
-                                    <p className='text-xs text-gray-500'>
-                                        {form.interestType === 'retained' && 'Interest deducted upfront from loan advance'}
-                                        {form.interestType === 'rolled' && 'Interest added to loan balance, paid on exit'}
-                                        {form.interestType === 'serviced' && 'Interest paid monthly during the term'}
-                                    </p>
-                                </div>
-
                                 <FloatingField
                                     label='Postcode'
                                     name='postcode'
                                     value={form.postcode}
-                                    helper='For AI market validation'
+                                    helper='For AI recommendation'
                                     onChange={(e) => handleInputChange('postcode', e.target.value)}
                                 />
 
-                                {/* Rate Guidance */}
-                                <div className='p-4 rounded-xl bg-red-50 border border-red-200'>
+                                {/* Info Box */}
+                                <div className='p-4 rounded-xl bg-blue-50 border border-blue-200'>
                                     <div className='flex items-start gap-3'>
-                                        <Info className='size-5 text-red-600 shrink-0 mt-0.5' />
+                                        <Info className='size-5 text-blue-600 shrink-0 mt-0.5' />
                                         <div className='space-y-2'>
-                                            <p className='font-medium text-red-900 text-sm'>Indicative Bridging Rates (Dec 2024)</p>
-                                            <p className='text-xs text-red-700'>
-                                                Your LTV: <span className='font-semibold'>{metrics.ltv.toFixed(0)}%</span> —
-                                                Typical rates: <span className='font-semibold'>{indicativeRate.minRate.toFixed(2)}-{indicativeRate.maxRate.toFixed(2)}% pm</span>
-                                            </p>
-                                            <details className='text-xs'>
-                                                <summary className='cursor-pointer text-red-600 hover:text-red-800'>View all rate bands</summary>
-                                                <div className='mt-2 space-y-1'>
-                                                    {BRIDGING_RATE_BANDS.map((band) => (
-                                                        <div
-                                                            key={band.maxLtv}
-                                                            className={`flex justify-between py-1 px-2 rounded ${metrics.ltv <= band.maxLtv && (BRIDGING_RATE_BANDS.findIndex(b => b.maxLtv === band.maxLtv) === 0 || metrics.ltv > BRIDGING_RATE_BANDS[BRIDGING_RATE_BANDS.findIndex(b => b.maxLtv === band.maxLtv) - 1].maxLtv) ? 'bg-red-100 font-medium' : ''}`}
-                                                        >
-                                                            <span className='text-red-800'>{band.label}</span>
-                                                            <span className='text-red-700'>{band.minRate.toFixed(2)}-{band.maxRate.toFixed(2)}% pm</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </details>
-                                            <p className='text-xs text-red-600 italic'>
-                                                Rates vary by lender and deal type. Contact us for personalised quotes.
-                                            </p>
+                                            <p className='font-medium text-blue-900 text-sm'>Understanding Interest Types</p>
+                                            <div className='text-xs text-blue-700 space-y-1'>
+                                                <p><strong>Retained:</strong> Interest is deducted from your loan on Day 1. You receive less upfront but pay back less at exit.</p>
+                                                <p><strong>Rolled:</strong> Interest compounds monthly and is added to redemption. You receive more Day 1 but pay more at exit.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className='flex flex-wrap gap-3'>
                                     <PropertyButton type='submit' variant='primary' icon={<Calculator className='size-4' />}>
-                                        Calculate Costs
+                                        Compare Options
                                     </PropertyButton>
                                     <PropertyButton type='button' variant='ghost' onClick={() => {
                                         setForm(initialForm);
@@ -442,113 +381,146 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        {/* Comparison Table */}
+                        <BentoCard variant='secondary' title='Side-by-side comparison' description='Retained vs Rolled interest'>
+                            <div className='overflow-hidden rounded-xl border border-slate-200'>
+                                <table className='w-full text-sm'>
+                                    <thead>
+                                        <tr className='bg-slate-50'>
+                                            <th className='px-4 py-3 text-left font-medium text-slate-600'></th>
+                                            <th className='px-4 py-3 text-right font-semibold text-emerald-700'>
+                                                <div className='flex items-center justify-end gap-2'>
+                                                    <TrendingDown className='size-4' />
+                                                    Retained
+                                                </div>
+                                            </th>
+                                            <th className='px-4 py-3 text-right font-semibold text-blue-700'>
+                                                <div className='flex items-center justify-end gap-2'>
+                                                    <TrendingUp className='size-4' />
+                                                    Rolled
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className='divide-y divide-slate-100'>
+                                        <tr>
+                                            <td className='px-4 py-3 text-slate-600'>Gross loan</td>
+                                            <td className='px-4 py-3 text-right font-medium'>{formatCurrency(metrics.loanAmount)}</td>
+                                            <td className='px-4 py-3 text-right font-medium'>{formatCurrency(metrics.loanAmount)}</td>
+                                        </tr>
+                                        <tr className='bg-emerald-50/50'>
+                                            <td className='px-4 py-3 text-slate-600 font-medium'>Net Day 1 Advance</td>
+                                            <td className='px-4 py-3 text-right font-bold text-emerald-700'>{formatCurrency(metrics.retainedNetAdvance)}</td>
+                                            <td className='px-4 py-3 text-right font-bold text-blue-700'>{formatCurrency(metrics.rolledNetAdvance)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='px-4 py-3 text-slate-600'>Total interest</td>
+                                            <td className='px-4 py-3 text-right font-medium'>{formatCurrency(metrics.retainedTotalInterest)}</td>
+                                            <td className='px-4 py-3 text-right font-medium'>{formatCurrency(metrics.rolledTotalInterest)}</td>
+                                        </tr>
+                                        <tr className='bg-red-50/50'>
+                                            <td className='px-4 py-3 text-slate-600 font-medium'>Gross Redemption</td>
+                                            <td className='px-4 py-3 text-right font-bold text-emerald-700'>{formatCurrency(metrics.retainedGrossRedemption)}</td>
+                                            <td className='px-4 py-3 text-right font-bold text-blue-700'>{formatCurrency(metrics.rolledGrossRedemption)}</td>
+                                        </tr>
+                                        <tr className='bg-slate-50'>
+                                            <td className='px-4 py-3 text-slate-900 font-semibold'>Total Cost of Finance</td>
+                                            <td className='px-4 py-3 text-right font-bold text-slate-900'>{formatCurrency(metrics.retainedTotalCost)}</td>
+                                            <td className='px-4 py-3 text-right font-bold text-slate-900'>{formatCurrency(metrics.rolledTotalCost)}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Key Differences */}
+                            <div className='mt-6 grid gap-4 sm:grid-cols-2'>
+                                <Card className='border-2 border-blue-200 bg-blue-50'>
+                                    <CardContent className='p-4'>
+                                        <div className='flex items-center gap-3'>
+                                            <Banknote className='size-8 text-blue-600' />
+                                            <div>
+                                                <p className='text-sm text-slate-600'>Extra Day 1 with Rolled</p>
+                                                <p className='text-xl font-bold text-blue-700'>
+                                                    +{formatCurrency(metrics.dayOneDifference)}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+
+                                <Card className='border-2 border-red-200 bg-red-50'>
+                                    <CardContent className='p-4'>
+                                        <div className='flex items-center gap-3'>
+                                            <ArrowLeftRight className='size-8 text-red-600' />
+                                            <div>
+                                                <p className='text-sm text-slate-600'>Higher Exit with Rolled</p>
+                                                <p className='text-xl font-bold text-red-700'>
+                                                    +{formatCurrency(metrics.redemptionDifference)}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </div>
+
+                            {/* Recommendation Box */}
+                            <div className={`mt-6 p-4 rounded-xl border-2 ${
+                                metrics.betterOption === 'retained'
+                                    ? 'border-emerald-200 bg-emerald-50'
+                                    : 'border-blue-200 bg-blue-50'
+                            }`}>
+                                <div className='flex items-start gap-3'>
+                                    <CheckCircle2 className={`size-6 shrink-0 ${
+                                        metrics.betterOption === 'retained' ? 'text-emerald-600' : 'text-blue-600'
+                                    }`} />
+                                    <div>
+                                        <h4 className={`font-semibold ${
+                                            metrics.betterOption === 'retained' ? 'text-emerald-900' : 'text-blue-900'
+                                        }`}>
+                                            {metrics.betterOption === 'retained' ? 'Retained' : 'Rolled'} saves {formatCurrency(Math.abs(metrics.totalCostDifference))}
+                                        </h4>
+                                        <p className='text-sm text-slate-600 mt-1'>
+                                            {metrics.betterOption === 'retained'
+                                                ? `Retained interest is cheaper overall, but you receive ${formatCurrency(metrics.dayOneDifference)} less on Day 1. Choose retained if you have sufficient equity for your project.`
+                                                : `Rolled interest gives you ${formatCurrency(metrics.dayOneDifference)} more on Day 1, but costs more overall due to compounding. Choose rolled if you need maximum cash upfront.`
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </BentoCard>
+
                         {/* Key Metrics */}
-                        <BentoCard variant='secondary' title='Loan costs' description='Total bridging costs breakdown'>
+                        <BentoCard variant='glass' title='Loan details' description='Common to both options'>
                             <BentoGrid className='grid-cols-2 gap-4'>
                                 <DealMetric
                                     label='LTV'
                                     value={`${metrics.ltv.toFixed(1)}%`}
-                                    helper={getLtvStatus().label}
+                                    helper='Loan to value'
                                 />
                                 <DealMetric
-                                    label='Monthly Interest'
-                                    value={formatCurrency(metrics.monthlyInterest)}
-                                    helper='Per month'
+                                    label='Monthly rate'
+                                    value={`${metrics.monthlyRate.toFixed(2)}%`}
+                                    helper='Interest per month'
                                 />
                                 <DealMetric
-                                    label='Total Interest'
-                                    value={formatCurrency(metrics.totalInterest)}
-                                    helper={`Over ${metrics.termMonths} months`}
+                                    label='Arrangement fee'
+                                    value={formatCurrency(metrics.arrangementFee)}
+                                    helper='Deducted Day 1'
                                 />
                                 <DealMetric
-                                    label='Total Fees'
-                                    value={formatCurrency(metrics.totalFees)}
-                                    helper='All fees combined'
+                                    label='Exit fee'
+                                    value={formatCurrency(metrics.exitFee)}
+                                    helper='Paid on redemption'
                                 />
                             </BentoGrid>
-
-                            {/* Summary Cards */}
-                            <div className='mt-6 grid gap-4 sm:grid-cols-2'>
-                                <Card className='border-2 border-red-200 bg-red-50'>
-                                    <CardContent className='p-4'>
-                                        <div className='flex items-center gap-3'>
-                                            <Banknote className='size-8 text-red-600' />
-                                            <div>
-                                                <p className='text-sm text-slate-600'>Total Cost of Finance</p>
-                                                <p className='text-xl font-bold text-red-700'>
-                                                    {formatCurrency(metrics.totalCost)}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-
-                                <Card className='border-2 border-slate-200 bg-slate-50'>
-                                    <CardContent className='p-4'>
-                                        <div className='flex items-center gap-3'>
-                                            <Clock className='size-8 text-slate-600' />
-                                            <div>
-                                                <p className='text-sm text-slate-600'>Effective Annual Rate</p>
-                                                <p className='text-xl font-bold text-slate-700'>
-                                                    {metrics.effectiveAnnualRate.toFixed(1)}%
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </div>
-
-                            {/* Finance Summary */}
-                            <div className='mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200'>
-                                <h4 className='font-semibold text-slate-900 mb-3 flex items-center gap-2'>
-                                    <Zap className='size-4' />
-                                    Loan Summary ({form.interestType} interest)
-                                </h4>
-                                <div className='space-y-2 text-sm'>
-                                    <div className='flex justify-between'>
-                                        <span className='text-slate-600'>Gross loan</span>
-                                        <span className='font-medium'>{formatCurrency(metrics.loanAmount)}</span>
-                                    </div>
-                                    <div className='flex justify-between'>
-                                        <span className='text-slate-600'>Net advance (Day 1)</span>
-                                        <span className='font-medium text-emerald-600'>{formatCurrency(metrics.netAdvance)}</span>
-                                    </div>
-                                    <div className='flex justify-between border-t pt-2'>
-                                        <span className='text-slate-600'>Gross redemption</span>
-                                        <span className='font-medium text-red-600'>{formatCurrency(metrics.grossRedemption)}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Fee Breakdown */}
-                            <div className='mt-4 p-4 rounded-xl bg-gray-50 border border-gray-200'>
-                                <h4 className='font-semibold text-slate-900 mb-3'>Fee Breakdown</h4>
-                                <div className='space-y-2 text-sm'>
-                                    <div className='flex justify-between'>
-                                        <span className='text-slate-600'>Arrangement fee ({form.arrangementFee}%)</span>
-                                        <span className='font-medium'>{formatCurrency(metrics.arrangementFee)}</span>
-                                    </div>
-                                    <div className='flex justify-between'>
-                                        <span className='text-slate-600'>Exit fee ({form.exitFee}%)</span>
-                                        <span className='font-medium'>{formatCurrency(metrics.exitFee)}</span>
-                                    </div>
-                                    <div className='flex justify-between'>
-                                        <span className='text-slate-600'>Valuation</span>
-                                        <span className='font-medium'>{formatCurrency(metrics.valuationFee)}</span>
-                                    </div>
-                                    <div className='flex justify-between'>
-                                        <span className='text-slate-600'>Legal fees</span>
-                                        <span className='font-medium'>{formatCurrency(metrics.legalFees)}</span>
-                                    </div>
-                                </div>
-                            </div>
                         </BentoCard>
 
                         {/* AI Validation Gate */}
                         <AIValidationGate
                             onValidate={handleAIValidation}
                             isLoading={isValidating}
-                            calculatorType='bridging loan'
+                            calculatorType='retained vs rolled comparison'
                             postcode={form.postcode}
                         />
 
@@ -559,10 +531,11 @@ Respond in JSON:
                                     <div className='flex items-center justify-between'>
                                         <div className='flex items-center gap-3'>
                                             <Sparkles className='size-5 text-white' />
-                                            <span className='font-semibold text-white'>AI Bridging Analysis</span>
+                                            <span className='font-semibold text-white'>AI Recommendation</span>
                                         </div>
                                         <Badge className={getVerdictColor(aiAnalysis.verdict)}>
-                                            {aiAnalysis.verdict.charAt(0).toUpperCase() + aiAnalysis.verdict.slice(1)}
+                                            {aiAnalysis.verdict === 'either' ? 'Either Option' :
+                                             aiAnalysis.verdict.charAt(0).toUpperCase() + aiAnalysis.verdict.slice(1)}
                                         </Badge>
                                     </div>
                                 </div>
@@ -599,6 +572,13 @@ Respond in JSON:
                                         </div>
                                     )}
 
+                                    {aiAnalysis.marketContext && (
+                                        <div className='p-4 rounded-lg bg-slate-50 border border-slate-200'>
+                                            <h4 className='font-semibold text-slate-900 mb-2'>When to Choose Each</h4>
+                                            <p className='text-sm text-slate-600'>{aiAnalysis.marketContext}</p>
+                                        </div>
+                                    )}
+
                                     {aiAnalysis.recommendations && aiAnalysis.recommendations.length > 0 && (
                                         <div>
                                             <h4 className='font-semibold text-slate-900 mb-2'>Recommendations</h4>
@@ -621,4 +601,4 @@ Respond in JSON:
     );
 };
 
-export default BridgingLoanCalculatorPage;
+export default RetainedVsRolledCalculatorPage;

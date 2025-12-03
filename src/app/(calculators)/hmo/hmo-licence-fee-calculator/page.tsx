@@ -1,18 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import {
-  ArrowLeft,
   FileCheck,
   MapPin,
   Info,
   AlertTriangle,
   Clock,
 } from 'lucide-react';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { BentoCard } from '@/components/property-kit/bento-card';
 import { FloatingField } from '@/components/property-kit/floating-field';
-import { StatusPill } from '@/components/property-kit/status-pill';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
 
@@ -177,43 +175,23 @@ export default function HMOLicenceFeeCalculatorPage() {
     label: key.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
   }));
 
+  const getLicenceBadge = () => {
+    return {
+      label: derivedMetrics.isMandatoryHmo ? 'Mandatory HMO' : 'Additional Scheme',
+      variant: derivedMetrics.isMandatoryHmo ? 'warning' as const : 'neutral' as const,
+    };
+  };
+
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      {/* Header */}
-      <header className="border-b border-white/10 bg-slate-900/50 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link
-            href="/hmo"
-            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to HMO</span>
-          </Link>
-          <StatusPill
-            tone={derivedMetrics.isMandatoryHmo ? 'warning' : 'neutral'}
-            label={derivedMetrics.isMandatoryHmo ? 'Mandatory HMO' : 'Additional Scheme'}
-          />
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Title Section */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
-              <FileCheck className="w-6 h-6 text-blue-400" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold">HMO Licence Fee Calculator</h1>
-              <p className="text-slate-400">
-                Calculate HMO licensing costs by local authority
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <CalculatorPageLayout
+      title="HMO Licence Fee Calculator"
+      description="Calculate HMO licensing costs by local authority"
+      category="HMO"
+      categorySlug="hmo"
+      categoryColor="#EC4899"
+      badges={[getLicenceBadge()]}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Input Section */}
           <div className="lg:col-span-2 space-y-6">
             {/* Location & Type */}
@@ -467,7 +445,6 @@ export default function HMOLicenceFeeCalculatorPage() {
             />
           </div>
         </div>
-      </main>
-    </div>
+    </CalculatorPageLayout>
   );
 }

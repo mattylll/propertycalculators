@@ -701,7 +701,7 @@ const landlordCalculators: CalculatorConfig[] = [
     icon: 'Percent',
     color: '#22C55E',
     href: '/landlord/btl-icr-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['ICR calculator', 'interest coverage ratio BTL'],
   },
   {
@@ -838,7 +838,7 @@ const bridgingCalculators: CalculatorConfig[] = [
     icon: 'ArrowLeftRight',
     color: '#EF4444',
     href: '/bridging/retained-vs-rolled-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['retained vs rolled interest', 'bridging interest options'],
   },
 ];
@@ -884,7 +884,7 @@ const saCalculators: CalculatorConfig[] = [
     icon: 'Receipt',
     color: '#EC4899',
     href: '/sa/holiday-let-tax-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['holiday let tax calculator', 'FHL tax'],
   },
   {
@@ -897,7 +897,7 @@ const saCalculators: CalculatorConfig[] = [
     icon: 'Calendar',
     color: '#EC4899',
     href: '/sa/sa-occupancy-calculator',
-    status: 'coming-soon',
+    status: 'live',
     keywords: ['occupancy breakeven', 'ADR calculator'],
   },
 ];

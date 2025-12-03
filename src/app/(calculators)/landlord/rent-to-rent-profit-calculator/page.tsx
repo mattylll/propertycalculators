@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import {
-  ArrowLeft,
   Key,
   TrendingUp,
   AlertTriangle,
@@ -12,9 +10,9 @@ import {
 } from 'lucide-react';
 import { BentoCard } from '@/components/property-kit/bento-card';
 import { FloatingField } from '@/components/property-kit/floating-field';
-import { StatusPill } from '@/components/property-kit/status-pill';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 
 export default function RentToRentProfitCalculatorPage() {
   // Lease Costs
@@ -199,39 +197,14 @@ export default function RentToRentProfitCalculatorPage() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      {/* Header */}
-      <header className="border-b border-white/10 bg-slate-900/50 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link
-            href="/landlord"
-            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Landlord</span>
-          </Link>
-          <StatusPill tone={getProfitStatus().tone} label={getProfitStatus().label} />
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Title Section */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
-              <Key className="w-6 h-6 text-green-400" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold">Rent to Rent Profit Calculator</h1>
-              <p className="text-slate-400">
-                Calculate profit margins for rent-to-rent deals
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <CalculatorPageLayout
+      title="Rent to Rent Profit Calculator"
+      description="Calculate profit margins for rent-to-rent deals. Analyze lease agreements, rental income, operating costs, and setup costs to determine your profitability."
+      category="Landlord"
+      categorySlug="landlord"
+      categoryColor="#10B981"
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Input Section */}
           <div className="lg:col-span-2 space-y-6">
             {/* Lease Agreement */}
@@ -536,7 +509,6 @@ export default function RentToRentProfitCalculatorPage() {
             />
           </div>
         </div>
-      </main>
-    </div>
+    </CalculatorPageLayout>
   );
 }

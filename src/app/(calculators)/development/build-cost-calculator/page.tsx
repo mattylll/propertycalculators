@@ -7,7 +7,7 @@ import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { CalculatorStepper } from '@/components/property-kit/calculator-stepper';
 import { formatCurrency, formatCurrencyCompact, formatPercent } from '@/lib/calculators/format';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/new-york-v4/ui/select';
@@ -133,42 +133,39 @@ const BuildCostCalculatorPage = () => {
     };
 
     return (
-        <div className='bg-white min-h-screen'>
-        <main className='mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 pb-16 pt-8 lg:px-8'>
-            <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                <div className='flex flex-wrap items-center gap-3'>
-                    <StatusPill tone='warning' label='Step 03 · Build Costs' />
-                    <StatusPill tone='neutral' label='BCIS benchmarking' />
-                </div>
-                <div className='grid gap-6 lg:grid-cols-[1.3fr_0.7fr]'>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>AI Build Cost Calculator</h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Generate BCIS-aligned cost estimates with regional adjustments, contingencies, and professional
-                            fees. The AI explains cost drivers and flags potential risks.
-                        </p>
-                        <div className='mt-6'>
-                            <CalculatorStepper currentStepIndex={3} />
-                        </div>
-                    </div>
-                    <BentoCard
-                        variant='micro'
-                        title='Cost breakdown'
-                        description='We itemise major cost categories for transparency.'>
-                        <ul className='space-y-2 text-sm text-muted-foreground'>
-                            <li className='flex items-center gap-2'>
-                                <HardHat className='size-4 text-primary' /> Base construction (shell & core)
-                            </li>
-                            <li className='flex items-center gap-2'>
-                                <Wrench className='size-4 text-primary' /> M&E and internal finishes
-                            </li>
-                            <li className='flex items-center gap-2'>
-                                <Ruler className='size-4 text-primary' /> Professional fees & contingency
-                            </li>
-                        </ul>
-                    </BentoCard>
-                </div>
-            </section>
+        <CalculatorPageLayout
+            title="AI Build Cost Calculator"
+            description="Generate BCIS-aligned cost estimates with regional adjustments, contingencies, and professional fees. The AI explains cost drivers and flags potential risks."
+            category="Development"
+            categorySlug="development"
+            categoryColor="#8B5CF6"
+            badges={[
+                { label: 'Step 03 · Build Costs', variant: 'warning' },
+                { label: 'BCIS benchmarking', variant: 'neutral' }
+            ]}
+        >
+            <div className='mb-6'>
+                <CalculatorStepper currentStepIndex={3} />
+            </div>
+
+            <div className='mb-10'>
+                <BentoCard
+                    variant='micro'
+                    title='Cost breakdown'
+                    description='We itemise major cost categories for transparency.'>
+                    <ul className='space-y-2 text-sm text-muted-foreground'>
+                        <li className='flex items-center gap-2'>
+                            <HardHat className='size-4 text-primary' /> Base construction (shell & core)
+                        </li>
+                        <li className='flex items-center gap-2'>
+                            <Wrench className='size-4 text-primary' /> M&E and internal finishes
+                        </li>
+                        <li className='flex items-center gap-2'>
+                            <Ruler className='size-4 text-primary' /> Professional fees & contingency
+                        </li>
+                    </ul>
+                </BentoCard>
+            </div>
 
             <section className='grid gap-8 lg:grid-cols-2'>
                 <BentoCard variant='glass' title='Project specification' description='Define scope to estimate total build cost.'>
@@ -329,8 +326,7 @@ const BuildCostCalculatorPage = () => {
                     />
                 </BentoGrid>
             </section>
-        </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 

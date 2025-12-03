@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from 'react';
 
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
@@ -259,7 +259,7 @@ Respond in JSON:
     };
 
     const getLeaseUrgency = () => {
-        if (metrics.currentLeaseYears < 70) return { label: 'Critical', color: 'danger' as const, message: 'Mortgage difficult, act now' };
+        if (metrics.currentLeaseYears < 70) return { label: 'Critical', color: 'warning' as const, message: 'Mortgage difficult, act now' };
         if (metrics.currentLeaseYears < 80) return { label: 'Urgent', color: 'warning' as const, message: 'Marriage value applies' };
         if (metrics.currentLeaseYears < 85) return { label: 'Consider Soon', color: 'info' as const, message: 'Approaching 80-year threshold' };
         return { label: 'Not Urgent', color: 'success' as const, message: 'No marriage value payable' };
@@ -268,27 +268,17 @@ Respond in JSON:
     const urgency = getLeaseUrgency();
 
     return (
-        <div className='bg-white min-h-screen'>
-            <main className='mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                {/* Header */}
-                <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                    <div className='flex flex-wrap items-center gap-3'>
-                        <StatusPill tone='success' label='Lease Extension' />
-                        <StatusPill tone='neutral' label='Leasehold' />
-                    </div>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
-                            Lease Extension Calculator
-                        </h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Estimate the cost to extend your lease using the statutory formula.
-                            Includes marriage value calculation for leases under 80 years.
-                        </p>
-                    </div>
-                </section>
-
-                {/* Main Content */}
-                <div className='grid gap-8 lg:grid-cols-2'>
+        <CalculatorPageLayout
+            title="Lease Extension Calculator"
+            description="Estimate the cost to extend your lease using the statutory formula. Includes marriage value calculation for leases under 80 years."
+            category="Leasehold"
+            categorySlug="leasehold"
+            categoryColor="#06B6D4"
+            badges={[
+                { label: urgency.label, variant: urgency.color },
+            ]}
+        >
+            <div className='grid gap-8 lg:grid-cols-2'>
                     {/* Left: Inputs */}
                     <div className='space-y-6'>
                         <BentoCard variant='glass' title='Property details' description='Enter your leasehold details'>
@@ -687,8 +677,7 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
-            </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 

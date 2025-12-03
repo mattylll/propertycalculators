@@ -1,18 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import {
-  ArrowLeft,
   Flame,
   Shield,
   AlertTriangle,
   Info,
   CheckCircle2,
 } from 'lucide-react';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { BentoCard } from '@/components/property-kit/bento-card';
 import { FloatingField } from '@/components/property-kit/floating-field';
-import { StatusPill } from '@/components/property-kit/status-pill';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
 
@@ -224,43 +222,24 @@ export default function HMOFireSafetyCostCalculatorPage() {
     outputs: derivedMetrics,
   });
 
+  const getComplianceBadge = () => {
+    const level = derivedMetrics.complianceLevel;
+    return {
+      label: `${level.charAt(0).toUpperCase() + level.slice(1)} Spec`,
+      variant: level === 'enhanced' ? 'success' as const : level === 'standard' ? 'warning' as const : 'neutral' as const,
+    };
+  };
+
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      {/* Header */}
-      <header className="border-b border-white/10 bg-slate-900/50 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link
-            href="/hmo"
-            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to HMO</span>
-          </Link>
-          <StatusPill
-            tone={derivedMetrics.complianceLevel === 'enhanced' ? 'success' : derivedMetrics.complianceLevel === 'standard' ? 'warning' : 'neutral'}
-            label={`${derivedMetrics.complianceLevel.charAt(0).toUpperCase() + derivedMetrics.complianceLevel.slice(1)} Spec`}
-          />
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Title Section */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
-              <Flame className="w-6 h-6 text-orange-400" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold">HMO Fire Safety Cost Calculator</h1>
-              <p className="text-slate-400">
-                Estimate fire safety compliance costs for your HMO property
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <CalculatorPageLayout
+      title="HMO Fire Safety Cost Calculator"
+      description="Estimate fire safety compliance costs for your HMO property"
+      category="HMO"
+      categorySlug="hmo"
+      categoryColor="#EC4899"
+      badges={[getComplianceBadge()]}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Input Section */}
           <div className="lg:col-span-2 space-y-6">
             {/* Property Details */}
@@ -572,7 +551,6 @@ export default function HMOFireSafetyCostCalculatorPage() {
             />
           </div>
         </div>
-      </main>
-    </div>
+    </CalculatorPageLayout>
   );
 }

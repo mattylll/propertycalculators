@@ -6,8 +6,8 @@ import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
 import { formatCurrency } from '@/lib/calculators/format';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { Card, CardContent } from '@/components/ui/card';
 import {
     Calculator,
@@ -243,27 +243,15 @@ const StampDutyCalculatorPage = () => {
     };
 
     return (
-        <div className='bg-white min-h-screen'>
-            <main className='mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                {/* Header */}
-                <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                    <div className='flex flex-wrap items-center gap-3'>
-                        <StatusPill tone='success' label='SDLT Calculator' />
-                        <StatusPill tone='warning' label='Updated Oct 2024' />
-                    </div>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
-                            Stamp Duty Calculator
-                        </h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Calculate Stamp Duty Land Tax (SDLT) for England and Northern Ireland property purchases.
-                            Includes the 5% additional property surcharge effective from October 2024.
-                        </p>
-                    </div>
-                </section>
-
-                {/* Main Content */}
-                <div className='grid gap-8 lg:grid-cols-2'>
+        <CalculatorPageLayout
+            title="Stamp Duty Calculator"
+            description="Calculate Stamp Duty Land Tax (SDLT) for England and Northern Ireland property purchases. Includes the 5% additional property surcharge effective from October 2024."
+            category="Landlord"
+            categorySlug="landlord"
+            categoryColor="#10B981"
+            badges={[{ label: 'Updated Oct 2024', variant: 'warning' }]}
+        >
+            <div className='grid gap-8 lg:grid-cols-2'>
                     {/* Left: Inputs */}
                     <div className='space-y-6'>
                         <BentoCard variant='glass' title='Property details' description='Enter your purchase details'>
@@ -518,8 +506,7 @@ const StampDutyCalculatorPage = () => {
                         </BentoCard>
                     </div>
                 </div>
-            </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 

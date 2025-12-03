@@ -6,7 +6,7 @@ import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/new-york-v4/ui/select';
@@ -308,41 +308,31 @@ Respond in JSON:
     };
 
     return (
-        <div className='bg-white min-h-screen'>
-            <main className='mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                {/* Header */}
-                <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                    <div className='flex flex-wrap items-center gap-3'>
-                        <StatusPill tone='success' label='CIL Calculator' />
-                        <StatusPill tone='neutral' label='Development Finance' />
-                    </div>
+        <CalculatorPageLayout
+            title="CIL Calculator"
+            description="Calculate Community Infrastructure Levy for your development project. Includes indexation, reliefs, and payment schedule."
+            category="Development"
+            categorySlug="development"
+            categoryColor="#8B5CF6"
+            badges={[
+                { label: 'CIL Calculator', variant: 'success' },
+                { label: 'Development Finance', variant: 'neutral' }
+            ]}
+        >
+            <Card className='border-blue-200 bg-blue-50 mb-8'>
+                <CardContent className='p-4 flex items-start gap-3'>
+                    <Info className='size-5 text-blue-600 shrink-0 mt-0.5' />
                     <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
-                            CIL Calculator
-                        </h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Calculate Community Infrastructure Levy for your development project.
-                            Includes indexation, reliefs, and payment schedule.
+                        <p className='font-medium text-blue-900'>What is CIL?</p>
+                        <p className='text-sm text-blue-700 mt-1'>
+                            The Community Infrastructure Levy is a charge on new development to fund local infrastructure.
+                            It's calculated based on the net additional floor space and the local authority's charging rates.
                         </p>
                     </div>
-                </section>
+                </CardContent>
+            </Card>
 
-                {/* Info Card */}
-                <Card className='border-blue-200 bg-blue-50'>
-                    <CardContent className='p-4 flex items-start gap-3'>
-                        <Info className='size-5 text-blue-600 shrink-0 mt-0.5' />
-                        <div>
-                            <p className='font-medium text-blue-900'>What is CIL?</p>
-                            <p className='text-sm text-blue-700 mt-1'>
-                                The Community Infrastructure Levy is a charge on new development to fund local infrastructure.
-                                It's calculated based on the net additional floor space and the local authority's charging rates.
-                            </p>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Main Content */}
-                <div className='grid gap-8 lg:grid-cols-2'>
+            <div className='grid gap-8 lg:grid-cols-2'>
                     {/* Left: Inputs */}
                     <div className='space-y-6'>
                         <BentoCard variant='glass' title='Development details' description='Enter your scheme information'>
@@ -661,8 +651,7 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
-            </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 

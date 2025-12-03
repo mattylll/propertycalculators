@@ -6,7 +6,7 @@ import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -131,27 +131,18 @@ const ProfitOnCostCalculatorPage = () => {
     const pocStatus = getPocStatus();
 
     return (
-        <div className='bg-white min-h-screen'>
-            <main className='mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                {/* Header */}
-                <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                    <div className='flex flex-wrap items-center gap-3'>
-                        <StatusPill tone='success' label='POC Calculator' />
-                        <StatusPill tone='neutral' label='Development' />
-                    </div>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
-                            Profit on Cost Calculator
-                        </h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Calculate developer profit on cost percentage to assess deal viability.
-                            Most lenders require 15-20% POC for development finance.
-                        </p>
-                    </div>
-                </section>
-
-                {/* Main Content */}
-                <div className='grid gap-8 lg:grid-cols-2'>
+        <CalculatorPageLayout
+            title="Profit on Cost Calculator"
+            description="Calculate developer profit on cost percentage to assess deal viability. Most lenders require 15-20% POC for development finance."
+            category="Development"
+            categorySlug="development"
+            categoryColor="#8B5CF6"
+            badges={[
+                { label: 'POC Calculator', variant: 'success' },
+                { label: 'Development', variant: 'neutral' }
+            ]}
+        >
+            <div className='grid gap-8 lg:grid-cols-2'>
                     {/* Left: Inputs */}
                     <div className='space-y-6'>
                         <BentoCard variant='glass' title='Development figures' description='Enter project costs and GDV'>
@@ -429,8 +420,7 @@ const ProfitOnCostCalculatorPage = () => {
                         </BentoCard>
                     </div>
                 </div>
-            </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 

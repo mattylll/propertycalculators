@@ -6,7 +6,7 @@ import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { CalculatorStepper, ContinueToNextStep } from '@/components/property-kit/calculator-stepper';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
 import { useDeal } from '@/lib/deal-context';
@@ -294,32 +294,18 @@ Respond in JSON:
     };
 
     return (
-        <div className='bg-white min-h-screen'>
-            <main className='mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                {/* Header */}
-                <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                    <div className='flex flex-wrap items-center justify-between gap-3'>
-                        <div className='flex flex-wrap items-center gap-3'>
-                            <StatusPill tone='success' label='GDV Calculator' />
-                            <StatusPill tone='neutral' label='Development Finance' />
-                        </div>
-                        {currentDeal && (
-                            <StatusPill tone='info' label={`Deal: ${currentDeal.address.slice(0, 25)}...`} />
-                        )}
-                    </div>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
-                            GDV Calculator
-                        </h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Estimate your Gross Development Value based on unit mix and local market pricing.
-                            Validate your assumptions with AI-powered market analysis.
-                        </p>
-                    </div>
-                </section>
-
-                {/* Main Content */}
-                <div className='grid gap-8 lg:grid-cols-2'>
+        <CalculatorPageLayout
+            title="GDV Calculator"
+            description="Estimate your Gross Development Value based on unit mix and local market pricing. Validate your assumptions with AI-powered market analysis."
+            category="Development"
+            categorySlug="development"
+            categoryColor="#8B5CF6"
+            badges={[
+                { label: 'Development Finance', variant: 'neutral' },
+                ...(currentDeal ? [{ label: `Deal: ${currentDeal.address.slice(0, 25)}...`, variant: 'info' as const }] : [])
+            ]}
+        >
+            <div className='grid gap-8 lg:grid-cols-2'>
                     {/* Left: Inputs */}
                     <div className='space-y-6'>
                         <BentoCard variant='glass' title='Unit mix & location' description='Define your scheme'>
@@ -663,19 +649,18 @@ Respond in JSON:
                 </div>
 
                 {/* Continue CTA */}
-                {hasCalculated && (
-                    <section className='flex items-center justify-between rounded-2xl border border-emerald-200 bg-emerald-50 p-6'>
-                        <div>
-                            <p className='font-medium text-gray-900'>GDV Estimate Complete</p>
-                            <p className='text-sm text-gray-600'>
-                                Continue to calculate build costs for your development.
-                            </p>
-                        </div>
-                        <ContinueToNextStep nextStep={3} />
-                    </section>
-                )}
-            </main>
-        </div>
+            {hasCalculated && (
+                <section className='flex items-center justify-between rounded-2xl border border-emerald-200 bg-emerald-50 p-6'>
+                    <div>
+                        <p className='font-medium text-gray-900'>GDV Estimate Complete</p>
+                        <p className='text-sm text-gray-600'>
+                            Continue to calculate build costs for your development.
+                        </p>
+                    </div>
+                    <ContinueToNextStep nextStep={3} />
+                </section>
+            )}
+        </CalculatorPageLayout>
     );
 };
 

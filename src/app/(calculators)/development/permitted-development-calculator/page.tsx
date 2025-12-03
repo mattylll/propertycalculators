@@ -7,7 +7,7 @@ import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { CalculatorStepper, ContinueToNextStep } from '@/components/property-kit/calculator-stepper';
 import { useDeal } from '@/lib/deal-context';
 import { Switch } from '@/registry/new-york-v4/ui/switch';
@@ -171,51 +171,44 @@ const PdCalculatorPage = () => {
     };
 
     return (
-        <div className='bg-white min-h-screen'>
-        <main className='mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 pb-16 pt-8 lg:px-8'>
-            <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                <div className='flex flex-wrap items-center justify-between gap-3'>
-                    <div className='flex flex-wrap items-center gap-3'>
-                        <StatusPill tone='info' label='Step 01 · Address & PD' />
-                        <StatusPill tone='neutral' label='Streaming AI reasoning' />
-                    </div>
-                    {currentDeal && (
-                        <StatusPill tone='success' label={`Deal: ${currentDeal.address.slice(0, 25)}...`} />
-                    )}
-                </div>
-                <div className='grid gap-6 lg:grid-cols-[1.3fr_0.7fr]'>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>AI Permitted Development Calculator</h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Layer national PD rules, Article 4 directions, heritage overlays, and finance hooks in a
-                            single guided flow. The output streams straight into your Deal Profile.
-                        </p>
-                        <div className='mt-6'>
-                            <CalculatorStepper currentStepIndex={1} />
-                        </div>
-                    </div>
-                    <BentoCard
-                        variant='secondary'
-                        eyebrow='Guidance'
-                        title='What to prepare'
-                        description='We only need a handful of fields to qualify PD routes and trigger Construction Capital review.'>
-                        <ul className='space-y-2 text-sm text-muted-foreground'>
-                            <li className='flex items-center gap-2'>
-                                <Building2 className='size-4 text-primary' /> Confirm the current use class + tenancy.
-                            </li>
-                            <li className='flex items-center gap-2'>
-                                <ShieldAlert className='size-4 text-primary' /> Flag Article 4, conservation, or flood zones.
-                            </li>
-                            <li className='flex items-center gap-2'>
-                                <Layers className='size-4 text-primary' /> Provide gross internal area and intended storeys.
-                            </li>
-                            <li className='flex items-center gap-2'>
-                                <Compass className='size-4 text-primary' /> Share your target units for GDV projections.
-                            </li>
-                        </ul>
-                    </BentoCard>
-                </div>
-            </section>
+        <CalculatorPageLayout
+            title="AI Permitted Development Calculator"
+            description="Layer national PD rules, Article 4 directions, heritage overlays, and finance hooks in a single guided flow. The output streams straight into your Deal Profile."
+            category="Development"
+            categorySlug="development"
+            categoryColor="#8B5CF6"
+            badges={[
+                { label: 'Step 01 · Address & PD', variant: 'info' },
+                { label: 'Streaming AI reasoning', variant: 'neutral' },
+                ...(currentDeal ? [{ label: `Deal: ${currentDeal.address.slice(0, 25)}...`, variant: 'success' as const }] : [])
+            ]}
+        >
+            <div className='mb-6'>
+                <CalculatorStepper currentStepIndex={1} />
+            </div>
+
+            <div className='mb-10'>
+                <BentoCard
+                    variant='secondary'
+                    eyebrow='Guidance'
+                    title='What to prepare'
+                    description='We only need a handful of fields to qualify PD routes and trigger Construction Capital review.'>
+                    <ul className='space-y-2 text-sm text-muted-foreground'>
+                        <li className='flex items-center gap-2'>
+                            <Building2 className='size-4 text-primary' /> Confirm the current use class + tenancy.
+                        </li>
+                        <li className='flex items-center gap-2'>
+                            <ShieldAlert className='size-4 text-primary' /> Flag Article 4, conservation, or flood zones.
+                        </li>
+                        <li className='flex items-center gap-2'>
+                            <Layers className='size-4 text-primary' /> Provide gross internal area and intended storeys.
+                        </li>
+                        <li className='flex items-center gap-2'>
+                            <Compass className='size-4 text-primary' /> Share your target units for GDV projections.
+                        </li>
+                    </ul>
+                </BentoCard>
+            </div>
 
             <section className='grid gap-8 lg:grid-cols-2'>
                 <BentoCard variant='glass' title='Site inputs' description='These values are stored inside the Deal Profile.'>
@@ -335,8 +328,7 @@ const PdCalculatorPage = () => {
                     <ContinueToNextStep nextStep={2} onBeforeContinue={handleContinue} />
                 </section>
             )}
-        </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 

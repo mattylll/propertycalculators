@@ -6,8 +6,8 @@ import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
 import { formatCurrency } from '@/lib/calculators/format';
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { Card, CardContent } from '@/components/ui/card';
 import {
     ArrowRight,
@@ -165,27 +165,15 @@ const Section24CalculatorPage = () => {
     };
 
     return (
-        <div className='bg-white min-h-screen'>
-            <main className='mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                {/* Header */}
-                <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                    <div className='flex flex-wrap items-center gap-3'>
-                        <StatusPill tone='warning' label='Section 24' />
-                        <StatusPill tone='neutral' label='Landlord Tax' />
-                    </div>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
-                            Section 24 Tax Impact Calculator
-                        </h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Calculate how Section 24 mortgage interest relief restrictions affect your rental income tax.
-                            Compare personal ownership vs limited company structures.
-                        </p>
-                    </div>
-                </section>
-
-                {/* Main Content */}
-                <div className='grid gap-8 lg:grid-cols-2'>
+        <CalculatorPageLayout
+            title="Section 24 Tax Impact Calculator"
+            description="Calculate how Section 24 mortgage interest relief restrictions affect your rental income tax. Compare personal ownership vs limited company structures."
+            category="Landlord"
+            categorySlug="landlord"
+            categoryColor="#10B981"
+            badges={[{ label: 'Tax Planning', variant: 'warning' }]}
+        >
+            <div className='grid gap-8 lg:grid-cols-2'>
                     {/* Left: Inputs */}
                     <div className='space-y-6'>
                         <BentoCard variant='glass' title='Rental income details' description='Enter your annual figures'>
@@ -503,8 +491,7 @@ const Section24CalculatorPage = () => {
                         </BentoCard>
                     </div>
                 </div>
-            </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 

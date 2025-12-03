@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from 'react';
 
+import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { BentoCard, BentoGrid } from '@/components/property-kit/bento-card';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
-import { StatusPill } from '@/components/property-kit/status-pill';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/new-york-v4/ui/select';
@@ -238,27 +238,17 @@ Respond in JSON:
     ].filter(item => item.value > 0);
 
     return (
-        <div className='bg-white min-h-screen'>
-            <main className='mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                {/* Header */}
-                <section className='space-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm'>
-                    <div className='flex flex-wrap items-center gap-3'>
-                        <StatusPill tone='success' label='Service Charge Calculator' />
-                        <StatusPill tone='neutral' label='Leasehold Tools' />
-                    </div>
-                    <div>
-                        <h1 className='text-4xl font-semibold text-gray-900 font-[family-name:var(--font-space-grotesk)]'>
-                            Service Charge Calculator
-                        </h1>
-                        <p className='mt-3 text-lg text-gray-600'>
-                            Calculate your share of annual service charges for a leasehold property.
-                            Understand the breakdown and validate costs with AI analysis.
-                        </p>
-                    </div>
-                </section>
-
-                {/* Main Content */}
-                <div className='grid gap-8 lg:grid-cols-2'>
+        <CalculatorPageLayout
+            title="Service Charge Calculator"
+            description="Calculate your share of annual service charges for a leasehold property. Understand the breakdown and validate costs with AI analysis."
+            category="Leasehold"
+            categorySlug="leasehold"
+            categoryColor="#06B6D4"
+            badges={[
+                { label: metrics.reservePercentage >= 20 ? 'Good Reserves' : 'Low Reserves', variant: metrics.reservePercentage >= 20 ? 'success' : 'warning' },
+            ]}
+        >
+            <div className='grid gap-8 lg:grid-cols-2'>
                     {/* Left: Inputs */}
                     <div className='space-y-6'>
                         <BentoCard variant='glass' title='Building details' description='Enter the building service charge budget'>
@@ -574,8 +564,7 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
-            </main>
-        </div>
+        </CalculatorPageLayout>
     );
 };
 
