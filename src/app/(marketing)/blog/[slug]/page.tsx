@@ -8,8 +8,7 @@ import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { StatusPill } from '@/components/property-kit/status-pill';
-import { Calendar, User, ArrowLeft, Clock, Tag, Share2, Bookmark } from 'lucide-react';
+import { Calendar, ArrowLeft, Clock, Tag, Share2, ChevronRight, ArrowRight, Calculator } from 'lucide-react';
 import { useMemo } from 'react';
 
 const formatDate = (timestamp: number) => {
@@ -85,17 +84,23 @@ const BlogPostPage = () => {
 
     if (post === undefined) {
         return (
-            <div className='bg-white min-h-screen'>
-                <main className='mx-auto flex w-full max-w-4xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                    <div className='animate-pulse space-y-6'>
-                        <div className='h-8 bg-slate-200 rounded w-2/3'></div>
-                        <div className='h-4 bg-slate-200 rounded w-1/3'></div>
-                        <div className='h-64 bg-slate-200 rounded'></div>
-                        <div className='space-y-4'>
-                            <div className='h-4 bg-slate-200 rounded w-full'></div>
-                            <div className='h-4 bg-slate-200 rounded w-5/6'></div>
-                            <div className='h-4 bg-slate-200 rounded w-4/6'></div>
+            <div className='min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50/50'>
+                <div className='relative overflow-hidden border-b border-slate-200/60'>
+                    <div className='hero-gradient-mesh absolute inset-0 opacity-30' />
+                    <div className='relative mx-auto max-w-4xl px-6 py-16 lg:px-8'>
+                        <div className='animate-pulse space-y-6'>
+                            <div className='h-6 bg-slate-200 rounded-full w-32'></div>
+                            <div className='h-12 bg-slate-200 rounded-xl w-3/4'></div>
+                            <div className='h-5 bg-slate-200 rounded-lg w-2/3'></div>
                         </div>
+                    </div>
+                </div>
+                <main className='mx-auto max-w-4xl px-6 py-16 lg:px-8'>
+                    <div className='h-80 bg-slate-200 rounded-2xl animate-pulse mb-12'></div>
+                    <div className='space-y-4'>
+                        <div className='h-4 bg-slate-200 rounded w-full animate-pulse'></div>
+                        <div className='h-4 bg-slate-200 rounded w-5/6 animate-pulse'></div>
+                        <div className='h-4 bg-slate-200 rounded w-4/6 animate-pulse'></div>
                     </div>
                 </main>
             </div>
@@ -104,17 +109,25 @@ const BlogPostPage = () => {
 
     if (post === null) {
         return (
-            <div className='bg-white min-h-screen'>
-                <main className='mx-auto flex w-full max-w-4xl flex-col items-center justify-center gap-8 px-6 pb-16 pt-16 lg:px-8'>
-                    <h1 className='text-2xl font-semibold text-slate-900'>Post not found</h1>
-                    <p className='text-slate-600'>The blog post you're looking for doesn't exist.</p>
-                    <Link href='/blog'>
-                        <Button variant='outline' className='gap-2'>
-                            <ArrowLeft className='size-4' />
-                            Back to Blog
-                        </Button>
-                    </Link>
-                </main>
+            <div className='min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50/50'>
+                <div className='relative overflow-hidden'>
+                    <div className='hero-gradient-mesh absolute inset-0 opacity-40' />
+                    <div className='hero-orb-1 absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20 bg-gradient-to-br from-purple-500 to-pink-500' />
+
+                    <main className='relative mx-auto flex w-full max-w-4xl flex-col items-center justify-center gap-8 px-6 pb-16 pt-24 lg:px-8'>
+                        <div className='mx-auto flex size-24 items-center justify-center rounded-3xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-xl shadow-purple-500/30 mb-4'>
+                            <ArrowLeft className='size-12 text-white' />
+                        </div>
+                        <h1 className='text-3xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]'>Post not found</h1>
+                        <p className='text-lg text-slate-600 text-center max-w-md'>The blog post you're looking for doesn't exist or has been removed.</p>
+                        <Link href='/blog'>
+                            <Button className='gap-2 h-12 px-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/30'>
+                                <ArrowLeft className='size-4' />
+                                Back to Blog
+                            </Button>
+                        </Link>
+                    </main>
+                </div>
             </div>
         );
     }
@@ -123,58 +136,80 @@ const BlogPostPage = () => {
     const filteredRelated = relatedPosts?.filter(p => p._id !== post._id).slice(0, 3) || [];
 
     return (
-        <div className='bg-white min-h-screen'>
-            <main className='mx-auto flex w-full max-w-4xl flex-col gap-8 px-6 pb-16 pt-8 lg:px-8'>
-                {/* Back Link */}
-                <Link href='/blog' className='flex items-center gap-2 text-slate-600 hover:text-[var(--pc-blue)] transition-colors'>
-                    <ArrowLeft className='size-4' />
-                    <span>Back to Blog</span>
-                </Link>
+        <div className='min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50/50'>
+            {/* Hero Section */}
+            <div className='relative overflow-hidden border-b border-slate-200/60'>
+                {/* Animated Background */}
+                <div className='hero-gradient-mesh absolute inset-0 opacity-40' />
+                <div className='hero-orb-1 absolute -top-20 -right-20 w-96 h-96 rounded-full blur-3xl opacity-30 bg-gradient-to-br from-purple-500 to-pink-500' />
+                <div className='hero-orb-2 absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full blur-3xl opacity-20 bg-gradient-to-br from-blue-500 to-cyan-500' />
 
-                {/* Article Header */}
-                <header className='space-y-6'>
-                    <div className='flex flex-wrap items-center gap-3'>
-                        <Badge className='bg-blue-100 text-blue-700 border-0'>
-                            {post.category}
-                        </Badge>
-                        <span className='text-sm text-slate-500 flex items-center gap-1'>
-                            <Clock className='size-3' />
-                            {estimateReadTime(post.content)}
-                        </span>
-                    </div>
+                <div className='relative mx-auto max-w-4xl px-6 py-12 lg:px-8'>
+                    {/* Breadcrumb */}
+                    <nav className='hero-fade-up mb-8'>
+                        <ol className='flex items-center gap-2 text-sm'>
+                            <li>
+                                <Link href='/' className='text-slate-500 hover:text-purple-600 transition-colors'>
+                                    Home
+                                </Link>
+                            </li>
+                            <ChevronRight className='size-4 text-slate-400' />
+                            <li>
+                                <Link href='/blog' className='text-slate-500 hover:text-purple-600 transition-colors'>
+                                    Blog
+                                </Link>
+                            </li>
+                            <ChevronRight className='size-4 text-slate-400' />
+                            <li className='font-medium text-slate-900 truncate max-w-[200px]'>{post.title}</li>
+                        </ol>
+                    </nav>
 
-                    <h1 className='text-4xl md:text-5xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]'>
-                        {post.title}
-                    </h1>
-
-                    <p className='text-xl text-slate-600'>
-                        {post.excerpt}
-                    </p>
-
-                    <div className='flex items-center justify-between pt-4 border-t border-slate-200'>
-                        <div className='flex items-center gap-4'>
-                            <div className='size-10 rounded-full bg-gradient-to-br from-[var(--pc-blue)] to-blue-600 flex items-center justify-center text-white font-semibold'>
-                                {post.author.charAt(0)}
-                            </div>
-                            <div>
-                                <p className='font-medium text-slate-900'>{post.author}</p>
-                                <p className='text-sm text-slate-500'>
-                                    {post.publishedAt ? formatDate(post.publishedAt) : 'Draft'}
-                                </p>
-                            </div>
+                    {/* Article Header */}
+                    <header className='hero-fade-up-2'>
+                        <div className='flex flex-wrap items-center gap-3 mb-6'>
+                            <Badge className='bg-purple-100 text-purple-700 border-0 font-semibold px-3 py-1'>
+                                {post.category}
+                            </Badge>
+                            <span className='text-sm text-slate-500 flex items-center gap-1.5 font-medium'>
+                                <Clock className='size-4' />
+                                {estimateReadTime(post.content)}
+                            </span>
                         </div>
-                        <div className='flex items-center gap-2'>
-                            <Button variant='ghost' size='sm' className='gap-2'>
+
+                        <h1 className='text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)] leading-tight mb-6'>
+                            {post.title}
+                        </h1>
+
+                        <p className='text-lg sm:text-xl text-slate-600 leading-relaxed mb-8'>
+                            {post.excerpt}
+                        </p>
+
+                        <div className='flex items-center justify-between p-5 rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-200/60 shadow-sm'>
+                            <div className='flex items-center gap-4'>
+                                <div className='size-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-purple-500/30'>
+                                    {post.author.charAt(0)}
+                                </div>
+                                <div>
+                                    <p className='font-semibold text-slate-900'>{post.author}</p>
+                                    <p className='text-sm text-slate-500 flex items-center gap-1.5'>
+                                        <Calendar className='size-3.5' />
+                                        {post.publishedAt ? formatDate(post.publishedAt) : 'Draft'}
+                                    </p>
+                                </div>
+                            </div>
+                            <Button variant='outline' size='sm' className='gap-2 border-2 hover:border-purple-300 hover:bg-purple-50 hover:text-purple-600 transition-all'>
                                 <Share2 className='size-4' />
                                 Share
                             </Button>
                         </div>
-                    </div>
-                </header>
+                    </header>
+                </div>
+            </div>
 
+            <main className='mx-auto max-w-4xl px-6 py-12 lg:px-8'>
                 {/* Featured Image */}
                 {post.featuredImage && (
-                    <div className='relative w-full h-[400px] rounded-2xl overflow-hidden'>
+                    <div className='relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden mb-12 shadow-xl'>
                         <Image
                             src={post.featuredImage}
                             alt={post.title}
@@ -182,21 +217,22 @@ const BlogPostPage = () => {
                             className='object-cover'
                             priority
                         />
+                        <div className='absolute inset-0 bg-gradient-to-t from-black/10 to-transparent' />
                     </div>
                 )}
 
                 {/* Article Content */}
                 <article
-                    className='prose prose-slate max-w-none'
+                    className='prose prose-slate prose-lg max-w-none mb-12'
                     dangerouslySetInnerHTML={{ __html: contentHtml }}
                 />
 
                 {/* Tags */}
                 {post.tags && post.tags.length > 0 && (
-                    <div className='flex flex-wrap items-center gap-2 pt-8 border-t border-slate-200'>
-                        <Tag className='size-4 text-slate-400' />
+                    <div className='flex flex-wrap items-center gap-3 py-8 border-y border-slate-200'>
+                        <Tag className='size-5 text-slate-400' />
                         {post.tags.map((tag) => (
-                            <Badge key={tag} variant='outline' className='text-slate-600'>
+                            <Badge key={tag} variant='outline' className='text-slate-600 border-2 px-3 py-1 hover:border-purple-300 hover:text-purple-600 transition-all cursor-pointer'>
                                 {tag}
                             </Badge>
                         ))}
@@ -205,33 +241,39 @@ const BlogPostPage = () => {
 
                 {/* Related Posts */}
                 {filteredRelated.length > 0 && (
-                    <section className='pt-12 border-t border-slate-200'>
-                        <h2 className='text-2xl font-semibold text-slate-900 mb-6'>Related Articles</h2>
+                    <section className='py-12'>
+                        <div className='flex items-center justify-between mb-8'>
+                            <h2 className='text-2xl font-bold text-slate-900 font-[family-name:var(--font-space-grotesk)]'>Related Articles</h2>
+                            <Link href='/blog' className='flex items-center gap-2 text-sm font-semibold text-purple-600 hover:text-purple-700 transition-colors'>
+                                View all
+                                <ArrowRight className='size-4' />
+                            </Link>
+                        </div>
                         <div className='grid gap-6 md:grid-cols-3'>
                             {filteredRelated.map((relatedPost) => (
                                 <Link key={relatedPost._id} href={`/blog/${relatedPost.slug}`}>
-                                    <Card className='overflow-hidden h-full hover:shadow-md transition-shadow'>
+                                    <div className='group h-full overflow-hidden rounded-2xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-purple-300 hover:shadow-xl hover:-translate-y-1'>
                                         {relatedPost.featuredImage ? (
-                                            <div className='relative h-32 bg-slate-100'>
+                                            <div className='relative h-36 bg-slate-100 overflow-hidden'>
                                                 <Image
                                                     src={relatedPost.featuredImage}
                                                     alt={relatedPost.title}
                                                     fill
-                                                    className='object-cover'
+                                                    className='object-cover group-hover:scale-105 transition-transform duration-500'
                                                 />
                                             </div>
                                         ) : (
-                                            <div className='h-32 bg-gradient-to-br from-[var(--pc-blue)] to-blue-600' />
+                                            <div className='h-36 bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500' />
                                         )}
-                                        <CardContent className='p-4'>
-                                            <Badge className='bg-blue-100 text-blue-700 border-0 text-xs mb-2'>
+                                        <div className='p-5'>
+                                            <Badge className='bg-purple-100 text-purple-700 border-0 text-xs font-semibold mb-3'>
                                                 {relatedPost.category}
                                             </Badge>
-                                            <h3 className='font-semibold text-slate-900 line-clamp-2'>
+                                            <h3 className='font-bold text-slate-900 line-clamp-2 group-hover:text-purple-600 transition-colors'>
                                                 {relatedPost.title}
                                             </h3>
-                                        </CardContent>
-                                    </Card>
+                                        </div>
+                                    </div>
                                 </Link>
                             ))}
                         </div>
@@ -239,21 +281,29 @@ const BlogPostPage = () => {
                 )}
 
                 {/* CTA */}
-                <Card className='border-[var(--pc-blue)]/30 bg-gradient-to-br from-blue-50 to-white mt-8'>
-                    <CardContent className='p-8 text-center'>
-                        <h3 className='text-2xl font-semibold text-slate-900 mb-3'>
+                <div className='relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-10 mt-8'>
+                    {/* Background decorations */}
+                    <div className='absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full blur-3xl' />
+                    <div className='absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-cyan-500/20 to-transparent rounded-full blur-3xl' />
+
+                    <div className='relative text-center'>
+                        <div className='mx-auto flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 shadow-lg shadow-emerald-500/30 mb-6'>
+                            <Calculator className='size-8 text-white' />
+                        </div>
+                        <h3 className='text-2xl sm:text-3xl font-bold text-white mb-4 font-[family-name:var(--font-space-grotesk)]'>
                             Ready to run the numbers?
                         </h3>
-                        <p className='text-slate-600 mb-6'>
+                        <p className='text-slate-400 mb-8 max-w-md mx-auto'>
                             Use our free calculators to analyse your next property deal.
                         </p>
                         <Link href='/calculators'>
-                            <Button className='bg-[var(--pc-blue)] hover:bg-[var(--pc-blue)]/90'>
+                            <Button className='gap-2 h-14 px-8 text-base font-semibold bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow-lg shadow-emerald-500/30 transition-all hover:shadow-xl hover:shadow-emerald-500/40'>
                                 Explore Calculators
+                                <ArrowRight className='size-5' />
                             </Button>
                         </Link>
-                    </CardContent>
-                </Card>
+                    </div>
+                </div>
             </main>
         </div>
     );
