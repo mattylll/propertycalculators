@@ -193,9 +193,9 @@ const Page = () => {
               </div>
 
               <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight font-[family-name:var(--font-space-grotesk)]">
-                Property calculators
+                Property Calculators
                 <br />
-                <span className="text-[var(--pc-blue)]">that actually work.</span>
+                <span className="text-[var(--pc-blue)]">AI powered property calculators for UK real estate</span>
               </h1>
 
               <p className="mt-6 text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
