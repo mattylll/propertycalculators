@@ -167,11 +167,11 @@ export default function RentToRentProfitCalculatorPage() {
   // Profit status
   const getProfitStatus = () => {
     if (derivedMetrics.monthlyProfit >= 500) {
-      return { tone: 'success', accent: 'green' as const, label: 'Strong Profit' };
+      return { tone: 'success' as const, accent: 'green' as const, label: 'Strong Profit' };
     } else if (derivedMetrics.monthlyProfit > 0) {
-      return { tone: 'warning', accent: 'orange' as const, label: 'Marginal' };
+      return { tone: 'warning' as const, accent: 'orange' as const, label: 'Marginal' };
     }
-    return { tone: 'warning', accent: 'orange' as const, label: 'Loss Making' };
+    return { tone: 'warning' as const, accent: 'orange' as const, label: 'Loss Making' };
   };
 
   // Prepare data for AI validation

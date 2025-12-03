@@ -193,11 +193,11 @@ export default function SAFinanceCalculatorPage() {
 
   const getIcrStatus = () => {
     if (derivedMetrics.stressedIcr >= parseFloat(icrRequirement)) {
-      return { tone: 'success', accent: 'green' as const, label: 'Passes ICR' };
+      return { tone: 'success' as const, accent: 'green' as const, label: 'Passes ICR' };
     } else if (derivedMetrics.stressedIcr >= parseFloat(icrRequirement) * 0.9) {
-      return { tone: 'warning', accent: 'orange' as const, label: 'Near Threshold' };
+      return { tone: 'warning' as const, accent: 'orange' as const, label: 'Near Threshold' };
     }
-    return { tone: 'warning', accent: 'orange' as const, label: 'Below ICR' };
+    return { tone: 'warning' as const, accent: 'orange' as const, label: 'Below ICR' };
   };
 
   const getIndicativeRate = (ltv: number) => {

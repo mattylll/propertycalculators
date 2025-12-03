@@ -272,7 +272,7 @@ const BuildCostCalculatorPage = () => {
                 <div className='flex flex-col gap-6'>
                     <AiOutputCard
                         title='Build Cost Analysis'
-                        accent={status}
+                        status={status}
                         response={aiCopy}
                         highlights={[
                             { label: 'TOTAL COST', value: formatCurrencyCompact(metrics.totalCost) },

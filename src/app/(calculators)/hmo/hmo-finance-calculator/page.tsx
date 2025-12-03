@@ -144,21 +144,21 @@ export default function HMOFinanceCalculatorPage() {
   // ICR status
   const getIcrStatus = () => {
     if (derivedMetrics.stressedIcr >= parseFloat(icrRequirement)) {
-      return { tone: 'success', accent: 'green' as const, label: 'Passes ICR' };
+      return { tone: 'success' as const, accent: 'green' as const, label: 'Passes ICR' };
     } else if (derivedMetrics.stressedIcr >= parseFloat(icrRequirement) * 0.9) {
-      return { tone: 'warning', accent: 'orange' as const, label: 'Near Threshold' };
+      return { tone: 'warning' as const, accent: 'orange' as const, label: 'Near Threshold' };
     }
-    return { tone: 'warning', accent: 'orange' as const, label: 'Below ICR' };
+    return { tone: 'warning' as const, accent: 'orange' as const, label: 'Below ICR' };
   };
 
   // LTV status
   const getLtvStatus = () => {
     if (derivedMetrics.ltv <= 65) {
-      return { tone: 'success', accent: 'green' as const, label: 'Low LTV' };
+      return { tone: 'success' as const, accent: 'green' as const, label: 'Low LTV' };
     } else if (derivedMetrics.ltv <= 75) {
-      return { tone: 'warning', accent: 'orange' as const, label: 'Standard LTV' };
+      return { tone: 'warning' as const, accent: 'orange' as const, label: 'Standard LTV' };
     }
-    return { tone: 'warning', accent: 'orange' as const, label: 'High LTV' };
+    return { tone: 'warning' as const, accent: 'orange' as const, label: 'High LTV' };
   };
 
   // Prepare data for AI validation

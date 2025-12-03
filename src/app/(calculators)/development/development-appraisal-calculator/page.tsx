@@ -289,7 +289,7 @@ const PdCalculatorPage = () => {
 
                 <div className='flex flex-col gap-6'>
                     <AiOutputCard
-                        accent={status}
+                        status={status}
                         response={aiCopy}
                         highlights={[
                             {

@@ -151,11 +151,11 @@ export default function TitleSplitCalculatorPage() {
   // Viability status
   const getViabilityStatus = () => {
     if (derivedMetrics.profitOnCost >= 20) {
-      return { tone: 'success', accent: 'green' as const, label: 'Strong Deal' };
+      return { tone: 'success' as const, accent: 'green' as const, label: 'Strong Deal' };
     } else if (derivedMetrics.profitOnCost >= 15) {
-      return { tone: 'warning', accent: 'orange' as const, label: 'Viable' };
+      return { tone: 'warning' as const, accent: 'orange' as const, label: 'Viable' };
     }
-    return { tone: 'warning', accent: 'orange' as const, label: 'Marginal' };
+    return { tone: 'warning' as const, accent: 'orange' as const, label: 'Marginal' };
   };
 
   // Prepare data for AI validation
@@ -293,7 +293,7 @@ export default function TitleSplitCalculatorPage() {
                 <FloatingField
                   label="Unit 1 Value"
                   value={unit1Value}
-                  onChange={setUnit1Value}
+                  onChange={(e) => setUnit1Value(e.target.value)}
                   unit="£"
                   unitPosition="prefix"
                   helper="e.g., Ground floor flat"
@@ -301,7 +301,7 @@ export default function TitleSplitCalculatorPage() {
                 <FloatingField
                   label="Unit 2 Value"
                   value={unit2Value}
-                  onChange={setUnit2Value}
+                  onChange={(e) => setUnit2Value(e.target.value)}
                   unit="£"
                   unitPosition="prefix"
                   helper="e.g., First floor flat"
@@ -310,7 +310,7 @@ export default function TitleSplitCalculatorPage() {
                   <FloatingField
                     label="Unit 3 Value"
                     value={unit3Value}
-                    onChange={setUnit3Value}
+                    onChange={(e) => setUnit3Value(e.target.value)}
                     unit="£"
                     unitPosition="prefix"
                   />
@@ -319,7 +319,7 @@ export default function TitleSplitCalculatorPage() {
                   <FloatingField
                     label="Unit 4 Value"
                     value={unit4Value}
-                    onChange={setUnit4Value}
+                    onChange={(e) => setUnit4Value(e.target.value)}
                     unit="£"
                     unitPosition="prefix"
                   />

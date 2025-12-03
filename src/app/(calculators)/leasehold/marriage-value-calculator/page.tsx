@@ -206,7 +206,7 @@ export default function MarriageValueCalculatorPage() {
             <span>Back to Leasehold</span>
           </Link>
           <StatusPill
-            accent={derivedMetrics.isUnder80Years ? 'warning' : 'success'}
+            tone={derivedMetrics.isUnder80Years ? 'warning' : 'success'}
             label={derivedMetrics.isUnder80Years ? 'Under 80 Years' : 'Over 80 Years'}
           />
         </div>

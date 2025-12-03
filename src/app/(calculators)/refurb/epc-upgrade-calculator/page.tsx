@@ -215,7 +215,7 @@ export default function EPCUpgradeCalculatorPage() {
             <span>Back to Refurb</span>
           </Link>
           <StatusPill
-            accent={derivedMetrics.meetsTarget ? 'green' : 'orange'}
+            tone={derivedMetrics.meetsTarget ? 'success' : 'warning'}
             label={derivedMetrics.meetsTarget ? 'Target Met' : 'Below Target'}
           />
         </div>

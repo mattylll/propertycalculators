@@ -249,7 +249,7 @@ const FinanceCalculatorPage = () => {
                 <div className='flex flex-col gap-6'>
                     <AiOutputCard
                         title='Finance Recommendation'
-                        accent={status}
+                        status={status}
                         response={aiCopy}
                         highlights={[
                             { label: 'SENIOR DEBT', value: formatCurrencyCompact(metrics.seniorDebtAmount) },

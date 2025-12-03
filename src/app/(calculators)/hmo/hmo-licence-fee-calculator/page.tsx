@@ -190,7 +190,7 @@ export default function HMOLicenceFeeCalculatorPage() {
             <span>Back to HMO</span>
           </Link>
           <StatusPill
-            accent={derivedMetrics.isMandatoryHmo ? 'orange' : 'teal'}
+            tone={derivedMetrics.isMandatoryHmo ? 'warning' : 'neutral'}
             label={derivedMetrics.isMandatoryHmo ? 'Mandatory HMO' : 'Additional Scheme'}
           />
         </div>

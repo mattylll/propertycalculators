@@ -163,11 +163,11 @@ export default function BTLDSCRCalculatorPage() {
   const getIcrStatus = () => {
     const icrReq = parseFloat(icrRequirement);
     if (derivedMetrics.icrAtStressRate >= icrReq) {
-      return { tone: 'success', accent: 'green' as const, label: 'Passes ICR' };
+      return { tone: 'success' as const, accent: 'green' as const, label: 'Passes ICR' };
     } else if (derivedMetrics.icrAtStressRate >= icrReq * 0.9) {
-      return { tone: 'warning', accent: 'orange' as const, label: 'Near Threshold' };
+      return { tone: 'warning' as const, accent: 'orange' as const, label: 'Near Threshold' };
     }
-    return { tone: 'warning', accent: 'orange' as const, label: 'Below ICR' };
+    return { tone: 'warning' as const, accent: 'orange' as const, label: 'Below ICR' };
   };
 
   // Prepare data for AI validation
@@ -470,7 +470,7 @@ export default function BTLDSCRCalculatorPage() {
                 <DealMetric
                   label={derivedMetrics.shortfallOrSurplus > 0 ? 'Over Maximum By' : 'Headroom'}
                   value={formatCurrency(Math.abs(derivedMetrics.shortfallOrSurplus))}
-                  accent={derivedMetrics.shortfallOrSurplus > 0 ? 'danger' : 'success'}
+                  accent={derivedMetrics.shortfallOrSurplus > 0 ? 'orange' : 'green'}
                 />
               </div>
             </BentoCard>

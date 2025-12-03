@@ -237,7 +237,7 @@ export default function HMOFireSafetyCostCalculatorPage() {
             <span>Back to HMO</span>
           </Link>
           <StatusPill
-            accent={derivedMetrics.complianceLevel === 'enhanced' ? 'success' : derivedMetrics.complianceLevel === 'standard' ? 'orange' : 'teal'}
+            tone={derivedMetrics.complianceLevel === 'enhanced' ? 'success' : derivedMetrics.complianceLevel === 'standard' ? 'warning' : 'neutral'}
             label={`${derivedMetrics.complianceLevel.charAt(0).toUpperCase() + derivedMetrics.complianceLevel.slice(1)} Spec`}
           />
         </div>

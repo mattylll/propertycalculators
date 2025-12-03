@@ -179,11 +179,11 @@ export default function ERVRentCalculatorPage() {
   // ERV status
   const getErvStatus = () => {
     if (derivedMetrics.isUnderRented) {
-      return { tone: 'success', accent: 'green' as const, label: 'Under-Rented' };
+      return { tone: 'success' as const, accent: 'green' as const, label: 'Under-Rented' };
     } else if (derivedMetrics.isOverRented) {
-      return { tone: 'warning', accent: 'orange' as const, label: 'Over-Rented' };
+      return { tone: 'warning' as const, accent: 'orange' as const, label: 'Over-Rented' };
     }
-    return { tone: 'neutral', accent: 'teal' as const, label: 'At Market' };
+    return { tone: 'neutral' as const, accent: 'teal' as const, label: 'At Market' };
   };
 
   // Prepare data for AI validation
@@ -317,21 +317,21 @@ export default function ERVRentCalculatorPage() {
                 <FloatingField
                   label="Comparable 1"
                   value={comp1RentPsf}
-                  onChange={setComp1RentPsf}
+                  onChange={(e) => setComp1RentPsf(e.target.value)}
                   unit="£ psf"
                   helper="Most similar property"
                 />
                 <FloatingField
                   label="Comparable 2"
                   value={comp2RentPsf}
-                  onChange={setComp2RentPsf}
+                  onChange={(e) => setComp2RentPsf(e.target.value)}
                   unit="£ psf"
                   helper="Second comparable"
                 />
                 <FloatingField
                   label="Comparable 3"
                   value={comp3RentPsf}
-                  onChange={setComp3RentPsf}
+                  onChange={(e) => setComp3RentPsf(e.target.value)}
                   unit="£ psf"
                   helper="Third comparable"
                 />
