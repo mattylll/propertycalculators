@@ -1223,6 +1223,1234 @@ export const checkPostsExist = mutation({
   },
 });
 
+// Phase 2 Posts (Posts 6-10)
+export const seedPhase2Posts = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const posts = [];
+
+    // Post #7: Bridging Loan Costs - Sept 22, 2025
+    const post1Id = await ctx.db.insert("posts", {
+      title: "Bridging Loan Costs: Retained vs Rolled Interest Compared",
+      slug: "bridging-loan-costs-retained-vs-rolled",
+      excerpt: "Understanding the true cost of bridging finance means knowing how interest works. This guide compares retained and rolled interest structures to help you choose the cheapest option for your deal.",
+      category: "Bridging Finance",
+      author: "Matt Lenzie",
+      tags: ["bridging loan", "retained interest", "rolled interest", "short-term finance", "property finance"],
+      metaDescription: "Compare retained vs rolled interest on bridging loans. Learn which structure costs less and when to use each for UK property purchases.",
+      metaKeywords: ["bridging loan calculator UK", "retained interest bridging", "rolled up interest", "bridging finance costs"],
+      status: "published",
+      publishedAt: new Date("2025-09-22T09:30:00Z").getTime(),
+      createdAt: new Date("2025-09-22T09:30:00Z").getTime(),
+      updatedAt: new Date("2025-09-22T09:30:00Z").getTime(),
+      content: `Bridging loans are expensive. That's not news to anyone who's used them. But what many borrowers don't realise is that how you structure the interest can make a significant difference to your total costs—and the cheapest option depends entirely on your exit timeline.
+
+This guide breaks down the two main interest structures—retained and rolled—so you can make an informed decision on your next bridge.
+
+## How Bridging Interest Works
+
+Unlike traditional mortgages where you pay interest monthly, bridging lenders offer flexibility in how interest is handled. The three main options are:
+
+**Serviced (Monthly)** — You pay interest each month like a normal loan. Rarely used because most bridging borrowers can't afford monthly payments on properties being refurbished.
+
+**Retained** — Interest for the full term is deducted from the loan upfront and held by the lender. You receive a smaller net advance but make no monthly payments.
+
+**Rolled Up** — Interest accrues monthly and is added to the loan balance. You pay nothing during the term but owe more at exit.
+
+Most borrowers choose between retained and rolled. Let's compare them.
+
+## Retained Interest Explained
+
+With retained interest, the lender calculates total interest for your agreed term and deducts it from your loan advance.
+
+### Example: 12-Month Retained Bridge
+
+| Item | Amount |
+|------|--------|
+| Property value | £200,000 |
+| Loan (70% LTV) | £140,000 |
+| Interest rate | 0.95% per month |
+| Term | 12 months |
+| Total interest | £15,960 |
+| **Net advance** | **£124,040** |
+
+You receive £124,040 but owe £140,000 at exit.
+
+### Retained Interest Advantages
+
+**Fixed cost.** You know exactly what you'll pay regardless of when you exit. If rates rise, you're protected.
+
+**Lower headline rate.** Lenders often offer slightly lower rates for retained because they're guaranteed the income.
+
+**Simpler cashflow.** No monthly payments to budget for during your project.
+
+### Retained Interest Disadvantages
+
+**Reduced funds available.** You receive less money upfront, which may affect your project budget.
+
+**Overpay if you exit early.** Repay in 6 months? You've still paid for 12 months of interest.
+
+**Interest on interest.** You're effectively borrowing money to pay interest, which compounds the true cost.
+
+## Rolled Up Interest Explained
+
+With rolled interest, nothing is deducted upfront. Interest accrues monthly and is added to your loan balance.
+
+### Example: 12-Month Rolled Bridge
+
+| Month | Opening Balance | Interest (0.95%) | Closing Balance |
+|-------|-----------------|------------------|-----------------|
+| 1 | £140,000 | £1,330 | £141,330 |
+| 2 | £141,330 | £1,343 | £142,673 |
+| 3 | £142,673 | £1,355 | £144,028 |
+| ... | ... | ... | ... |
+| 12 | £154,891 | £1,471 | £156,362 |
+
+After 12 months, you owe £156,362—that's £16,362 in total interest (£402 more than retained due to compounding).
+
+### Rolled Interest Advantages
+
+**Maximum funds upfront.** You receive the full loan amount for your project.
+
+**Pay only for what you use.** Exit in 6 months and you've only accrued 6 months of interest.
+
+**Better for uncertain timelines.** If you might exit early, rolled usually works out cheaper.
+
+### Rolled Interest Disadvantages
+
+**Compounding effect.** Interest on interest means the longer you stay, the more expensive it gets.
+
+**Rate risk.** Some rolled facilities have variable rates—if rates rise, so do your costs.
+
+**Higher rates available.** Lenders may charge a premium for rolled structures.
+
+## Head-to-Head Comparison
+
+Let's model both structures across different exit timelines using the [Retained vs Rolled Calculator](/bridging/retained-vs-rolled-calculator):
+
+### Scenario: £140,000 Loan at 0.95% Monthly
+
+| Exit Month | Retained Cost | Rolled Cost | Cheaper Option |
+|------------|---------------|-------------|----------------|
+| 3 | £15,960 | £4,022 | Rolled (saves £11,938) |
+| 6 | £15,960 | £8,179 | Rolled (saves £7,781) |
+| 9 | £15,960 | £12,477 | Rolled (saves £3,483) |
+| 12 | £15,960 | £16,362 | Retained (saves £402) |
+| 15 | £15,960 | £21,076 | Retained (saves £5,116) |
+
+**The crossover point is around month 11-12.** Exit before then, rolled is cheaper. Stay longer, retained wins.
+
+## Which Should You Choose?
+
+### Choose Retained When:
+
+- You're confident the project will take the full term
+- You want cost certainty regardless of market movements
+- The lender offers a meaningful rate discount for retained
+- You're using the bridge for a longer-term hold (12+ months)
+
+### Choose Rolled When:
+
+- Your exit is uncertain or potentially early
+- You need maximum funds for the refurbishment
+- You're doing a [BRRR deal](/blog/brrr-strategy-masterclass) where refinance timing varies
+- The project is straightforward with minimal risk of delays
+
+## Real-World Application: BRRR Strategy
+
+If you're following the [BRRR strategy](/blog/brrr-strategy-masterclass), rolled interest typically makes more sense. Here's why:
+
+Your BRRR timeline might look like this:
+- Purchase: Month 0
+- Refurbishment: Months 1-3
+- Valuation: Month 4
+- Refinance application: Month 4-5
+- Completion: Month 5-6
+
+With a 12-month retained bridge, you'd pay for 12 months but only use 6. That's 6 months of wasted interest. Rolled interest charges you only for the time you actually need the funds.
+
+Use the [BRRR Calculator](/landlord/brrr-calculator) alongside the [Bridging Loan Calculator](/bridging/bridging-loan-calculator) to model your specific scenario.
+
+## Hidden Costs to Watch
+
+Beyond the interest structure, watch for these additional bridging costs:
+
+| Fee | Typical Range | Notes |
+|-----|---------------|-------|
+| Arrangement fee | 1-2% | Usually added to loan |
+| Exit fee | 0-1% | Some lenders charge, many don't |
+| Valuation | £300-1,000 | Depends on property value |
+| Legal (lender) | £500-1,500 | You pay the lender's solicitor |
+| Legal (yours) | £800-2,000 | Your own conveyancing |
+| Broker fee | 0-1% | If using a broker |
+
+These fees often matter more than small differences in interest rate. A 0.1% rate saving on a 6-month bridge is £840 on £140,000. A 1% lower arrangement fee saves £1,400.
+
+## Negotiating Better Terms
+
+Bridging is a competitive market. You have leverage, especially if you're:
+
+- An experienced borrower with track record
+- Borrowing larger amounts (£500k+)
+- Using a broker with volume relationships
+- Offering a clean, straightforward deal
+
+Push for:
+- Lower arrangement fees (some lenders will negotiate to 1%)
+- No exit fees
+- Rate reductions for early exit on retained deals
+- Interest calculated on drawn balance for development facilities
+
+## Auction Finance Considerations
+
+Buying at auction? The 28-day deadline creates specific challenges. Use the [Auction Bridge Calculator](/bridging/auction-bridge-calculator) to model these scenarios.
+
+For auction purchases, retained interest has a hidden advantage: certainty. You know exactly how much you need at completion. With rolled interest, you're calculating interest up to a specific completion date—get the timing wrong and your completion statement is incorrect.
+
+Many auction buyers prefer retained for this reason, accepting the potential overpayment for the certainty it provides.
+
+## Bridge to Let Exit
+
+Planning to refinance onto a BTL mortgage? Model your exit carefully using the [Bridge to Let Calculator](/bridging/bridge-to-let-calculator).
+
+Your refinance mortgage needs to:
+- Pay off the bridge balance (including rolled interest if applicable)
+- Cover any redemption fees
+- Pass the lender's DSCR requirements (see our [BTL DSCR Calculator](/landlord/btl-dscr-calculator))
+
+If your rolled interest has pushed the balance higher than expected, you may need a larger BTL mortgage—which means a higher property value or accepting a higher LTV.
+
+## Key Takeaways
+
+1. **Retained interest** fixes your cost but reduces available funds and penalises early exit
+2. **Rolled interest** maximises funds and rewards early exit but compounds over time
+3. **The crossover point** is typically around 80-90% of the retained term
+4. **Model both scenarios** before committing using our [Retained vs Rolled Calculator](/bridging/retained-vs-rolled-calculator)
+5. **Total costs matter more than rates**—watch the fees
+
+Bridging finance is a powerful tool for property investors. Understanding how interest structures work helps you minimise costs and maximise returns.
+
+---
+
+*Matt Lenzie is a property finance specialist with experience structuring over £400m of debt and equity transactions. He advises developers and investors on bridging finance, development funding, and portfolio structuring.*`
+    });
+    posts.push(post1Id);
+
+    // Post #11: Lease Extension Costs - Oct 5, 2025
+    const post2Id = await ctx.db.insert("posts", {
+      title: "Lease Extension Costs: Understanding the 80-Year Cliff",
+      slug: "lease-extension-costs-80-year-cliff",
+      excerpt: "Leasehold properties with under 80 years remaining face a hidden cost trap. Learn how marriage value works, what lease extensions really cost, and when to negotiate versus when to pay up.",
+      category: "Leasehold",
+      author: "Matt Lenzie",
+      tags: ["lease extension", "leasehold", "marriage value", "ground rent", "property investment"],
+      metaDescription: "Complete guide to UK lease extension costs. Understand the 80-year cliff, marriage value calculations, and how to negotiate with freeholders.",
+      metaKeywords: ["lease extension calculator UK", "marriage value", "leasehold extension cost", "80 year lease"],
+      status: "published",
+      publishedAt: new Date("2025-10-05T14:15:00Z").getTime(),
+      createdAt: new Date("2025-10-05T14:15:00Z").getTime(),
+      updatedAt: new Date("2025-10-05T14:15:00Z").getTime(),
+      content: `If you're buying a leasehold flat with 82 years remaining, you might think you have decades before worrying about the lease. You'd be wrong. That property is about to become significantly more expensive to extend—and many buyers don't discover this until it's too late.
+
+The 80-year threshold is one of the most important concepts in leasehold property. Understanding it can save you tens of thousands of pounds.
+
+## What Happens at 80 Years?
+
+When a lease drops below 80 years, something called **marriage value** kicks in. This is a legal concept that roughly doubles the cost of extending your lease.
+
+### The Numbers
+
+Consider a flat worth £300,000 with ground rent of £250/year:
+
+| Lease Length | Extension Cost (Approx) |
+|--------------|------------------------|
+| 90 years | £8,000-12,000 |
+| 85 years | £10,000-15,000 |
+| 80 years | £15,000-20,000 |
+| 79 years | £25,000-35,000 |
+| 75 years | £30,000-45,000 |
+| 70 years | £40,000-60,000 |
+
+That jump from 80 to 79 years? It's not gradual. It's a cliff.
+
+Use the [Lease Extension Calculator](/leasehold/lease-extension-calculator) to estimate costs for your specific property.
+
+## Marriage Value Explained
+
+Marriage value represents the increase in property value created by extending the lease. The law says the freeholder is entitled to 50% of this value gain—but only once the lease drops below 80 years.
+
+### How It Works
+
+**Property with 95 years remaining:**
+- Current value: £300,000
+- Value with 999-year lease: £310,000
+- Marriage value: £10,000
+- Freeholder's share: £0 (lease over 80 years)
+
+**Same property with 75 years remaining:**
+- Current value: £270,000 (shorter lease = lower value)
+- Value with 999-year lease: £310,000
+- Marriage value: £40,000
+- Freeholder's share: £20,000 (50% of marriage value)
+
+The freeholder gets half the value you create by extending. This is on top of the capitalised ground rent and other compensation.
+
+## The Full Extension Cost Breakdown
+
+Lease extension premiums comprise several elements:
+
+### 1. Capitalised Ground Rent
+
+The present value of ground rent the freeholder will lose. Calculate using the [Ground Rent Calculator](/leasehold/ground-rent-calculator).
+
+| Ground Rent | Remaining Term | Capitalised Value |
+|-------------|----------------|-------------------|
+| £250/year | 80 years | £4,500-5,500 |
+| £250/year | 70 years | £4,200-5,000 |
+| £500/year | 80 years | £9,000-11,000 |
+| £500/year | 70 years | £8,400-10,000 |
+
+### 2. Diminution in Freeholder's Interest
+
+The loss in value of the freeholder's reversion (their right to the property when the lease expires).
+
+For a £300,000 flat with 75 years remaining, this might be £3,000-5,000.
+
+### 3. Marriage Value (If Under 80 Years)
+
+As explained above, 50% of the value created by extending. This is typically the largest component for shorter leases.
+
+### 4. Professional Fees
+
+| Fee | Typical Cost |
+|-----|--------------|
+| Your valuation | £500-1,000 |
+| Your solicitor | £1,500-3,000 |
+| Freeholder's valuation | £500-1,000 |
+| Freeholder's legal costs | £1,000-2,000 |
+| Tribunal fees (if disputed) | £300-500 |
+
+You pay both sides' reasonable costs. Budget £3,500-6,000 in fees on top of the premium.
+
+## Investment Implications
+
+For buy-to-let investors, lease length significantly impacts [rental yield calculations](/blog/rental-yield-vs-cash-on-cash-return) and property value.
+
+### Impact on Property Value
+
+Lenders typically won't mortgage properties with less than:
+- 70 years remaining (some require 80+)
+- 30 years remaining after the mortgage term
+
+This affects both your purchase and your future sale.
+
+### Impact on Rental Yield
+
+A £300,000 flat requiring a £40,000 extension effectively costs £340,000. Your gross yield drops:
+
+| Scenario | Purchase Price | Annual Rent | Gross Yield |
+|----------|---------------|-------------|-------------|
+| No extension needed | £300,000 | £15,000 | 5.0% |
+| With £40k extension | £340,000 | £15,000 | 4.4% |
+
+Use the [Buy to Let Calculator](/landlord/buy-to-let-calculator) to model the full impact including extension costs.
+
+## Negotiation Strategies
+
+The statutory lease extension gives you legal rights, but informal (voluntary) extensions can sometimes be negotiated more cheaply.
+
+### Statutory vs Informal Extensions
+
+**Statutory Extension:**
+- Requires 2 years ownership
+- Adds 90 years to current lease
+- Ground rent reduced to £0
+- Formula-based premium
+- Enforceable at tribunal
+
+**Informal Extension:**
+- Available immediately
+- Terms negotiated freely
+- Ground rent may continue
+- Premium negotiable
+- No tribunal recourse
+
+### When to Go Informal
+
+Consider an informal extension when:
+- You've just purchased and can't wait 2 years
+- The freeholder offers genuinely better terms
+- You want more than 90 additional years
+- The relationship with the freeholder is good
+
+### When to Use Statutory Rights
+
+Use the formal process when:
+- The freeholder is unresponsive or difficult
+- Their informal quote is unreasonably high
+- You want the protection of zero ground rent
+- You prefer the certainty of a formula-based premium
+
+## The 2024 Leasehold Reform
+
+The Leasehold and Freehold Reform Act 2024 promises significant changes:
+
+- Marriage value may be abolished (reducing costs for sub-80-year leases)
+- Standard 990-year extensions (up from 90 years)
+- Capped ground rents on existing leases
+- Easier collective enfranchisement
+
+However, implementation dates remain uncertain. Don't delay an extension hoping for reforms—if your lease is approaching 80 years, act now.
+
+## Case Study: The Cost of Waiting
+
+Sarah bought a flat in 2020 with 83 years on the lease. She knew she'd need to extend eventually but decided to wait.
+
+**2020 Position:**
+- Lease remaining: 83 years
+- Estimated extension cost: £12,000
+- Marriage value: £0
+
+**2025 Position:**
+- Lease remaining: 78 years
+- Estimated extension cost: £32,000
+- Marriage value: £18,000
+
+By waiting 5 years, Sarah's extension cost increased by £20,000. The £12,000 she "saved" by delaying is now costing her £4,000 per year in lost value.
+
+**Lesson:** Extend before the lease drops below 82-83 years. The savings compound over time.
+
+## Due Diligence for Buyers
+
+If you're considering a leasehold purchase:
+
+1. **Check the exact lease length** (not "about 80 years"—exact years matter)
+2. **Calculate the extension cost** using our [Lease Extension Calculator](/leasehold/lease-extension-calculator)
+3. **Add extension costs to your purchase price** when assessing the deal
+4. **Factor in ground rent trends** with the [Ground Rent Calculator](/leasehold/ground-rent-calculator)
+5. **Review service charges** using the [Service Charge Analyser](/leasehold/service-charge-analyser)
+
+Properties advertised with "share of freehold" or long leases (125+ years) avoid these issues entirely.
+
+## Financing Lease Extensions
+
+Most lease extensions are paid from savings, but options exist:
+
+**Remortgage:** If you have equity, remortgage to release funds. This spreads the cost over your mortgage term.
+
+**Bridging:** For time-sensitive situations (approaching 80 years), a short bridge can fund the extension.
+
+**Freeholder payment plans:** Some freeholders offer payment terms, though usually at a premium.
+
+The cost of financing is usually less than the cost of waiting and crossing the 80-year threshold.
+
+## Action Plan
+
+**If your lease is 85+ years:**
+- You have time, but start planning
+- Get a valuation to understand likely costs
+- Consider extending before it drops to 82-83 years
+
+**If your lease is 80-85 years:**
+- Act now—you're approaching the cliff
+- Serve notice to protect your position
+- Begin negotiations immediately
+
+**If your lease is under 80 years:**
+- Extension is urgent
+- Marriage value is already applying
+- Every year of delay increases costs significantly
+
+## Related Resources
+
+- [Property Investment Calculators Guide](/blog/property-investment-calculators-beginners-guide) — Overview of all calculator tools
+- [Rental Yield vs Cash-on-Cash](/blog/rental-yield-vs-cash-on-cash-return) — Understanding true investment returns
+- [Lease Extension Calculator](/leasehold/lease-extension-calculator) — Estimate your extension premium
+- [Ground Rent Calculator](/leasehold/ground-rent-calculator) — Capitalise future ground rent liability
+
+---
+
+*Matt Lenzie is a property finance specialist with experience in over £400m of property transactions. He advises investors on acquisition structuring, including leasehold considerations.*`
+    });
+    posts.push(post2Id);
+
+    // Post #6: Section 24 Tax Calculator - Nov 3, 2025
+    const post3Id = await ctx.db.insert("posts", {
+      title: "Section 24 Tax Calculator: The True Cost of Personal Ownership",
+      slug: "section-24-tax-impact-guide",
+      excerpt: "Section 24 changed everything for UK landlords. This guide explains how the mortgage interest restriction works, who it affects most, and how to calculate your true after-tax returns.",
+      category: "Landlord Education",
+      author: "Matt Lenzie",
+      tags: ["section 24", "landlord tax", "mortgage interest relief", "buy to let tax", "property investment"],
+      metaDescription: "Complete guide to Section 24 tax for UK landlords. Calculate how mortgage interest restrictions affect your buy-to-let profits and after-tax returns.",
+      metaKeywords: ["section 24 calculator", "landlord tax UK", "mortgage interest relief", "buy to let tax calculator"],
+      status: "published",
+      publishedAt: new Date("2025-11-03T11:00:00Z").getTime(),
+      createdAt: new Date("2025-11-03T11:00:00Z").getTime(),
+      updatedAt: new Date("2025-11-03T11:00:00Z").getTime(),
+      content: `When Section 24 was announced in 2015, many landlords shrugged. By the time it was fully implemented in 2020, some discovered their profitable portfolios had become loss-making overnight—at least on paper.
+
+Section 24 is the single most significant tax change to affect UK landlords in decades. If you don't understand how it works, you can't accurately assess your investment returns. This guide explains everything you need to know.
+
+## What Is Section 24?
+
+Section 24 of the Finance (No. 2) Act 2015 restricts mortgage interest relief for individual landlords. Before Section 24, landlords could deduct mortgage interest as an expense, reducing their taxable profit.
+
+Now, landlords receive only a 20% tax credit on mortgage interest—regardless of their tax bracket.
+
+### The Old System (Pre-2017)
+
+| Item | Amount |
+|------|--------|
+| Rental income | £12,000 |
+| Mortgage interest | £6,000 |
+| Other expenses | £2,000 |
+| **Taxable profit** | **£4,000** |
+
+A higher-rate (40%) taxpayer would pay £1,600 in tax (40% × £4,000).
+
+### The New System (Post-2020)
+
+| Item | Amount |
+|------|--------|
+| Rental income | £12,000 |
+| Other expenses (no mortgage interest) | £2,000 |
+| **Taxable profit** | **£10,000** |
+| Tax at 40% | £4,000 |
+| Less: 20% tax credit on interest | £1,200 |
+| **Net tax payable** | **£2,800** |
+
+Same property, same income, same costs—but £1,200 more tax.
+
+Use the [Section 24 Tax Impact Calculator](/landlord/section-24-tax-impact-calculator) to model your specific situation.
+
+## Who Is Affected?
+
+### Heavily Affected
+
+**Higher-rate taxpayers (40%+):** The 20% tax credit is worth less than the 40% deduction you previously received.
+
+**Highly-leveraged landlords:** More mortgage debt = more interest = bigger Section 24 impact.
+
+**Landlords pushed into higher brackets:** Rental "profit" now includes mortgage interest, potentially pushing you from basic to higher rate.
+
+### Less Affected
+
+**Basic-rate taxpayers:** If you're firmly in the 20% bracket, Section 24 is roughly neutral.
+
+**Cash buyers:** No mortgage = no interest = no Section 24 impact.
+
+**Limited company landlords:** Companies can still deduct mortgage interest as an expense.
+
+## The Bracket Creep Problem
+
+Section 24's most insidious effect is pushing landlords into higher tax brackets.
+
+### Example: The Hidden Rate Rise
+
+James earns £45,000 from employment and £15,000 net rental income (after mortgage interest).
+
+**Old system:**
+- Total taxable income: £45,000 + £15,000 = £60,000
+- Higher-rate threshold: £50,270
+- Income taxed at 40%: £9,730
+
+**New system:**
+- Rental income for tax purposes includes £8,000 mortgage interest
+- Total taxable income: £45,000 + £23,000 = £68,000
+- Income taxed at 40%: £17,730
+
+James now pays 40% tax on an extra £8,000 of income—that's £3,200 more tax, only partially offset by the £1,600 tax credit (20% × £8,000).
+
+This is why Section 24 hits middle-income landlords with mortgaged properties hardest.
+
+## Calculating Your Section 24 Impact
+
+Work through this step-by-step to understand your exposure:
+
+### Step 1: Calculate Pre-Section 24 Profit
+
+| Item | Your Property |
+|------|---------------|
+| Annual rent | £______ |
+| Less: Mortgage interest | £______ |
+| Less: Other expenses | £______ |
+| **Pre-S24 profit** | £______ |
+
+### Step 2: Calculate Post-Section 24 Taxable Income
+
+| Item | Your Property |
+|------|---------------|
+| Annual rent | £______ |
+| Less: Other expenses only | £______ |
+| **Post-S24 taxable income** | £______ |
+
+### Step 3: Determine Your Tax Rate
+
+Add your rental taxable income to your other income. What bracket does this put you in?
+
+| Bracket | Rate | Threshold 2025/26 |
+|---------|------|-------------------|
+| Personal allowance | 0% | £0-12,570 |
+| Basic rate | 20% | £12,571-50,270 |
+| Higher rate | 40% | £50,271-125,140 |
+| Additional rate | 45% | £125,140+ |
+
+### Step 4: Calculate Net Tax
+
+Tax on rental income (at your marginal rate) minus 20% tax credit on mortgage interest.
+
+The [Section 24 Calculator](/landlord/section-24-tax-impact-calculator) automates this process.
+
+## Real-World Impact on Returns
+
+Let's see how Section 24 affects the metrics covered in our [Rental Yield vs Cash-on-Cash guide](/blog/rental-yield-vs-cash-on-cash-return).
+
+### Case Study: £200,000 BTL Property
+
+| Item | Amount |
+|------|--------|
+| Property value | £200,000 |
+| Mortgage (75% LTV) | £150,000 |
+| Interest rate | 5.5% |
+| Annual mortgage cost | £8,250 |
+| Monthly rent | £900 |
+| Annual rent | £10,800 |
+| Other expenses (20%) | £2,160 |
+
+**Basic-rate taxpayer (20%):**
+- Pre-tax cashflow: £10,800 - £8,250 - £2,160 = £390
+- Tax on £8,640 profit: £1,728
+- Tax credit (20% × £8,250): £1,650
+- Net tax: £78
+- **After-tax cashflow: £312/year**
+
+**Higher-rate taxpayer (40%):**
+- Pre-tax cashflow: £390
+- Tax on £8,640 profit: £3,456
+- Tax credit (20% × £8,250): £1,650
+- Net tax: £1,806
+- **After-tax cashflow: -£1,416/year**
+
+The same property makes £312/year for a basic-rate taxpayer but loses £1,416/year for a higher-rate taxpayer. That's a £1,728 annual difference—purely from Section 24.
+
+## Strategies to Mitigate Section 24
+
+### 1. Limited Company Ownership
+
+Companies can still deduct mortgage interest. However, consider:
+
+**Advantages:**
+- Full mortgage interest deduction
+- Corporation tax (25%) may be lower than your marginal rate
+- Profits retained in company avoid immediate personal tax
+
+**Disadvantages:**
+- Higher mortgage rates (typically 0.5-1% premium)
+- CGT on transferring existing properties
+- SDLT on transfers (no spouse relief)
+- Extracting profits triggers personal tax
+
+Company ownership suits:
+- New purchases (avoid transfer costs)
+- Higher-rate taxpayers
+- Long-term portfolio builders
+- Those not needing rental income personally
+
+### 2. Pay Down Mortgages
+
+Less debt = less interest = smaller Section 24 impact.
+
+If your after-tax returns are negative, overpaying the mortgage may make mathematical sense—even if it feels counterintuitive.
+
+### 3. Optimise Ownership Between Spouses
+
+If one spouse is basic-rate and the other higher-rate, consider transferring properties to the lower earner. A Declaration of Trust can vary beneficial ownership from the default 50/50.
+
+### 4. Focus on Higher-Yield Properties
+
+Section 24's impact is proportionally lower on high-yield properties because the interest-to-rent ratio is smaller.
+
+Compare a 4% yield property (common in London) versus a 7% yield property (Northern cities):
+
+| Metric | 4% Yield | 7% Yield |
+|--------|----------|----------|
+| Property value | £300,000 | £150,000 |
+| Rent | £12,000 | £10,500 |
+| Mortgage (75% LTV) | £225,000 | £112,500 |
+| Interest (5.5%) | £12,375 | £6,188 |
+| Interest as % of rent | 103% | 59% |
+
+The 4% yield property has interest exceeding rent—Section 24 devastates returns. The 7% yield property is more resilient.
+
+This partly explains the shift of investor interest toward higher-yielding regional markets.
+
+## Section 24 and Investment Decisions
+
+When evaluating new purchases, always calculate after-tax returns. Our [Buy to Let Calculator](/landlord/buy-to-let-calculator) includes Section 24 modelling.
+
+Questions to ask:
+
+1. **Does this property cashflow after Section 24?** If not, are you comfortable funding the shortfall?
+
+2. **What's my after-tax cash-on-cash return?** Compare this to alternative investments.
+
+3. **Am I already being pushed into a higher bracket?** Additional properties compound the problem.
+
+4. **Would company ownership be more tax-efficient?** Run the numbers both ways.
+
+## The Bigger Picture
+
+Section 24 has fundamentally changed UK property investment economics. Combined with higher interest rates, many landlords now face:
+
+- Negative cashflow on previously profitable properties
+- Tax bills exceeding actual profits
+- Difficult decisions about selling versus holding
+
+However, property remains a valuable long-term investment. The key is adapting your strategy:
+
+- Use proper analysis tools like our [property investment calculators](/blog/property-investment-calculators-beginners-guide)
+- Understand your true after-tax returns
+- Structure ownership tax-efficiently
+- Focus on properties that work in the current environment
+
+## Resources
+
+- [Section 24 Tax Impact Calculator](/landlord/section-24-tax-impact-calculator) — Model your specific situation
+- [Buy to Let Calculator](/landlord/buy-to-let-calculator) — Full investment analysis
+- [BTL DSCR Calculator](/landlord/btl-dscr-calculator) — Lender affordability checks
+- [Rental Yield vs Cash-on-Cash](/blog/rental-yield-vs-cash-on-cash-return) — Understanding return metrics
+
+---
+
+*Matt Lenzie is a property finance specialist with experience advising on over £400m of property transactions. He works with landlords and developers on portfolio structuring and tax-efficient financing.*`
+    });
+    posts.push(post3Id);
+
+    // Post #22: SA Investment Analysis - Nov 20, 2025
+    const post4Id = await ctx.db.insert("posts", {
+      title: "SA Investment Analysis: Occupancy → Profit → Tax in One Model",
+      slug: "serviced-accommodation-investment-analysis",
+      excerpt: "Serviced accommodation promises higher returns than traditional BTL—but only if the numbers work. This workflow shows you how to analyse SA deals from occupancy forecasts through to after-tax profit.",
+      category: "Serviced Accommodation",
+      author: "Matt Lenzie",
+      tags: ["serviced accommodation", "Airbnb", "holiday let", "short-term rental", "SA investment"],
+      metaDescription: "Complete guide to analysing serviced accommodation investments. Model occupancy, revenue, costs and tax for Airbnb and short-term rental properties.",
+      metaKeywords: ["serviced accommodation calculator", "Airbnb investment UK", "holiday let calculator", "SA profit calculator"],
+      status: "published",
+      publishedAt: new Date("2025-11-20T15:30:00Z").getTime(),
+      createdAt: new Date("2025-11-20T15:30:00Z").getTime(),
+      updatedAt: new Date("2025-11-20T15:30:00Z").getTime(),
+      content: `Serviced accommodation—Airbnb, Booking.com, short-term lets—can generate significantly higher income than traditional buy-to-let. A property renting for £1,000/month as a BTL might achieve £2,500/month as an SA unit.
+
+But SA comes with higher costs, more complexity, and greater uncertainty. Many investors jump in seduced by headline revenue figures, only to discover their actual profit is lower than they'd have achieved with a simple AST tenant.
+
+This guide provides a rigorous framework for analysing SA investments—from occupancy forecasting through to after-tax returns.
+
+## The SA Analysis Workflow
+
+Proper SA analysis follows three stages:
+
+1. **Occupancy** — How many nights will you realistically fill?
+2. **Profit** — After all SA-specific costs, what do you actually keep?
+3. **Tax** — How is SA income taxed, and what's your after-tax return?
+
+Let's work through each stage.
+
+## Stage 1: Occupancy Analysis
+
+Revenue projections mean nothing without realistic occupancy assumptions. Use the [SA Occupancy Calculator](/sa/sa-occupancy-calculator) to model this.
+
+### Factors Affecting Occupancy
+
+| Factor | Impact |
+|--------|--------|
+| Location | City centre > suburbs > rural |
+| Property type | Unique properties outperform generic flats |
+| Seasonality | Coastal = summer peak; city = year-round |
+| Competition | High supply areas face occupancy pressure |
+| Reviews | 4.8+ rating significantly improves bookings |
+| Pricing strategy | Dynamic pricing improves occupancy |
+
+### Realistic Occupancy Benchmarks
+
+| Market Type | Low Season | High Season | Annual Average |
+|-------------|------------|-------------|----------------|
+| Major city centre | 65% | 85% | 72% |
+| City suburbs | 55% | 75% | 62% |
+| Coastal tourist | 30% | 95% | 55% |
+| Rural/remote | 35% | 70% | 48% |
+
+First-year occupancy is typically 10-15% below these benchmarks while you build reviews.
+
+### Calculating Available Nights
+
+Don't assume 365 nights are available:
+
+| Adjustment | Nights Lost |
+|------------|-------------|
+| Your own use | 14-30 |
+| Maintenance/repairs | 7-14 |
+| Turnaround gaps | 12-20 |
+| Platform minimums (e.g., 2-night min) | 10-20 |
+| **Realistic available nights** | **300-330** |
+
+A property with 70% occupancy of 310 available nights books 217 nights per year—not 255 (70% × 365).
+
+## Stage 2: Revenue and Profit Analysis
+
+With occupancy estimated, calculate revenue and subtract SA-specific costs. Use the [SA Profit Calculator](/sa/sa-profit-calculator).
+
+### Revenue Modelling
+
+| Item | Example |
+|------|---------|
+| Available nights | 310 |
+| Occupancy rate | 68% |
+| Booked nights | 211 |
+| Average nightly rate | £120 |
+| **Gross revenue** | **£25,320** |
+
+### SA-Specific Costs
+
+SA has significantly higher operating costs than BTL:
+
+| Cost Category | Typical % of Revenue | Example (£25,320) |
+|---------------|---------------------|-------------------|
+| Platform fees | 3-15% | £760-3,800 |
+| Cleaning | 15-25% | £3,800-6,330 |
+| Linen/laundry | 3-5% | £760-1,266 |
+| Utilities (guest use) | 5-8% | £1,266-2,026 |
+| Toiletries/supplies | 2-4% | £506-1,013 |
+| Maintenance | 5-8% | £1,266-2,026 |
+| Management (if used) | 15-25% | £3,800-6,330 |
+| Insurance | 1-2% | £253-506 |
+| **Total operating costs** | **50-90%** | **£12,660-22,790** |
+
+Self-managed SA typically runs at 50-65% operating costs. Fully managed SA runs at 70-90%.
+
+### Profit Comparison: SA vs BTL
+
+Let's compare the same property under both models:
+
+**The Property:**
+- Value: £250,000
+- Mortgage: £187,500 (75% LTV)
+- Interest rate: 5.5%
+- Annual mortgage cost: £10,313
+
+**As BTL:**
+
+| Item | Annual |
+|------|--------|
+| Rent | £12,000 |
+| Operating costs (25%) | £3,000 |
+| Mortgage | £10,313 |
+| **Net cashflow** | **-£1,313** |
+
+**As SA (Self-Managed):**
+
+| Item | Annual |
+|------|--------|
+| Gross revenue | £25,320 |
+| Operating costs (55%) | £13,926 |
+| Mortgage | £10,313 |
+| **Net cashflow** | **£1,081** |
+
+SA generates £2,394 more annual cashflow—but requires significantly more work.
+
+See our [Rental Yield vs Cash-on-Cash guide](/blog/rental-yield-vs-cash-on-cash-return) for how to compare these returns properly.
+
+## Stage 3: Tax Analysis
+
+SA tax treatment differs from standard BTL. Use the [Holiday Let Tax Calculator](/sa/holiday-let-tax-calculator) to model your situation.
+
+### Furnished Holiday Let (FHL) Status
+
+If your SA qualifies as a Furnished Holiday Let, you receive favourable tax treatment:
+
+**FHL Criteria:**
+- Available for letting 210+ days per year
+- Actually let 105+ days per year
+- No single letting exceeds 31 consecutive days (unless exceptional)
+- Furnished to a standard for normal occupation
+
+**FHL Benefits:**
+- Full mortgage interest deduction (no Section 24!)
+- Capital Gains Tax reliefs (Business Asset Disposal Relief)
+- Pension contribution basis
+- Capital allowances on furnishings
+
+This makes SA significantly more tax-efficient than BTL for higher-rate taxpayers. Compare using the [Section 24 Calculator](/landlord/section-24-tax-impact-calculator) for BTL versus FHL treatment.
+
+### Non-FHL SA Tax Treatment
+
+If you don't meet FHL criteria, SA income is taxed as property income:
+- Subject to Section 24 restrictions
+- No CGT business reliefs
+- Standard property income rules apply
+
+### Tax Comparison Example
+
+Higher-rate taxpayer with our example property:
+
+**BTL (Subject to Section 24):**
+- Net profit: £9,000
+- Tax at 40%: £3,600
+- Less 20% credit on interest: £2,063
+- Net tax: £1,537
+- **After-tax profit: £7,463**
+- **After-tax cashflow: -£2,850**
+
+**FHL (Full Interest Deduction):**
+- Net profit: £11,394 (after interest)
+- Tax at 40%: £4,558
+- **After-tax profit: £6,836**
+- **After-tax cashflow: -£3,477**
+
+Wait—the FHL has lower after-tax profit? Yes, because the SA costs are higher. But the FHL generates positive pre-tax cashflow, while the BTL doesn't.
+
+The real comparison requires considering:
+- Your time (SA requires more management)
+- Risk (SA revenue is more volatile)
+- Exit strategy (FHL gets better CGT treatment)
+
+## Risk Factors to Consider
+
+SA investment carries risks that BTL doesn't:
+
+### Occupancy Risk
+
+A new competitor, regulatory change, or economic downturn can slash occupancy. Model scenarios at 50%, 60%, and 70% occupancy—does the investment still work?
+
+### Regulatory Risk
+
+Many councils are introducing:
+- Planning requirements for SA
+- Licensing schemes
+- 90-day letting limits (London)
+- Article 4 directions
+
+Check your local authority's position before investing.
+
+### Operational Risk
+
+SA requires active management:
+- Guest communication
+- Check-in/check-out
+- Cleaning coordination
+- Maintenance response
+- Review management
+
+If you can't commit time (or pay for management), returns suffer.
+
+### Seasonality Risk
+
+Revenue concentration in peak seasons means:
+- Cash flow gaps in off-season
+- Pressure to discount to fill quiet periods
+- Weather/event dependency
+
+Model monthly cash flow, not just annual totals.
+
+## Making the SA Decision
+
+### SA Makes Sense When:
+
+- You can achieve 60%+ occupancy year-round
+- Gross revenue exceeds 2× BTL rent
+- You can self-manage (or accept lower returns with management)
+- The property suits short stays (parking, location, amenities)
+- You're a higher-rate taxpayer (FHL benefits valuable)
+- Local regulations support SA
+
+### BTL Makes Sense When:
+
+- SA occupancy would be below 55%
+- You value passive income over maximum returns
+- The property doesn't suit short stays
+- You're a basic-rate taxpayer (Section 24 less painful)
+- Local regulations restrict SA
+- You're building a hands-off portfolio
+
+## Calculator Workflow
+
+Use this sequence to analyse any SA opportunity:
+
+1. **[SA Occupancy Calculator](/sa/sa-occupancy-calculator)** — Estimate realistic booking rates
+2. **[SA Profit Calculator](/sa/sa-profit-calculator)** — Model revenue minus all SA costs
+3. **[Holiday Let Tax Calculator](/sa/holiday-let-tax-calculator)** — Calculate FHL tax position
+4. **[Buy to Let Calculator](/landlord/buy-to-let-calculator)** — Model the BTL alternative
+5. **Compare after-tax returns** — Make an informed decision
+
+## Related Reading
+
+- [Property Investment Calculators Guide](/blog/property-investment-calculators-beginners-guide) — Overview of all tools
+- [Rental Yield vs Cash-on-Cash](/blog/rental-yield-vs-cash-on-cash-return) — Comparing return metrics
+- [BRRR Strategy Masterclass](/blog/brrr-strategy-masterclass) — Adding value before letting
+- [Section 24 Tax Guide](/blog/section-24-tax-impact-guide) — BTL tax comparison
+
+---
+
+*Matt Lenzie is a property finance specialist with experience in over £400m of property transactions. He advises investors on acquisition strategy, financing, and portfolio optimisation.*`
+    });
+    posts.push(post4Id);
+
+    // Post #44: Stamp Duty for Beginners - Dec 1, 2025
+    const post5Id = await ctx.db.insert("posts", {
+      title: "Stamp Duty for Beginners: Everything You Need to Know",
+      slug: "stamp-duty-beginners-guide",
+      excerpt: "Stamp Duty Land Tax adds thousands to your property purchase—and investors pay even more. This beginner's guide explains SDLT rates, surcharges, exemptions, and how to calculate exactly what you'll owe.",
+      category: "Beginner Guides",
+      author: "Matt Lenzie",
+      tags: ["stamp duty", "SDLT", "property tax", "first-time buyer", "property investment"],
+      metaDescription: "Complete beginner's guide to UK Stamp Duty Land Tax. Learn SDLT rates for first-time buyers, additional properties, and how to calculate your stamp duty bill.",
+      metaKeywords: ["stamp duty calculator UK", "SDLT rates 2025", "stamp duty additional property", "first time buyer stamp duty"],
+      status: "published",
+      publishedAt: new Date("2025-12-01T10:45:00Z").getTime(),
+      createdAt: new Date("2025-12-01T10:45:00Z").getTime(),
+      updatedAt: new Date("2025-12-01T10:45:00Z").getTime(),
+      content: `Stamp Duty Land Tax (SDLT) is one of the largest upfront costs when buying property—yet many buyers only discover how much they'll pay when their solicitor sends the completion statement.
+
+For investors, the additional 3% surcharge on second properties can add tens of thousands to your acquisition costs. This guide explains how SDLT works, what you'll pay, and strategies to minimise your bill.
+
+## What Is Stamp Duty?
+
+Stamp Duty Land Tax is a tax on property purchases in England and Northern Ireland. Scotland has LBTT (Land and Buildings Transaction Tax) and Wales has LTT (Land Transaction Tax)—similar but with different rates.
+
+You pay SDLT on any property purchase above £250,000 (or £425,000 for first-time buyers). It's calculated on a tiered basis—you only pay the higher rates on the portion above each threshold.
+
+## Current SDLT Rates (2025/26)
+
+### Standard Residential Rates
+
+| Property Price Band | SDLT Rate |
+|---------------------|-----------|
+| £0 - £250,000 | 0% |
+| £250,001 - £925,000 | 5% |
+| £925,001 - £1,500,000 | 10% |
+| Over £1,500,000 | 12% |
+
+### First-Time Buyer Rates
+
+| Property Price Band | SDLT Rate |
+|---------------------|-----------|
+| £0 - £425,000 | 0% |
+| £425,001 - £625,000 | 5% |
+| Over £625,000 | Standard rates apply |
+
+### Additional Property Surcharge (+3%)
+
+If you already own a property (anywhere in the world) and buy another, you pay an extra 3% on top of standard rates:
+
+| Property Price Band | Rate (Inc. Surcharge) |
+|---------------------|----------------------|
+| £0 - £250,000 | 3% |
+| £250,001 - £925,000 | 8% |
+| £925,001 - £1,500,000 | 13% |
+| Over £1,500,000 | 15% |
+
+This surcharge applies to:
+- Buy-to-let purchases
+- Second homes
+- Properties bought through companies
+- Investors adding to portfolios
+
+Use the [Stamp Duty Calculator](/landlord/stamp-duty-calculator) to calculate your exact bill.
+
+## How SDLT Is Calculated
+
+SDLT uses marginal rates—you only pay each rate on the portion within that band.
+
+### Example 1: £300,000 Home (First Property)
+
+| Band | Amount in Band | Rate | Tax |
+|------|---------------|------|-----|
+| £0 - £250,000 | £250,000 | 0% | £0 |
+| £250,001 - £300,000 | £50,000 | 5% | £2,500 |
+| **Total SDLT** | | | **£2,500** |
+
+### Example 2: £300,000 BTL (Additional Property)
+
+| Band | Amount in Band | Rate | Tax |
+|------|---------------|------|-----|
+| £0 - £250,000 | £250,000 | 3% | £7,500 |
+| £250,001 - £300,000 | £50,000 | 8% | £4,000 |
+| **Total SDLT** | | | **£11,500** |
+
+The additional property costs £9,000 more in SDLT alone.
+
+### Example 3: First-Time Buyer at £450,000
+
+| Band | Amount in Band | Rate | Tax |
+|------|---------------|------|-----|
+| £0 - £425,000 | £425,000 | 0% | £0 |
+| £425,001 - £450,000 | £25,000 | 5% | £1,250 |
+| **Total SDLT** | | | **£1,250** |
+
+A standard buyer would pay £10,000 on the same property.
+
+## SDLT for Property Investors
+
+The 3% surcharge significantly impacts investment returns. Factor it into every deal analysis—our [Buy to Let Calculator](/landlord/buy-to-let-calculator) includes SDLT automatically.
+
+### Impact on Yields
+
+SDLT is a sunk cost that affects your true cash-on-cash return:
+
+| Property Price | SDLT (Additional) | Total Cash Required |
+|----------------|-------------------|---------------------|
+| £150,000 | £4,500 | £42,000 (25% dep + SDLT) |
+| £200,000 | £6,000 | £56,000 |
+| £300,000 | £11,500 | £86,500 |
+| £500,000 | £27,500 | £152,500 |
+
+See our [Rental Yield vs Cash-on-Cash guide](/blog/rental-yield-vs-cash-on-cash-return) for how SDLT affects true returns.
+
+### When the Surcharge Doesn't Apply
+
+You can avoid the 3% surcharge if:
+
+**Replacing your main residence:** Selling your current home and buying a new one? No surcharge (even if you own BTL properties).
+
+**Properties under £40,000:** The surcharge doesn't apply to purchases below £40,000.
+
+**Caravans, mobile homes, houseboats:** These don't count as residential property.
+
+**Buying with a spouse who doesn't own:** If neither of you owns another property, no surcharge applies.
+
+### Surcharge Refunds
+
+If you buy a new main residence before selling your old one, you'll pay the surcharge initially. You can claim it back if you sell the old property within 3 years.
+
+## Company Purchases
+
+Companies buying residential property face:
+- The 3% additional property surcharge (always applies)
+- Plus 2% extra if the property exceeds £500,000 (total 5% surcharge)
+
+This makes company ownership expensive for higher-value properties:
+
+| Property Price | Individual SDLT | Company SDLT |
+|----------------|-----------------|--------------|
+| £300,000 | £11,500 | £11,500 |
+| £500,000 | £27,500 | £27,500 |
+| £600,000 | £38,500 | £50,500 |
+| £1,000,000 | £73,750 | £93,750 |
+
+Factor this into any [Section 24](/blog/section-24-tax-impact-guide) company ownership analysis.
+
+## SDLT Planning Strategies
+
+### 1. Timing Your Purchase
+
+If you're selling a property, try to complete the sale before buying the new one. This avoids the surcharge (or allows a refund claim).
+
+### 2. First-Time Buyer Status
+
+If you're buying jointly with a first-time buyer, the relief may apply—check the specific rules.
+
+### 3. Mixed-Use Properties
+
+Properties with commercial elements (shop with flat above) use different rates:
+
+| Band | Commercial/Mixed Rate |
+|------|----------------------|
+| £0 - £150,000 | 0% |
+| £150,001 - £250,000 | 2% |
+| Over £250,000 | 5% |
+
+No 3% surcharge applies. A £300,000 mixed-use property costs £4,500 SDLT versus £11,500 for residential.
+
+### 4. Multiple Dwellings Relief (MDR)
+
+Buying multiple properties in one transaction (a block of flats, portfolio acquisition) may qualify for MDR. The SDLT is calculated on the average unit price, potentially saving significant tax.
+
+**Note:** MDR rules are complex and were restricted in recent budgets. Take professional advice.
+
+### 5. Transfer to Spouse
+
+Transferring property to a spouse for no consideration attracts no SDLT. This can help with portfolio restructuring and [Section 24 planning](/blog/section-24-tax-impact-guide).
+
+## SDLT for Development
+
+Developers face different considerations:
+
+### Land Purchases
+
+Development land uses non-residential rates:
+- Lower rates than residential
+- No 3% surcharge
+- But site with planning may be valued as residential
+
+### Purchasing Companies (Share Deals)
+
+Buying a company that owns property avoids SDLT—you pay 0.5% Stamp Duty on shares instead. For large portfolios, this saves substantial tax.
+
+Our [Complete Development Appraisal guide](/blog/complete-development-appraisal-guide) covers how to factor acquisition costs into scheme viability.
+
+## Common SDLT Mistakes
+
+**Forgetting the surcharge:** Many investors only discover the additional 3% late in the process.
+
+**Miscalculating relief eligibility:** First-time buyer relief has specific criteria—check before assuming you qualify.
+
+**Ignoring SDLT in ROI calculations:** SDLT is a real cost that reduces returns. Include it in every analysis.
+
+**Missing refund deadlines:** Surcharge refunds must be claimed within 3 years of the new purchase.
+
+**Assuming company ownership saves tax:** The higher SDLT often outweighs income tax savings, especially on larger properties.
+
+## Regional Variations
+
+### Scotland (LBTT)
+
+| Band | Rate | Additional Dwelling |
+|------|------|---------------------|
+| £0 - £145,000 | 0% | 6% |
+| £145,001 - £250,000 | 2% | 8% |
+| £250,001 - £325,000 | 5% | 11% |
+| £325,001 - £750,000 | 10% | 16% |
+| Over £750,000 | 12% | 18% |
+
+### Wales (LTT)
+
+| Band | Rate | Higher Rate |
+|------|------|-------------|
+| £0 - £225,000 | 0% | 4% |
+| £225,001 - £400,000 | 6% | 10% |
+| £400,001 - £750,000 | 7.5% | 11.5% |
+| £750,001 - £1,500,000 | 10% | 14% |
+| Over £1,500,000 | 12% | 16% |
+
+## Calculator and Resources
+
+Use these tools for your SDLT planning:
+
+- [Stamp Duty Calculator](/landlord/stamp-duty-calculator) — Calculate your exact SDLT bill
+- [Buy to Let Calculator](/landlord/buy-to-let-calculator) — Include SDLT in investment analysis
+- [Property Investment Calculators Guide](/blog/property-investment-calculators-beginners-guide) — Overview of all tools
+
+## Key Takeaways
+
+1. **Standard SDLT** starts at 5% above £250,000
+2. **First-time buyers** pay nothing up to £425,000
+3. **Additional properties** attract a 3% surcharge on every band
+4. **Companies** pay even more (5% total surcharge above £500,000)
+5. **Factor SDLT into every deal**—it significantly affects returns
+6. **Mixed-use properties** can offer SDLT savings
+7. **Take professional advice** for complex situations
+
+---
+
+*Matt Lenzie is a property finance specialist with experience in over £400m of property transactions. He advises investors on acquisition structuring, financing, and tax-efficient property ownership.*`
+    });
+    posts.push(post5Id);
+
+    return { success: true, postsCreated: posts.length, postIds: posts };
+  },
+});
+
 // Backdate blog posts to spread them over time
 export const backdatePosts = mutation({
   args: {},
