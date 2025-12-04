@@ -1222,3 +1222,42 @@ export const checkPostsExist = mutation({
     return { count: posts.length, posts: posts.map(p => ({ title: p.title, slug: p.slug })) };
   },
 });
+
+// Backdate blog posts to spread them over time
+export const backdatePosts = mutation({
+  args: {},
+  handler: async (ctx) => {
+    // Define dates for each post (spreading over past 3 months)
+    const backdates: Record<string, number> = {
+      // Beginner's Guide - oldest (3 months ago) - Oct 15, 2025
+      "property-investment-calculators-beginners-guide": new Date("2025-10-15T10:00:00Z").getTime(),
+      // Development Appraisal - 2.5 months ago - Oct 28, 2025
+      "complete-development-appraisal-guide": new Date("2025-10-28T14:30:00Z").getTime(),
+      // BRRR Masterclass - 6 weeks ago - Nov 12, 2025
+      "brrr-strategy-masterclass": new Date("2025-11-12T09:15:00Z").getTime(),
+      // Rental Yield - 3 weeks ago - Nov 18, 2025
+      "rental-yield-vs-cash-on-cash-return": new Date("2025-11-18T11:45:00Z").getTime(),
+      // HMO Viability - 1 week ago - Nov 27, 2025
+      "hmo-viability-analysis-guide": new Date("2025-11-27T16:00:00Z").getTime(),
+    };
+
+    const updated: string[] = [];
+
+    for (const [slug, publishedAt] of Object.entries(backdates)) {
+      const post = await ctx.db
+        .query("posts")
+        .withIndex("by_slug", (q) => q.eq("slug", slug))
+        .first();
+
+      if (post) {
+        await ctx.db.patch(post._id, {
+          publishedAt,
+          createdAt: publishedAt,
+        });
+        updated.push(slug);
+      }
+    }
+
+    return { success: true, updated };
+  },
+});

@@ -26,9 +26,81 @@ const estimateReadTime = (content: string) => {
     return `${minutes} min read`;
 };
 
+// Parse markdown tables to HTML
+const parseTable = (tableString: string): string => {
+    const lines = tableString.trim().split('\n');
+    if (lines.length < 2) return tableString;
+
+    // Check if this is a valid table (has separator row with dashes)
+    const separatorIndex = lines.findIndex(line => /^\|[\s-:|]+\|$/.test(line.trim()));
+    if (separatorIndex === -1) return tableString;
+
+    const headerLine = lines[0];
+    const bodyLines = lines.slice(separatorIndex + 1);
+
+    // Parse header
+    const headers = headerLine
+        .split('|')
+        .filter(cell => cell.trim())
+        .map(cell => cell.trim());
+
+    // Parse body rows
+    const rows = bodyLines
+        .filter(line => line.trim() && line.includes('|'))
+        .map(line =>
+            line
+                .split('|')
+                .filter(cell => cell.trim() !== '' || line.split('|').length > 2)
+                .slice(line.startsWith('|') ? 1 : 0)
+                .map(cell => cell.trim())
+                .filter((_, i, arr) => i < arr.length - (line.endsWith('|') ? 1 : 0) || arr[i] !== '')
+        );
+
+    // Build HTML table
+    let html = '<div class="overflow-x-auto my-6"><table class="min-w-full border-collapse border border-slate-200 rounded-lg overflow-hidden">';
+
+    // Header
+    html += '<thead class="bg-slate-50"><tr>';
+    headers.forEach(header => {
+        html += `<th class="border border-slate-200 px-4 py-3 text-left text-sm font-semibold text-slate-900">${header}</th>`;
+    });
+    html += '</tr></thead>';
+
+    // Body
+    html += '<tbody>';
+    rows.forEach((row, rowIndex) => {
+        const bgClass = rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50/50';
+        html += `<tr class="${bgClass}">`;
+        row.forEach((cell, cellIndex) => {
+            if (cellIndex < headers.length) {
+                // Check if cell contains bold text for emphasis
+                const isBold = cell.startsWith('**') && cell.endsWith('**');
+                const cellContent = isBold ? cell.slice(2, -2) : cell;
+                const fontWeight = isBold ? 'font-semibold' : '';
+                html += `<td class="border border-slate-200 px-4 py-3 text-sm text-slate-700 ${fontWeight}">${cellContent}</td>`;
+            }
+        });
+        html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    return html;
+};
+
 // Simple markdown to HTML converter
 const parseMarkdown = (markdown: string): string => {
     let html = markdown;
+
+    // First, handle tables (before other processing that might interfere)
+    // Match table blocks (lines starting with |)
+    const tableRegex = /(?:^|\n)((?:\|[^\n]+\|\n?)+)/gm;
+    html = html.replace(tableRegex, (match, tableContent) => {
+        // Check if it's a valid table (has header separator row)
+        if (/\|[\s-:|]+\|/.test(tableContent)) {
+            return '\n' + parseTable(tableContent) + '\n';
+        }
+        return match;
+    });
 
     // Headers
     html = html.replace(/^### (.*$)/gim, '<h3 class="text-xl font-semibold text-slate-900 mt-8 mb-4">$1</h3>');
