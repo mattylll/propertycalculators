@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { SignInButton, SignUpButton, useUser } from '@clerk/nextjs';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
@@ -37,13 +37,52 @@ export function CalculatorResultsGate({
   onUnlock,
 }: CalculatorResultsGateProps) {
   const { isSignedIn, isLoaded, user } = useUser();
-  const [hasStoredData, setHasStoredData] = useState(false);
+  const [hasStoredInitialData, setHasStoredInitialData] = useState(false);
+  const prevHasCalculatedRef = useRef(false);
+  const prevFormDataRef = useRef<string>('');
   const storeSubmission = useMutation(api.calculatorSubmissions.store);
 
-  // Store data when user signs in
+  // Store data every time a calculation happens (for logged-in users)
   useEffect(() => {
     const storeData = async () => {
-      if (isSignedIn && hasCalculated && !hasStoredData && Object.keys(formData).length > 0) {
+      // Only proceed if user is signed in and auth is loaded
+      if (!isLoaded || !isSignedIn) return;
+
+      const currentFormDataStr = JSON.stringify(formData);
+
+      // Store when:
+      // 1. hasCalculated just became true (new calculation)
+      // 2. OR form data changed while hasCalculated is true (recalculation with new values)
+      const isNewCalculation = hasCalculated && !prevHasCalculatedRef.current;
+      const isRecalculation = hasCalculated && prevHasCalculatedRef.current && currentFormDataStr !== prevFormDataRef.current;
+
+      if ((isNewCalculation || isRecalculation) && Object.keys(formData).length > 0) {
+        try {
+          await storeSubmission({
+            calculatorType,
+            calculatorSlug,
+            formData: currentFormDataStr,
+            source: typeof window !== 'undefined' ? window.location.href : '',
+          });
+          setHasStoredInitialData(true);
+          onUnlock?.();
+        } catch (error) {
+          console.error('Failed to store calculator submission:', error);
+        }
+      }
+
+      // Update refs for next comparison
+      prevHasCalculatedRef.current = hasCalculated;
+      prevFormDataRef.current = currentFormDataStr;
+    };
+
+    storeData();
+  }, [isSignedIn, isLoaded, hasCalculated, formData, calculatorType, calculatorSlug, storeSubmission, onUnlock]);
+
+  // Also store when user signs in after calculating (for users who calculated before signing in)
+  useEffect(() => {
+    const storeOnSignIn = async () => {
+      if (isSignedIn && hasCalculated && !hasStoredInitialData && Object.keys(formData).length > 0) {
         try {
           await storeSubmission({
             calculatorType,
@@ -51,7 +90,7 @@ export function CalculatorResultsGate({
             formData: JSON.stringify(formData),
             source: typeof window !== 'undefined' ? window.location.href : '',
           });
-          setHasStoredData(true);
+          setHasStoredInitialData(true);
           onUnlock?.();
         } catch (error) {
           console.error('Failed to store calculator submission:', error);
@@ -59,8 +98,8 @@ export function CalculatorResultsGate({
       }
     };
 
-    storeData();
-  }, [isSignedIn, hasCalculated, hasStoredData, formData, calculatorType, calculatorSlug, storeSubmission, onUnlock]);
+    storeOnSignIn();
+  }, [isSignedIn, hasCalculated, hasStoredInitialData, formData, calculatorType, calculatorSlug, storeSubmission, onUnlock]);
 
   // Still loading auth state
   if (!isLoaded) {

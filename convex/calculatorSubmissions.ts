@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
-// Store a calculator submission
+// Store a calculator submission - creates new record for each calculation
 export const store = mutation({
   args: {
     calculatorType: v.string(),
@@ -34,26 +34,7 @@ export const store = mutation({
 
     const now = Date.now();
 
-    // Check if user already has a submission for this calculator
-    if (userId) {
-      const existing = await ctx.db
-        .query("calculatorSubmissions")
-        .withIndex("by_user", (q) => q.eq("userId", userId))
-        .filter((q) => q.eq(q.field("calculatorSlug"), args.calculatorSlug))
-        .first();
-
-      if (existing) {
-        // Update existing submission
-        await ctx.db.patch(existing._id, {
-          formData: args.formData,
-          source: args.source,
-          updatedAt: now,
-        });
-        return existing._id;
-      }
-    }
-
-    // Create new submission
+    // Always create new submission to track each calculation
     return await ctx.db.insert("calculatorSubmissions", {
       userId,
       userEmail,
