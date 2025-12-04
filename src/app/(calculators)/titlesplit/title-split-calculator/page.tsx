@@ -13,7 +13,8 @@ import { BentoCard } from '@/components/property-kit/bento-card';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { DealMetric } from '@/components/property-kit/deal-metric';
-import { AiOutputCard } from '@/components/property-kit/ai-output-card';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 
 // Title split cost estimates
 const TITLE_SPLIT_COSTS = {
@@ -46,6 +47,8 @@ export default function TitleSplitCalculatorPage() {
   const [purchasePrice, setPurchasePrice] = useState<string>('550000');
   const [stampDuty, setStampDuty] = useState<string>('33750');
   const [financeCosts, setFinanceCosts] = useState<string>('25000');
+
+  const [hasCalculated, setHasCalculated] = useState(false);
 
   // Derived calculations
   const [derivedMetrics, setDerivedMetrics] = useState({
@@ -131,6 +134,7 @@ export default function TitleSplitCalculatorPage() {
       isViable,
       costPerUnit,
     });
+    setHasCalculated(true);
   }, [currentValue, numberOfUnits, unit1Value, unit2Value, unit3Value, unit4Value, conversionCosts, useHighEstimates, hasPlanning, planningCosts, purchasePrice, stampDuty, financeCosts, existingLeases]);
 
   const formatCurrency = (value: number) => {
@@ -392,6 +396,25 @@ export default function TitleSplitCalculatorPage() {
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="Title Split Calculator"
+              calculatorSlug="title-split-calculator"
+              formData={{
+                currentValue,
+                numberOfUnits,
+                unit1Value,
+                unit2Value,
+                unit3Value,
+                unit4Value,
+                conversionCosts,
+                purchasePrice,
+                stampDuty,
+                financeCosts,
+                hasPlanning,
+                existingLeases,
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Value Analysis */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Value Analysis</h2>
@@ -503,17 +526,71 @@ export default function TitleSplitCalculatorPage() {
                 </div>
               </div>
             </BentoCard>
-
-            {/* AI Validation */}
-            <AiOutputCard
-              title="Title Split Analysis"
-              status="ready"
-              response="Enter your property details above to see AI-powered analysis and recommendations for your Title Split calculation."
-              highlights={[]}
-              confidence={0.85}
-            />
+            </CalculatorResultsGate>
           </div>
         </div>
+
+        {/* SEO Content */}
+        <CalculatorSEO
+          calculatorName="Title Split Calculator"
+          calculatorSlug="title-split-calculator"
+          description="The Title Split Calculator helps UK property investors and developers analyze the profitability of splitting a single property title into multiple units. Calculate value uplift, conversion costs, legal fees, and ROI for converting houses into flats or creating separate freehold titles. Essential for analyzing title split and freehold purchase opportunities."
+          howItWorks={`The calculator analyzes title splits by:
+
+1. Current vs Split Value - Compare single-title value against sum of individual unit values
+2. Unit Valuation - Enter estimated value for each separate unit after split
+3. Conversion Costs - Factor in physical works to create separate dwellings
+4. Legal Costs - Calculate solicitor fees, Land Registry, lease creation, and professional fees
+5. Planning - Account for planning permission costs if not using Permitted Development
+6. ROI Analysis - Calculate profit on cost and return on equity invested
+7. Viability Check - Assess if value uplift justifies costs and effort
+
+The calculator includes all costs: purchase, SDLT, conversion, legal fees, Land Registry, lease creation, surveyor fees, and finance costs to give a complete picture of the project.`}
+          whenToUse="Use this calculator when evaluating properties that could be split into multiple units (e.g., large houses into flats, semi-detached into two freeholds). Essential before purchasing conversion opportunities, when analyzing value-add strategies, or when tenants want to buy their freehold separately. Particularly useful for properties with existing HMO licenses or separate entrances."
+          keyFeatures={[
+            "Value uplift calculation for 2-4 unit splits",
+            "Comprehensive cost breakdown including all legal fees",
+            "Lease creation cost calculation for freehold properties",
+            "Planning permission cost estimation",
+            "ROI and profit on cost analysis",
+            "Viability assessment with minimum 15% profit target",
+          ]}
+          faqs={[
+            {
+              question: "What is a title split and when is it profitable?",
+              answer: "A title split (or freehold severance) divides a single property title into multiple separate legal titles. It's profitable when the combined value of separate units exceeds the single-title value by at least 20% to cover costs and provide profit. Common scenarios include splitting semi-detached houses, converting houses into flats, or creating separate maisonettes. Aim for 15-20% profit on cost minimum."
+            },
+            {
+              question: "What are the legal costs for splitting a property title?",
+              answer: "Legal costs typically include: solicitor fees (£2,000-£4,000), Land Registry fees (£300-£600 per unit), surveyor fees (£400-£800), and lease creation if converting a freehold (£1,500-£3,000 per unit). Total professional fees for a 2-unit split typically range from £5,000-£10,000. Costs increase with more units and complexity."
+            },
+            {
+              question: "Do I need planning permission to split a property title?",
+              answer: "You need planning permission if creating new separate dwellings or materially changing the use. Converting a house into flats requires planning permission and Building Regulations approval. However, if the property already operates as separate units (e.g., existing HMO or conversion), you may only need legal title work. Splitting a semi-detached into two freeholds usually doesn't need planning if no physical changes are made."
+            },
+            {
+              question: "Can I split a property title if it has a mortgage?",
+              answer: "Yes, but you need lender consent before proceeding. Most lenders require you to refinance or pay off the existing mortgage before splitting. The property typically needs bridging finance during conversion, then separate mortgages on each unit after split. Some specialist lenders offer products for title splits, but rates are higher than standard BTL mortgages."
+            },
+            {
+              question: "What's the difference between title split and freehold purchase?",
+              answer: "A title split creates multiple freehold titles from one property (e.g., house into flats). A freehold purchase is when existing leaseholders buy the freehold from the freeholder under the Leasehold Reform Act. Both create separate titles, but freehold purchase has statutory rights and set processes. Title splits require planning consent, separate access, building regulations, and lease creation if going from freehold to leasehold."
+            },
+          ]}
+          relatedTerms={[
+            "Title split property UK",
+            "Freehold severance",
+            "Convert house into flats",
+            "Split property title",
+            "Freehold purchase calculator",
+            "Property title division",
+            "House to flats conversion",
+            "Leasehold enfranchisement",
+            "Title split legal costs",
+            "Multi-unit property conversion",
+          ]}
+          categoryColor="#14B8A6"
+        />
     </CalculatorPageLayout>
   );
 }

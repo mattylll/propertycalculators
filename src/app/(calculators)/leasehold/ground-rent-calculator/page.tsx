@@ -8,6 +8,8 @@ import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/new-york-v4/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
@@ -426,6 +428,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Ground Rent Calculator"
+                            calculatorSlug="ground-rent-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Risk Assessment */}
                         <Card className={`border-2 ${
                             metrics.riskLevel === 'low' ? 'border-emerald-200 bg-emerald-50' :
@@ -557,6 +565,7 @@ Respond in JSON:
                                 </div>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
 
                         {/* AI Validation Gate */}
                         <AIValidationGate
@@ -641,6 +650,63 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="Ground Rent Calculator"
+                    calculatorSlug="ground-rent-calculator"
+                    description="The Ground Rent Calculator helps UK leaseholders understand their ground rent obligations and assess whether their ground rent is onerous. Following the Leasehold Reform (Ground Rent) Act 2022, new leases must have peppercorn ground rents. This calculator projects future escalations, calculates the capitalised value, and checks against lender criteria to determine if your ground rent could affect mortgageability or resale value."
+                    howItWorks={`The calculator analyses your ground rent using several methods:
+
+1. Escalation Projection - Models how your ground rent will increase over time based on the terms in your lease (fixed, RPI-linked, percentage increase, doubling clauses, or market review)
+2. Capitalised Value - Calculates the Net Present Value (NPV) of all future ground rent payments using a 5% discount rate, showing the true economic cost
+3. Lender Assessment - Checks your ground rent against key lending criteria, including the 0.1% of property value test and absolute thresholds
+4. Risk Analysis - Evaluates whether your ground rent is onerous based on current amount, escalation terms, and future projections
+
+The calculator identifies potentially onerous ground rents (such as doubling clauses) that may restrict mortgage availability or affect property resale.`}
+                    whenToUse="Use this calculator when purchasing a leasehold property to assess ground rent terms, when considering extending your lease to understand the capitalised value of ground rent, or when evaluating if your existing ground rent is onerous. It's essential for due diligence before completing a leasehold purchase, particularly if the ground rent exceeds £250/year or includes escalation clauses."
+                    keyFeatures={[
+                        "Project ground rent escalations over the lease term",
+                        "Calculate capitalised value (NPV) of ground rent stream",
+                        "Check against lender criteria and mortgage restrictions",
+                        "Assess risk level from low to potentially onerous",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is considered an onerous ground rent?",
+                            answer: "An onerous ground rent typically includes doubling clauses, exceeds 0.1% of the property value, or reaches £250+ per year (£1,000+ in London). Many lenders refuse mortgages on properties with doubling ground rents or where rent exceeds these thresholds. The Leasehold Reform (Ground Rent) Act 2022 banned ground rents on new leases from 30 June 2022."
+                        },
+                        {
+                            question: "How does ground rent affect my mortgage?",
+                            answer: "Lenders typically refuse mortgages if ground rent exceeds 0.1% of the property value or includes doubling clauses. Some lenders apply stricter criteria, declining if ground rent exceeds £250/year (£1,000/year in London) or if it's projected to exceed £500/year within 25 years. Onerous ground rents significantly reduce your pool of available lenders."
+                        },
+                        {
+                            question: "What are doubling ground rents?",
+                            answer: "Doubling ground rents are escalation clauses where the ground rent doubles at set intervals (typically every 10, 15, or 25 years). These are now considered onerous - a £300/year ground rent doubling every 25 years reaches £2,400/year after 75 years. Most major lenders now refuse mortgages on properties with doubling ground rents."
+                        },
+                        {
+                            question: "Can I negotiate or remove ground rent?",
+                            answer: "Yes, you can negotiate with your freeholder to vary the ground rent terms or buy out the ground rent entirely. When extending your lease under Section 42, the ground rent reduces to a peppercorn (zero). Alternatively, you can pursue collective enfranchisement to buy the freehold, eliminating ground rent. Some freeholders will negotiate voluntary variations, especially for onerous terms."
+                        },
+                        {
+                            question: "What is the Leasehold Reform (Ground Rent) Act 2022?",
+                            answer: "This Act abolished ground rents on new residential long leases in England and Wales from 30 June 2022. New leases must have a 'peppercorn' (zero financial value) ground rent. Existing leases are unaffected, but future reforms may cap or abolish ground rents on existing leases. The Act also introduced penalties for freeholders who charge prohibited ground rents."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Ground rent escalation",
+                        "Onerous ground rent",
+                        "Doubling ground rent",
+                        "Leasehold Reform Act 2022",
+                        "Peppercorn ground rent",
+                        "Capitalised ground rent value",
+                        "Ground rent mortgage criteria",
+                        "RPI-linked ground rent",
+                        "Ground rent buyout",
+                        "Section 42 lease extension",
+                    ]}
+                    categoryColor="#06B6D4"
+                />
         </CalculatorPageLayout>
     );
 };

@@ -14,8 +14,12 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 
 export default function AuctionBridgeCalculatorPage() {
+  const [hasCalculated, setHasCalculated] = useState(false);
+
   // Auction Details
   const [winningBid, setWinningBid] = useState<string>('180000');
   const [auctionFees, setAuctionFees] = useState<string>('2');
@@ -208,6 +212,7 @@ export default function AuctionBridgeCalculatorPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Input Section */}
           <div className="lg:col-span-2 space-y-6">
+            <form onSubmit={(e) => { e.preventDefault(); setHasCalculated(true); }} className="space-y-6">
             {/* Auction Details */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -408,10 +413,40 @@ export default function AuctionBridgeCalculatorPage() {
                 </p>
               </div>
             </BentoCard>
+
+            {/* Calculate Button */}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                className="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+              >
+                <Calculator className="w-5 h-5" />
+                Calculate Auction Bridge
+              </button>
+            </div>
+            </form>
           </div>
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="Auction Bridge Calculator"
+              calculatorSlug="auction-bridge-calculator"
+              formData={{
+                winningBid,
+                auctionFees,
+                currentValue,
+                completionDays,
+                exitStrategy,
+                plannedRefurb,
+                exitValue,
+                expectedHoldingPeriod,
+                bridgingLtv,
+                interestRate,
+                depositPaid
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Purchase Summary */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Purchase Summary</h2>
@@ -543,8 +578,66 @@ export default function AuctionBridgeCalculatorPage() {
               ]}
               confidence={derivedMetrics.isViable ? 0.88 : 0.65}
             />
+            </CalculatorResultsGate>
           </div>
         </div>
+
+        <CalculatorSEO
+          calculatorName="Auction Bridge Calculator"
+          calculatorSlug="auction-bridge-calculator"
+          description="The Auction Bridge Calculator helps UK property investors model fast-track bridging finance for auction purchases. When you win at auction, you typically have just 28 days to complete - this calculator shows exactly how much you need and whether the deal stacks up financially."
+          howItWorks={`Auction bridging finance is designed for speed. Here's how it works:
+
+1. Win the Property - You bid at auction and pay 10% deposit immediately
+2. Secure Bridge Finance - Apply for bridging within 1-3 days of auction
+3. Complete Due Diligence - Valuation and legal work completed in 7-14 days
+4. Complete Purchase - Bridge funds released to complete within 28 days
+5. Execute Strategy - Refurbish, refinance, or flip depending on your exit plan
+
+The calculator models your total facility (purchase + refurb), day one LTV, cash required to complete, and expected profit based on your exit strategy. It accounts for auction fees (buyer's premium), bridging interest, arrangement fees, exit fees, and all associated costs.`}
+          whenToUse="Use this calculator when you're planning to bid at property auction or have already won at auction. It's essential for understanding your cash requirements, ensuring you can complete within 28 days, and validating that the deal generates sufficient profit after all bridging costs."
+          keyFeatures={[
+            "28-day completion timeline tracking",
+            "Auction fee calculations (buyer's premium)",
+            "Day one LTV and GDLTV analysis",
+            "Cash required to complete breakdown",
+          ]}
+          faqs={[
+            {
+              question: "What is auction bridging finance?",
+              answer: "Auction bridging is fast-track finance designed to complete property purchases within the tight 28-day deadline after winning at auction. Lenders typically advance 70-80% LTV with quick decision times and can often complete in 2-3 weeks."
+            },
+            {
+              question: "How much deposit do I need to pay at auction?",
+              answer: "You must pay a 10% deposit on the day of auction (or the next working day). This is non-refundable - if you fail to complete within 28 days, you lose this deposit plus may face additional penalties."
+            },
+            {
+              question: "What happens if I can't complete in 28 days?",
+              answer: "Failing to complete means you forfeit your 10% deposit and the seller can resell the property. You may also be liable for additional damages. Always ensure your bridging finance is in place before bidding at auction."
+            },
+            {
+              question: "What are typical auction bridging rates?",
+              answer: "Auction bridging rates in the UK range from 0.75% to 1.25% per month depending on LTV, property type, and lender. Expect arrangement fees of 1.5-2.5% and budget for fast-track valuation and legal costs."
+            },
+            {
+              question: "Can I fund refurbishment costs with auction bridging?",
+              answer: "Yes, many auction bridge lenders will advance refurb costs (typically up to 100% of works). This can be drawn upfront, staged, or in arrears depending on the lender and scope of works."
+            },
+          ]}
+          relatedTerms={[
+            "Auction finance UK",
+            "28 day bridging loan",
+            "Property auction funding",
+            "Fast track bridging",
+            "Auction buyer's premium",
+            "Day one LTV",
+            "Auction property investment",
+            "Bridge to let",
+            "Auction flip finance",
+            "Emergency bridging loan",
+          ]}
+          categoryColor="#F59E0B"
+        />
     </CalculatorPageLayout>
   );
 }

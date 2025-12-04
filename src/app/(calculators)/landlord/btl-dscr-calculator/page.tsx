@@ -14,6 +14,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 
 // Common lender requirements
 const LENDER_REQUIREMENTS = [
@@ -39,6 +41,7 @@ export default function BTLDSCRCalculatorPage() {
   const [icrRequirement, setIcrRequirement] = useState<string>('145');
   const [isLimitedCompany, setIsLimitedCompany] = useState<boolean>(false);
   const [taxBand, setTaxBand] = useState<'basic' | 'higher' | 'additional'>('higher');
+  const [hasCalculated, setHasCalculated] = useState(false);
 
   // Derived calculations
   const [derivedMetrics, setDerivedMetrics] = useState({
@@ -302,6 +305,14 @@ export default function BTLDSCRCalculatorPage() {
                   helper="Lender's minimum ICR"
                 />
               </div>
+              <button
+                type="button"
+                onClick={() => setHasCalculated(true)}
+                className="w-full mt-4 py-3 bg-[var(--pc-green)] text-white rounded-xl font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+              >
+                <Calculator className="w-5 h-5" />
+                Calculate DSCR/ICR
+              </button>
             </BentoCard>
 
             {/* Stress Test Result */}
@@ -373,6 +384,20 @@ export default function BTLDSCRCalculatorPage() {
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="BTL DSCR Calculator"
+              calculatorSlug="btl-dscr-calculator"
+              formData={{
+                propertyValue,
+                loanAmount,
+                interestRate,
+                monthlyRent,
+                icrRequirement,
+                isLimitedCompany,
+                taxBand
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Key Metrics */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Coverage Ratios</h2>
@@ -447,6 +472,7 @@ export default function BTLDSCRCalculatorPage() {
                 />
               </div>
             </BentoCard>
+            </CalculatorResultsGate>
 
             {/* AI Validation */}
             <AiOutputCard
@@ -458,6 +484,61 @@ export default function BTLDSCRCalculatorPage() {
             />
           </div>
         </div>
+
+        <CalculatorSEO
+          calculatorName="BTL DSCR Calculator"
+          calculatorSlug="btl-dscr-calculator"
+          description="The BTL DSCR Calculator helps UK landlords calculate Debt Service Coverage Ratio and Interest Coverage Ratio for buy-to-let mortgages. These metrics are critical for securing BTL finance, as lenders use them to assess whether rental income adequately covers mortgage payments. Our calculator shows you if your rental income meets lender affordability requirements."
+          howItWorks={`The DSCR and ICR calculations assess mortgage affordability for BTL properties:
+
+**Interest Coverage Ratio (ICR)**: ICR = (Annual Rent ÷ Annual Interest) × 100. Most UK BTL lenders require an ICR of 125-145% calculated at a stress test rate (typically 5.5%). This means your rent must be 125-145% of the interest payment at the stressed rate.
+
+**Debt Service Coverage Ratio (DSCR)**: DSCR = Net Operating Income ÷ Annual Debt Service. A DSCR above 1.25 indicates healthy cashflow with comfortable margin for unexpected costs. Lower DSCRs may struggle to secure finance or refinance.
+
+The calculator applies different ICR requirements based on your tax status: 125% for basic rate taxpayers and limited companies, 145% for higher and additional rate taxpayers due to Section 24 restrictions.`}
+          whenToUse="Use this calculator when applying for BTL mortgages, remortgaging, or assessing whether a rental property meets lender requirements. It's essential for understanding if your rental income passes lender stress tests before making an offer or approaching lenders."
+          keyFeatures={[
+            "Calculate ICR at both actual and stress test rates",
+            "Determine maximum borrowing based on rental income",
+            "See break-even rental requirements for different loan amounts",
+            "Compare requirements for personal vs limited company ownership",
+          ]}
+          faqs={[
+            {
+              question: "What ICR do I need for a BTL mortgage?",
+              answer: "Most UK BTL lenders require an ICR of 125% for basic rate taxpayers and limited companies, or 145% for higher/additional rate taxpayers. Portfolio landlords (4+ mortgaged properties) typically need 145% regardless of tax status. The ICR is calculated using a stress test rate (usually 5.5%) rather than your actual mortgage rate."
+            },
+            {
+              question: "What is a good DSCR for buy-to-let?",
+              answer: "A DSCR of 1.25 or above is considered good for BTL properties, indicating rent covers debt service by 25% or more. DSCRs between 1.0-1.25 are marginal and may struggle to secure competitive finance. Below 1.0 means the property cannot cover its own mortgage from rental income."
+            },
+            {
+              question: "Why do lenders use a stress test rate?",
+              answer: "Lenders stress test BTL mortgages at rates typically 1-2% above current rates (usually 5.5%) to ensure you can still afford the mortgage if interest rates rise. This protects both you and the lender against rate increases. Even if your actual rate is 4%, the lender will assess affordability at 5.5%."
+            },
+            {
+              question: "Does Section 24 affect my ICR calculation?",
+              answer: "Yes. Section 24 restricts mortgage interest tax relief for personal landlords to 20%, pushing many into higher tax bands. This is why higher rate taxpayers face a 145% ICR requirement compared to 125% for basic rate taxpayers and limited companies, who aren't affected by Section 24."
+            },
+            {
+              question: "What if my rent doesn't meet the ICR requirement?",
+              answer: "You have several options: reduce your loan amount to lower the interest payment, increase the deposit, find a higher rental property, or consider purchasing through a limited company which typically has a lower 125% ICR requirement. Some specialist lenders may also have more flexible criteria."
+            },
+          ]}
+          relatedTerms={[
+            "BTL DSCR calculator",
+            "Interest Coverage Ratio",
+            "Buy-to-let affordability",
+            "BTL mortgage stress test",
+            "ICR requirements UK",
+            "Rental income calculator",
+            "BTL lender requirements",
+            "Section 24 impact",
+            "Portfolio landlord ICR",
+            "Limited company BTL",
+          ]}
+          categoryColor="#10B981"
+        />
     </CalculatorPageLayout>
   );
 }

@@ -9,6 +9,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { CalculatorStepper } from '@/components/property-kit/calculator-stepper';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency, formatCurrencyCompact, formatPercent } from '@/lib/calculators/format';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/new-york-v4/ui/select';
 import { ArrowRight, HardHat, Ruler, Wrench } from 'lucide-react';
@@ -113,6 +115,7 @@ const BuildCostCalculatorPage = () => {
     const [form, setForm] = useState<BuildCostFormState>(initialForm);
     const [status, setStatus] = useState<'ready' | 'thinking' | 'streaming'>('ready');
     const [aiCopy, setAiCopy] = useState(defaultSummary);
+    const [hasCalculated, setHasCalculated] = useState(false);
 
     const metrics = useMemo(() => deriveBuildCostMetrics(form), [form]);
 
@@ -122,6 +125,7 @@ const BuildCostCalculatorPage = () => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setHasCalculated(true);
         setStatus('thinking');
 
         setTimeout(() => {
@@ -267,6 +271,12 @@ const BuildCostCalculatorPage = () => {
                 </BentoCard>
 
                 <div className='flex flex-col gap-6'>
+                    <CalculatorResultsGate
+                        calculatorType="Build Cost Calculator"
+                        calculatorSlug="build-cost-calculator"
+                        formData={form}
+                        hasCalculated={hasCalculated}
+                    >
                     <AiOutputCard
                         title='Build Cost Analysis'
                         status={status}
@@ -297,6 +307,7 @@ const BuildCostCalculatorPage = () => {
                             </div>
                         </div>
                     </BentoCard>
+                    </CalculatorResultsGate>
                 </div>
             </section>
 
@@ -326,6 +337,63 @@ const BuildCostCalculatorPage = () => {
                     />
                 </BentoGrid>
             </section>
+
+            {/* SEO Content */}
+            <CalculatorSEO
+                calculatorName="Build Cost Calculator"
+                calculatorSlug="build-cost-calculator"
+                description="The Build Cost Calculator helps UK property developers estimate construction costs using BCIS-aligned benchmarks. Calculate accurate build costs including regional adjustments, contingencies, and professional fees for new builds, conversions, refurbishments, and extensions."
+                howItWorks={`The Build Cost Calculator uses BCIS (Building Cost Information Service) data to estimate construction costs:
+
+1. Base Costs - Select your build type (new build, conversion, refurbishment, or extension) and specification level (basic, standard, or premium)
+2. Regional Adjustments - Apply location multipliers based on UK region (London attracts 25% premium, North typically 5% below base)
+3. Contingencies - Add contingency percentage (typically 7.5-15%) for unforeseen costs
+4. Professional Fees - Include architect, engineer, QS, and project management fees (typically 10-15% of build costs)
+
+The calculator provides cost per sqm, cost per sqft, and total project cost with full breakdown of all components.`}
+                whenToUse="Use this calculator during feasibility stage to estimate total construction costs for development appraisals. Essential for calculating profit on cost, structuring development finance, and determining residual land value. Particularly useful when comparing different build types or specification levels."
+                keyFeatures={[
+                    "BCIS-aligned construction cost benchmarks for accurate UK estimates",
+                    "Regional multipliers covering all UK regions from London to Scotland",
+                    "Multiple build types: new build, conversion, refurbishment, extension",
+                    "Specification levels from basic social housing to premium high-end",
+                ]}
+                faqs={[
+                    {
+                        question: "What is BCIS and why is it important?",
+                        answer: "BCIS (Building Cost Information Service) is the UK's leading provider of construction cost data. It's produced by RICS and provides industry-standard cost benchmarks. Lenders, quantity surveyors, and professional developers use BCIS data to validate build cost estimates in development appraisals."
+                    },
+                    {
+                        question: "How much should I budget for contingency?",
+                        answer: "Contingency typically ranges from 5% for straightforward new builds to 15% for complex conversions or heritage projects. Standard practice is 7.5-10% for most schemes. Lenders will stress-test your appraisal with higher contingency, so budget conservatively. Remember: unused contingency becomes profit, but insufficient contingency can kill a deal."
+                    },
+                    {
+                        question: "What's included in professional fees?",
+                        answer: "Professional fees cover architects (3-5%), structural engineers (1-2%), MEP consultants (1-2%), quantity surveyor (1-2%), project manager (2-3%), planning consultant (0.5-1%), and building control (0.5-1%). Total professional fees typically range from 10-15% of build costs depending on project complexity."
+                    },
+                    {
+                        question: "How do I cost per sqm differ by region?",
+                        answer: "UK construction costs vary significantly by region. London commands 20-30% premium over Midlands baseline. South East adds 10-15%, South West 5-10%, while North and Scotland are typically 5-10% below baseline. This reflects labour costs, material transport, and supply/demand dynamics. Always use regional multipliers in your appraisals."
+                    },
+                    {
+                        question: "What's the difference between GIA and NIA for costing?",
+                        answer: "GIA (Gross Internal Area) includes all internal space including walls and columns. NIA (Net Internal Area) excludes walls, columns, and service areas. Construction costs are always quoted per sqm of GIA as this is what you're building. Sales values use NIA as this is usable space. For residential, GIA is typically 10-15% larger than NIA."
+                    },
+                ]}
+                relatedTerms={[
+                    "BCIS construction costs UK",
+                    "Build cost calculator per sqm",
+                    "Development appraisal build costs",
+                    "Construction contingency percentage",
+                    "Professional fees development",
+                    "Cost per sqm London",
+                    "New build costs calculator",
+                    "Conversion build costs UK",
+                    "QS build cost estimate",
+                    "Regional construction costs UK",
+                ]}
+                categoryColor="#8B5CF6"
+            />
         </CalculatorPageLayout>
     );
 };

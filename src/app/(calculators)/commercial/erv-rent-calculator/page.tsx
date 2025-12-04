@@ -11,6 +11,8 @@ import {
 import { BentoCard } from '@/components/property-kit/bento-card';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
 
@@ -50,6 +52,8 @@ export default function ERVRentCalculatorPage() {
   const [leaseLength, setLeaseLength] = useState<string>('10');
   const [breakClause, setBreakClause] = useState<string>('5');
   const [rentFreeMonths, setRentFreeMonths] = useState<string>('6');
+
+  const [hasCalculated, setHasCalculated] = useState(false);
 
   // Derived calculations
   const [derivedMetrics, setDerivedMetrics] = useState({
@@ -152,6 +156,7 @@ export default function ERVRentCalculatorPage() {
       isUnderRented,
       isOverRented,
     });
+    setHasCalculated(true);
   }, [propertyType, totalSqFt, netToGrossRatio, currentRentPsf, location, comp1RentPsf, comp2RentPsf, comp3RentPsf, qualityAdjustment, sizeAdjustment, termsAdjustment, rentFreeMonths, leaseLength]);
 
   const formatCurrency = (value: number) => {
@@ -391,6 +396,21 @@ export default function ERVRentCalculatorPage() {
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="ERV Rent Calculator"
+              calculatorSlug="erv-rent-calculator"
+              formData={{
+                propertyType,
+                totalSqFt,
+                netToGrossRatio,
+                currentRentPsf,
+                location,
+                comp1RentPsf,
+                comp2RentPsf,
+                comp3RentPsf,
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* ERV Summary */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Estimated Rental Value</h2>
@@ -480,8 +500,69 @@ export default function ERVRentCalculatorPage() {
               highlights={[]}
               confidence={0.85}
             />
+            </CalculatorResultsGate>
           </div>
         </div>
+
+        {/* SEO Content */}
+        <CalculatorSEO
+          calculatorName="ERV Rent Calculator"
+          calculatorSlug="erv-rent-calculator"
+          description="The ERV (Estimated Rental Value) Calculator helps UK commercial property investors and valuers determine the market rental value of commercial properties. Using comparable evidence, property characteristics, and market benchmarks, calculate accurate ERV assessments for retail, office, industrial, and leisure properties to support valuations and investment decisions."
+          howItWorks={`The ERV Rent Calculator determines Estimated Rental Value using professional UK commercial property valuation methodology:
+
+1. Property Assessment - Enter property type, location quality (prime/secondary/tertiary), and net lettable area
+2. Comparable Analysis - Input recent comparable lettings (£ per sq ft) from similar properties
+3. Adjustments - Apply percentage adjustments for quality, size (quantum), and lease terms differences
+4. Benchmark Comparison - Compare against market benchmarks for the property type and location
+5. ERV Calculation - Calculate weighted ERV from adjusted comparables (70%) and benchmarks (30%)
+6. Reversionary Analysis - If currently let, assess under-rented or over-rented status and reversion potential
+7. Incentive Impact - Calculate effective rent after amortising rent-free periods and incentives
+
+The calculator provides both headline ERV and effective rent after incentives, essential for accurate commercial property valuations.`}
+          whenToUse="Use this calculator when valuing commercial property for purchase, sale, or refinancing. Essential for RICS Red Book valuations, investment appraisals, lease renewals, and rent reviews. Particularly useful for assessing reversionary potential in under-rented properties, or when negotiating new lettings with rent-free incentives. Ideal for comparing ERV against passing rent to identify value-add opportunities."
+          keyFeatures={[
+            "Calculate ERV from comparable evidence and benchmarks",
+            "Apply adjustments for quality, size, and terms",
+            "Assess reversionary potential for under-rented properties",
+            "Calculate effective rent after rent-free incentives",
+          ]}
+          faqs={[
+            {
+              question: "What is ERV in UK commercial property?",
+              answer: "ERV (Estimated Rental Value) is the open market rental value of a commercial property. It represents the rent that could reasonably be expected if the property were let today on standard institutional lease terms. ERV is fundamental to commercial property valuation, as it's used to calculate yields and capital values. Professional valuers determine ERV using comparable evidence from recent lettings of similar properties, adjusted for differences."
+            },
+            {
+              question: "How do you calculate ERV per square foot?",
+              answer: "ERV per square foot is calculated by analysing recent comparable lettings of similar properties in the area, expressed as £ per sq ft per annum. Adjustments are made for differences in quality (+/-5-15%), size/quantum (+/-5-15%), lease terms (+/-5-10%), and location grade (prime +20%, tertiary -25%). The adjusted comparables are weighted (typically 70%) with market benchmarks (30%) to arrive at the ERV."
+            },
+            {
+              question: "What is the difference between ERV and passing rent?",
+              answer: "Passing rent is the actual rent currently being paid under an existing lease. ERV is the estimated market rent if the property were let today. A property is 'reversionary' or 'under-rented' when ERV exceeds passing rent, offering rental growth potential. A property is 'over-rented' when passing rent exceeds ERV, creating risk at lease renewal. The difference between ERV and passing rent drives commercial property investment decisions."
+            },
+            {
+              question: "How do rent-free periods affect ERV?",
+              answer: "Rent-free periods don't change the headline ERV, but they do impact the effective rent. For example, a property with ERV of £30 psf and 6 months rent-free on a 10-year lease has an effective rent of £28.50 psf (£30 × 114/120 months). Longer rent-free periods are common in weak markets or for tenant improvements. When analysing investments, always consider effective rent after amortising incentives over the lease term."
+            },
+            {
+              question: "What adjustments should I make to comparables?",
+              answer: "Typical adjustments to comparable evidence include: Quality (+/-10-20% for specification, fit-out, building condition), Size (-5-15% for larger units reflecting 'quantum discount'), Location (+20% prime, -25% tertiary relative to secondary), Terms (+/-5-10% for lease length, break clauses, repairs), and Timing (+/-3-5% per year for rental growth). Total adjustments typically range from -30% to +30%. Over-adjustment suggests poor comparable selection."
+            },
+          ]}
+          relatedTerms={[
+            "Estimated Rental Value",
+            "ERV calculation UK",
+            "Commercial property valuation",
+            "Comparable rent analysis",
+            "Rent per square foot",
+            "Reversionary property",
+            "Under-rented commercial property",
+            "Effective rent calculation",
+            "Commercial rent review",
+            "Market rent assessment",
+          ]}
+          categoryColor="#6366F1"
+        />
     </CalculatorPageLayout>
   );
 }

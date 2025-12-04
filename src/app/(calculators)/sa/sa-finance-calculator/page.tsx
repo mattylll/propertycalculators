@@ -15,6 +15,9 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
+import { PropertyButton } from '@/components/property-kit/property-button';
 
 // SA mortgage rate guidance (2024)
 const SA_RATE_BANDS = [
@@ -54,6 +57,8 @@ export default function SAFinanceCalculatorPage() {
   const [utilities, setUtilities] = useState<string>('300');
   const [insurance, setInsurance] = useState<string>('150');
   const [maintenance, setMaintenance] = useState<string>('5');
+
+  const [hasCalculated, setHasCalculated] = useState(false);
 
   // Derived calculations
   const [derivedMetrics, setDerivedMetrics] = useState({
@@ -439,6 +444,19 @@ export default function SAFinanceCalculatorPage() {
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="SA Finance Calculator"
+              calculatorSlug="sa-finance-calculator"
+              formData={{
+                propertyValue,
+                deposit,
+                saType,
+                averageDailyRate,
+                occupancyRate,
+                interestRate,
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Loan Summary */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Loan Summary</h2>
@@ -536,6 +554,7 @@ export default function SAFinanceCalculatorPage() {
                 </div>
               </div>
             </BentoCard>
+            </CalculatorResultsGate>
 
             {/* AI Validation */}
             <AiOutputCard
@@ -547,6 +566,64 @@ export default function SAFinanceCalculatorPage() {
             />
           </div>
         </div>
+
+        {/* SEO Content */}
+        <CalculatorSEO
+          calculatorName="SA Finance Calculator"
+          calculatorSlug="sa-finance-calculator"
+          description="The SA Finance Calculator helps UK serviced accommodation investors model finance options, understand lender requirements, and stress-test affordability. Calculate Interest Coverage Ratio (ICR), loan amounts, and cashflow with SA-specific mortgage rates that are typically higher than BTL but offer greater income potential."
+          howItWorks={`The SA Finance Calculator works by:
+
+1. Property & Loan Setup - Enter property value, deposit, and SA type (Holiday Let FHL, Short-Term Let, or Serviced Accommodation)
+2. Income Projections - Model gross income based on Average Daily Rate (ADR) and realistic occupancy rates for your area
+3. Operating Costs - Account for platform fees (Airbnb/Booking.com 12-20%), management, cleaning, utilities, and maintenance
+4. ICR Calculation - Calculate Interest Coverage Ratio at both current and stressed rates (typically 125-145% required)
+5. Affordability Test - Determine maximum loan amount based on lender ICR requirements
+
+The calculator uses current SA mortgage rate bands (60-75% LTV) and stress-tests your deal against typical lender requirements. SA mortgages require higher ICR than BTL due to the variable nature of short-term letting income.`}
+          whenToUse="Use this calculator when sourcing SA finance, comparing lender offers, or assessing deal viability before approaching brokers. Essential for understanding how much you can borrow based on projected income, ensuring your deal passes lender stress tests, and planning deposit requirements. Particularly useful for demonstrating affordability to SA specialist lenders."
+          keyFeatures={[
+            "ICR calculation with stress testing (125-145%)",
+            "SA-specific mortgage rate guidance by LTV",
+            "Breakeven occupancy analysis",
+            "Operating cost modeling (platform fees, management, cleaning)",
+          ]}
+          faqs={[
+            {
+              question: "What ICR do SA lenders require?",
+              answer: "SA lenders typically require 125-145% Interest Coverage Ratio (ICR) at a stressed interest rate. This means your gross rental income must be 1.25-1.45x your mortgage interest at the stress rate. This is higher than BTL (typically 125%) due to the variable nature of short-term letting income. Some lenders may require 145% or higher for less experienced operators."
+            },
+            {
+              question: "What interest rates should I expect for SA mortgages?",
+              answer: "SA mortgage rates are typically 0.5-1.5% higher than BTL rates. As of 2024, expect 5.29-6.19% at 60% LTV, rising to 6.29-7.49% at 71-75% LTV. Rates vary by lender, experience, property type, and business plan. Holiday Let (FHL) properties may access slightly better rates than full SA due to HMRC recognition."
+            },
+            {
+              question: "How do lenders assess SA income for affordability?",
+              answer: "Lenders typically use gross projected income (ADR x occupancy x 365) before expenses for ICR calculations. They'll scrutinize your ADR and occupancy assumptions against local market data, often requiring evidence from Airbnb/comparable listings. Most apply a stress test using 50-60% occupancy and stressed interest rates, even if you project higher occupancy."
+            },
+            {
+              question: "Can I get an SA mortgage with no SA experience?",
+              answer: "Yes, but expect stricter terms. First-time SA investors typically face: lower maximum LTV (60-70%), higher interest rates, stricter ICR requirements (145%+), and smaller loan amounts. Some lenders offer 'First SA' products. Building a track record with one property significantly improves terms for subsequent purchases."
+            },
+            {
+              question: "What's the minimum deposit for SA finance?",
+              answer: "Most SA lenders require 25-40% deposit (60-75% LTV), higher than BTL's typical 75-80% LTV. First-time SA operators may need 30-40% deposits. Holiday Let (FHL) properties might access higher LTV (75%) with some specialist lenders. The higher deposit reflects the perceived higher risk of short-term letting versus assured tenancies."
+            },
+          ]}
+          relatedTerms={[
+            "SA mortgage",
+            "Holiday let finance",
+            "Interest Coverage Ratio ICR",
+            "Serviced accommodation loan",
+            "Airbnb mortgage",
+            "Short-term let finance",
+            "SA lender requirements",
+            "Commercial mortgage SA",
+            "FHL mortgage rates",
+            "SA stress test",
+          ]}
+          categoryColor="#F97316"
+        />
     </CalculatorPageLayout>
   );
 }

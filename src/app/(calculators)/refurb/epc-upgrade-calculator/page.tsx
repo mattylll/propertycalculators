@@ -13,7 +13,8 @@ import { BentoCard } from '@/components/property-kit/bento-card';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { DealMetric } from '@/components/property-kit/deal-metric';
-import { AiOutputCard } from '@/components/property-kit/ai-output-card';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 
 // EPC upgrade measures with costs and SAP point improvements
 const EPC_MEASURES = {
@@ -64,6 +65,7 @@ export default function EPCUpgradeCalculatorPage() {
   const [targetRating, setTargetRating] = useState<EpcRating>('C');
   const [propertyType, setPropertyType] = useState<'house' | 'flat' | 'bungalow'>('house');
   const [propertyAge, setPropertyAge] = useState<'pre-1930' | '1930-1980' | '1980-2000' | 'post-2000'>('1930-1980');
+  const [hasCalculated, setHasCalculated] = useState(false);
 
   // Selected Measures
   const [selectedMeasures, setSelectedMeasures] = useState<Set<string>>(new Set());
@@ -183,6 +185,7 @@ export default function EPCUpgradeCalculatorPage() {
       newSelected.add(measureId);
     }
     setSelectedMeasures(newSelected);
+    setHasCalculated(true);
   };
 
   // Prepare data for AI validation
@@ -360,6 +363,21 @@ export default function EPCUpgradeCalculatorPage() {
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="EPC Upgrade Calculator"
+              calculatorSlug="epc-upgrade-calculator"
+              formData={{
+                currentRating,
+                targetRating,
+                propertyType,
+                propertyAge,
+                selectedMeasures: Array.from(selectedMeasures),
+                useHighEstimates,
+                hasGrantFunding,
+                grantAmount,
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Rating Progress */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Projected Rating</h2>
@@ -455,17 +473,71 @@ export default function EPCUpgradeCalculatorPage() {
                 </ul>
               </BentoCard>
             )}
-
-            {/* AI Validation */}
-            <AiOutputCard
-              title="EPC Upgrade Analysis"
-              status="ready"
-              response="Enter your property details above to see AI-powered analysis and recommendations for your EPC Upgrade calculation."
-              highlights={[]}
-              confidence={0.85}
-            />
+            </CalculatorResultsGate>
           </div>
         </div>
+
+        {/* SEO Content */}
+        <CalculatorSEO
+          calculatorName="EPC Upgrade Calculator"
+          calculatorSlug="epc-upgrade-calculator"
+          description="The EPC Upgrade Calculator helps UK property owners and landlords calculate the cost to improve their Energy Performance Certificate (EPC) rating. Plan upgrades to meet MEES regulations, reduce energy bills, and increase property value. Select from a range of energy efficiency measures and see projected costs, SAP improvements, and payback periods."
+          howItWorks={`The calculator works by:
+
+1. Starting Rating - Select your current EPC band (A-G) based on your existing certificate
+2. Target Rating - Choose the rating you need to achieve (typically C for MEES compliance)
+3. Select Measures - Pick from 14 different energy efficiency improvements
+4. Cost Estimation - See realistic costs with low/high estimates and regional variations
+5. SAP Analysis - Understand how each measure improves your SAP score
+6. Grant Funding - Factor in available grants like ECO4 and Boiler Upgrade Scheme
+7. Payback Period - Calculate when energy savings will recover your investment
+
+Each upgrade measure shows its SAP point improvement and typical cost range. The calculator accounts for your property type, age, and location to provide accurate estimates.`}
+          whenToUse="Use this calculator when planning EPC upgrades for rental properties (MEES compliance requires minimum EPC E, with EPC C proposed for 2028), preparing a property for sale, or planning energy efficiency improvements. Essential for landlords facing MEES regulations or property investors buying below-EPC-C properties."
+          keyFeatures={[
+            "14 different energy efficiency measures with accurate UK costs",
+            "SAP point improvements for each upgrade measure",
+            "Grant funding calculator (ECO4, BUS, local schemes)",
+            "Payback period analysis based on energy bill savings",
+            "MEES regulation compliance checker",
+            "Regional cost adjustments across the UK",
+          ]}
+          faqs={[
+            {
+              question: "What EPC rating do I need for rental properties?",
+              answer: "Under current MEES regulations, rental properties must have a minimum EPC rating of E. The government has proposed raising this to EPC C for new tenancies by 2028, though the timeline is under review. Landlords who don't comply can face fines of up to £30,000. There's currently a £3,500 spending cap per property."
+            },
+            {
+              question: "What is the cheapest way to improve my EPC rating?",
+              answer: "The most cost-effective measures are typically: LED lighting throughout (£200-500, +3 SAP points), draught proofing (£150-400, +2 points), loft insulation to 300mm (£300-600, +8 points), and cavity wall insulation (£800-1,500, +10 points). Always start with insulation and draught-proofing before upgrading heating systems."
+            },
+            {
+              question: "Can I get grants for EPC upgrades?",
+              answer: "Yes, several schemes are available: ECO4 provides free or subsidised insulation for eligible households, the Boiler Upgrade Scheme offers £7,500 towards air source heat pumps, and many local authorities run their own grant schemes. Check with your local council and energy suppliers for available funding."
+            },
+            {
+              question: "How much does it cost to go from EPC E to C?",
+              answer: "For a typical 3-bed semi-detached house, upgrading from E to C costs between £5,000-£15,000 depending on the property's starting condition and required measures. This usually includes loft and cavity wall insulation, a new condensing boiler, double glazing, and smart heating controls. Properties requiring solid wall insulation or heat pumps will cost more."
+            },
+            {
+              question: "What is SAP and how does it relate to EPC ratings?",
+              answer: "SAP (Standard Assessment Procedure) is the UK government's energy rating calculation method. It produces a score from 1-100, which translates to EPC bands: A (92+), B (81-91), C (69-80), D (55-68), E (39-54), F (21-38), G (1-20). Each energy efficiency measure adds SAP points. You need approximately 69 SAP points to achieve EPC C."
+            },
+          ]}
+          relatedTerms={[
+            "EPC rating improvement UK",
+            "MEES regulations landlords",
+            "Energy efficiency upgrades",
+            "EPC C compliance cost",
+            "Boiler Upgrade Scheme",
+            "ECO4 grant funding",
+            "SAP rating calculation",
+            "Cavity wall insulation",
+            "Heat pump installation UK",
+            "Property energy assessment",
+          ]}
+          categoryColor="#EF4444"
+        />
     </CalculatorPageLayout>
   );
 }

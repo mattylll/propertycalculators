@@ -13,8 +13,12 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 
 export default function RentToRentProfitCalculatorPage() {
+  const [hasCalculated, setHasCalculated] = useState(false);
+
   // Lease Costs
   const [monthlyRentToLandlord, setMonthlyRentToLandlord] = useState<string>('1200');
   const [leaseLengthYears, setLeaseLengthYears] = useState<string>('3');
@@ -376,6 +380,14 @@ export default function RentToRentProfitCalculatorPage() {
                   helper="Keys, listing fees, photos"
                 />
               </div>
+              <button
+                type="button"
+                onClick={() => setHasCalculated(true)}
+                className="w-full mt-4 py-3 bg-[var(--pc-green)] text-white rounded-xl font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+              >
+                <Calculator className="w-5 h-5" />
+                Calculate R2R Profit
+              </button>
             </BentoCard>
 
             {/* Risk Factors */}
@@ -412,6 +424,19 @@ export default function RentToRentProfitCalculatorPage() {
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="Rent to Rent Profit Calculator"
+              calculatorSlug="rent-to-rent-profit-calculator"
+              formData={{
+                monthlyRentToLandlord,
+                numberOfRooms,
+                averageRentPerRoom,
+                occupancyRate,
+                utilitiesBills,
+                furniturePackage
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Monthly Summary */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Monthly Summary</h2>
@@ -498,6 +523,7 @@ export default function RentToRentProfitCalculatorPage() {
                 />
               </div>
             </BentoCard>
+            </CalculatorResultsGate>
 
             {/* AI Validation */}
             <AiOutputCard
@@ -509,6 +535,65 @@ export default function RentToRentProfitCalculatorPage() {
             />
           </div>
         </div>
+
+        <CalculatorSEO
+          calculatorName="Rent to Rent Profit Calculator"
+          calculatorSlug="rent-to-rent-profit-calculator"
+          description="The Rent to Rent (R2R) Profit Calculator helps UK property investors analyse rent-to-rent deals by calculating monthly profit, annual returns, payback periods, and break-even occupancy. Input your lease costs, room rents, and operating expenses to see if your R2R deal is profitable."
+          howItWorks={`Rent-to-Rent is a property business model where you lease a property from a landlord, then sublease it (usually by room) at higher total rent:
+
+**Monthly Profit**: (Total Room Rents × Occupancy Rate) - Rent to Landlord - Operating Costs
+
+**Operating Costs** include: utilities (gas, electric, water, council tax), WiFi/TV, cleaning, maintenance, insurance, and management fees.
+
+**Setup Costs**: Furniture packages, decoration/refurb, legal fees, deposits. These are one-off costs with a payback period.
+
+**Break-Even Occupancy**: The minimum occupancy rate needed for the deal to cover all costs without making a loss.
+
+The calculator shows monthly profit, annual returns, profit margin, ROI on setup costs, payback period, and profit over the entire lease term.`}
+          whenToUse="Use this calculator when evaluating R2R opportunities, negotiating lease agreements with landlords, or stress-testing your R2R business model. It's essential for understanding profitability, required occupancy rates, and how long until you recoup setup investments."
+          keyFeatures={[
+            "Calculate monthly and annual R2R profit",
+            "Determine break-even occupancy rate",
+            "Calculate payback period on setup costs",
+            "Model profit over entire lease duration including rent-free periods",
+          ]}
+          faqs={[
+            {
+              question: "What is Rent-to-Rent (R2R)?",
+              answer: "Rent-to-Rent is a property strategy where you lease a property from a landlord on a medium-term contract (typically 3-5 years), then sublet it—usually as an HMO letting individual rooms—at higher total rent. You profit from the difference between what you pay the landlord and what you receive from tenants, minus operating costs. R2R requires landlord permission and proper legal agreements."
+            },
+            {
+              question: "Is Rent-to-Rent legal in the UK?",
+              answer: "Yes, R2R is legal in the UK provided you have the landlord's written permission to sublet (essential!) and comply with all relevant regulations. If running as an HMO, you'll need HMO licensing, gas/electrical safety certificates, and fire safety compliance. Never do R2R without explicit landlord consent—it breaches your tenancy and can lead to eviction and legal action."
+            },
+            {
+              question: "What is a good profit margin for R2R deals?",
+              answer: "Aim for 30-40%+ profit margins in R2R deals. Lower margins leave little buffer for voids, repairs, or rising costs. A £1,200/month rent to landlord with £2,500 gross income from rooms gives £1,300 before operating costs—after £500-600 costs, you'd have £700-800 profit (roughly 30% margin). Factor in realistic voids and maintenance."
+            },
+            {
+              question: "What are the main risks with Rent-to-Rent?",
+              answer: "Key R2R risks include: void periods (empty rooms), tenant damage, utility costs exceeding budget, landlord relationship breakdown or termination, regulatory changes (e.g., stricter HMO licensing), and liability for the full rent regardless of occupancy. You're contractually obligated to pay the landlord even if rooms are empty. Always have 3-6 months reserves."
+            },
+            {
+              question: "How much should I budget for R2R setup costs?",
+              answer: "Budget £2,000-5,000+ per property for R2R setup: furniture packages (£1,500-3,000), decoration/refurb (£1,000-3,000), legal fees (£300-800), inventory/photography (£200-500), plus 1-2 months deposit to landlord. Budget more for larger properties or full refurbishments. Factor in these costs when calculating payback period and ROI."
+            },
+          ]}
+          relatedTerms={[
+            "Rent to rent calculator",
+            "R2R profit calculator UK",
+            "HMO rent to rent",
+            "Rent to rent business model",
+            "Serviced accommodation R2R",
+            "R2R break-even calculator",
+            "Guaranteed rent calculator",
+            "Property rental arbitrage",
+            "R2R profit margins",
+            "Rent to rent strategy",
+          ]}
+          categoryColor="#10B981"
+        />
     </CalculatorPageLayout>
   );
 }

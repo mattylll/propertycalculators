@@ -7,6 +7,8 @@ import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -258,6 +260,12 @@ const ProfitOnCostCalculatorPage = () => {
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Profit on Cost Calculator"
+                            calculatorSlug="profit-on-cost-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='Profit analysis' description='Key development metrics'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -418,8 +426,68 @@ const ProfitOnCostCalculatorPage = () => {
                                 </div>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="Profit on Cost Calculator"
+                    calculatorSlug="profit-on-cost-calculator"
+                    description="The Profit on Cost Calculator helps UK property developers assess development viability and lender requirements. Calculate profit on cost (POC), profit on GDV, and return on equity to determine if your scheme meets lender criteria for development finance."
+                    howItWorks={`The Profit on Cost Calculator measures developer profit:
+
+1. Gross Development Value (GDV) - Total sales value of completed scheme
+2. Total Development Costs - Sum of land, build costs, professional fees, finance costs, sales costs, contingency, and other costs
+3. Gross Profit - GDV minus total costs (before tax)
+4. Profit on Cost (POC) - (Gross Profit ÷ Total Costs) × 100 - the key metric lenders use
+5. Profit on GDV - (Gross Profit ÷ GDV) × 100 - alternative margin measure
+6. Return on Equity - (Gross Profit ÷ Equity Required) × 100 - investor return metric
+
+The calculator assesses if POC meets typical lender requirements (15-20% minimum, preferably 20%+).`}
+                    whenToUse="Use this calculator during feasibility stage to check if development meets lender profit requirements before approaching lenders. Essential for development appraisals, assessing deal viability, and determining if scheme will secure development finance. Most lenders require 15-20% POC minimum."
+                    keyFeatures={[
+                        "Profit on Cost calculation - the primary metric lenders assess",
+                        "Profit on GDV and margin analysis for developer returns",
+                        "Return on equity calculation based on 30% equity assumption",
+                        "Visual POC gauge showing lender acceptance thresholds",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is a good profit on cost percentage?",
+                            answer: "Most development lenders require minimum 15-20% profit on cost, with 20%+ preferred. Strong schemes achieve 25%+. POC below 15% is typically rejected or requires increased equity. Higher risk schemes (complex builds, untested locations, first-time developers) need higher POC (20-25%) to secure finance. Remember: POC is before tax and doesn't include holding costs or developer time."
+                        },
+                        {
+                            question: "How is profit on cost different from profit on GDV?",
+                            answer: "Profit on Cost = (GDV - Costs) ÷ Costs × 100. Profit on GDV = (GDV - Costs) ÷ GDV × 100. Lenders prefer POC as it measures return on capital invested. 20% POC equals 16.7% profit on GDV. POC is unlimited (can exceed 100%), while profit on GDV caps at 100%. Example: £2.5m GDV, £2m costs = 25% POC or 20% on GDV. Always quote POC to lenders, not profit on GDV."
+                        },
+                        {
+                            question: "What costs should I include in total development cost?",
+                            answer: "Include everything: 1) Land (inc. SDLT), 2) Build costs (inc. prelims, overheads, profit), 3) Professional fees (architect, engineer, QS, PM, planning - typically 10-15%), 4) Finance costs (interest + arrangement fees), 5) Sales/marketing (agents, legals - 3% GDV), 6) CIL/S106, 7) Contingency (5-10%), 8) Other costs (utilities, enabling works). DO NOT include developer profit in costs - profit is what's left after all costs."
+                        },
+                        {
+                            question: "Why do lenders care about profit on cost?",
+                            answer: "POC indicates safety buffer. 20% POC means costs can overrun by 20% or sales can fall by 16.7% before lender loses money. High POC = strong deal, easier approval, better rates. Low POC means tight margins, higher lender risk, harder to secure finance. Lenders stress-test POC by increasing costs 10-15% and reducing GDV 10% - scheme must still show acceptable profit after stress."
+                        },
+                        {
+                            question: "Can I still get finance with 15% profit on cost?",
+                            answer: "Possibly, but challenging. 15-20% POC is marginal - some lenders accept for experienced developers on prime locations with pre-sales. You'll need: strong track record, higher equity (30-35%), pre-sold units reducing risk, conservative GDV with evidenced comparables, and tight cost control. Expect higher rates (12-14%) and lower LTC (60-65%). Better to improve scheme viability - reduce land cost, increase GDV, or reduce build costs to achieve 20%+ POC."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Profit on cost calculator",
+                        "Development profit margin UK",
+                        "POC calculator development",
+                        "Development finance requirements",
+                        "Lender profit requirements",
+                        "Development viability calculator",
+                        "Profit on GDV calculator",
+                        "Return on equity property",
+                        "Development appraisal profit",
+                        "Developer margin calculator",
+                    ]}
+                    categoryColor="#8B5CF6"
+                />
         </CalculatorPageLayout>
     );
 };

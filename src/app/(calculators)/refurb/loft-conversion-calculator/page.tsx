@@ -8,6 +8,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency, formatCurrencyCompact } from '@/lib/calculators/format';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/new-york-v4/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
@@ -490,6 +492,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Loft Conversion Calculator"
+                            calculatorSlug="loft-conversion-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* ROI Card */}
                         <Card className={`border-2 ${
                             metrics.roi >= 25 ? 'border-emerald-200 bg-emerald-50' :
@@ -666,8 +674,70 @@ Respond in JSON:
                                 </CardContent>
                             </Card>
                         )}
+                        </CalculatorResultsGate>
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="Loft Conversion Calculator"
+                    calculatorSlug="loft-conversion-calculator"
+                    description="The Loft Conversion Calculator helps UK homeowners and property investors estimate the cost and value-add of converting a loft into habitable space. Calculate ROI for different conversion types including Velux, dormer, hip-to-gable, and mansard conversions. Get region-specific costs and understand your potential return on investment."
+                    howItWorks={`The calculator analyses loft conversions by:
+
+1. Conversion Type - Choose from Velux, rear dormer, L-shaped dormer, hip-to-gable, or mansard
+2. Space Calculation - Enter usable loft area in square metres
+3. Regional Costs - Automatic adjustment for your UK region (London +40% to Wales -8%)
+4. Value Add - Estimates value increase based on bedrooms added and local market
+5. ROI Analysis - Compares total conversion cost against property value increase
+6. En-suite Premium - Factors in additional value from en-suite bathrooms
+
+Cost estimates are based on 2024 UK market rates and include all structural work, insulation, electrics, plumbing, finishes, and Building Regulations compliance. Regional multipliers ensure accurate pricing across the UK.`}
+                    whenToUse="Use this calculator when considering adding living space to your property through loft conversion. Ideal for homeowners looking to add bedrooms without extending, property developers assessing flip projects, or investors analyzing value-add opportunities. Essential before getting quotes to understand project viability and expected returns."
+                    keyFeatures={[
+                        "Five conversion types with accurate UK cost per sqm",
+                        "Regional cost multipliers across all UK regions",
+                        "Value-add calculation based on bedrooms added",
+                        "En-suite bathroom cost and value analysis",
+                        "Planning permission guidance by conversion type",
+                        "ROI and profit/loss projections",
+                    ]}
+                    faqs={[
+                        {
+                            question: "Do I need planning permission for a loft conversion?",
+                            answer: "Velux conversions typically fall under Permitted Development Rights and don't need planning permission. Dormer conversions may qualify if under 50 cubic metres (40 for terraced houses) and don't exceed the highest point of the roof. Hip-to-gable and mansard conversions usually require full planning permission. Conservation areas and listed buildings have stricter rules."
+                        },
+                        {
+                            question: "How much does a loft conversion cost per square metre?",
+                            answer: "UK costs vary by type and region: Velux conversions £1,100-£1,600/sqm, rear dormers £1,400-£2,100/sqm, L-shaped dormers £1,600-£2,500/sqm, hip-to-gable £1,800-£2,700/sqm, and mansard £2,200-£3,300/sqm. London costs are 40% higher, while Wales and North East are 20% lower. A typical 25sqm conversion costs £30,000-£60,000 depending on specification."
+                        },
+                        {
+                            question: "How much value does a loft conversion add?",
+                            answer: "A loft conversion typically adds 10-20% to property value, depending on location and quality. In London, adding a bedroom can increase value by 12-15%, while in the Midlands it's around 8%. The conversion should add more value than it costs - aim for an ROI of at least 25% to account for hassle and risk."
+                        },
+                        {
+                            question: "What's the difference between a Velux and dormer conversion?",
+                            answer: "A Velux conversion adds roof windows (rooflights) without changing the roofline - it's the cheapest option but provides less headroom and space. A dormer extends through the roof creating additional floor space and full head height. Dormers are more expensive but add significantly more usable space and better suit bedrooms with en-suites."
+                        },
+                        {
+                            question: "Do I need Building Regulations approval for a loft conversion?",
+                            answer: "Yes, all loft conversions require Building Regulations approval regardless of whether planning permission is needed. This covers structural calculations, fire safety, stairs, insulation, and ventilation. Your contractor should handle this, but budget £1,000-£2,000 for Building Control fees and structural engineer reports."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Loft conversion cost UK",
+                        "Dormer loft conversion",
+                        "Velux loft conversion",
+                        "Mansard loft conversion",
+                        "Hip to gable conversion",
+                        "Loft conversion ROI",
+                        "Permitted development loft",
+                        "Building regulations loft",
+                        "Add bedroom loft conversion",
+                        "Property value loft conversion",
+                    ]}
+                    categoryColor="#EF4444"
+                />
         </CalculatorPageLayout>
     );
 };

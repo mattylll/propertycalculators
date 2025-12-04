@@ -8,6 +8,8 @@ import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/new-york-v4/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
@@ -395,6 +397,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Service Charge Calculator"
+                            calculatorSlug="service-charge-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='Your service charge' description='Based on your share'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -480,6 +488,7 @@ Respond in JSON:
                                 </div>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
 
                         {/* AI Validation Gate */}
                         <AIValidationGate
@@ -564,6 +573,64 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="Service Charge Calculator"
+                    calculatorSlug="service-charge-calculator"
+                    description="The Service Charge Calculator helps UK leaseholders understand and validate their annual service charge obligations. Service charges cover the cost of maintaining communal areas, buildings insurance, management fees, and reserve funds. This calculator breaks down your share of total building costs, identifies whether charges are reasonable, and checks if adequate reserves are maintained for major works to avoid unexpected Section 20 demands."
+                    howItWorks={`The calculator analyses service charges through the following components:
+
+1. Building Costs - Aggregates all annual costs including insurance, management fees, cleaning, repairs, utilities, and reserve contributions
+2. Your Share Calculation - Applies your percentage share (as defined in your lease) to determine your personal liability
+3. Breakdown Analysis - Shows how your charge is distributed across different cost categories
+4. Reserve Assessment - Evaluates whether the building maintains adequate reserves (typically 20%+ of total costs) to avoid large Section 20 major works bills
+5. Benchmarking - Compares costs against typical ranges for your property type
+
+The calculator identifies whether charges are reasonable and if the freeholder/management company is adequately funding reserves.`}
+                    whenToUse="Use this calculator when purchasing a leasehold property to understand ongoing costs, when reviewing annual service charge budgets from your management company, or when challenging unreasonable charges through the First-tier Tribunal. Essential for budgeting rental yields on buy-to-let flats, assessing affordability before purchase, and identifying potentially excessive management fees or inadequate reserve contributions."
+                    keyFeatures={[
+                        "Calculate your annual service charge liability",
+                        "Break down costs by category with visual analysis",
+                        "Assess adequacy of reserve funds",
+                        "Identify unreasonable or excessive charges",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is a typical service charge for a flat?",
+                            answer: "Service charges vary widely by property type and location. Purpose-built blocks typically charge £1,000-£2,500/year for a 2-bed flat. Mansion blocks with porters can reach £3,000-£5,000+. High-rise towers with lifts may be £2,000-£4,000. New-build developments often have higher charges (£2,500-£4,000) due to managing agent fees and reserve requirements. Always request 3 years of service charge accounts before purchasing."
+                        },
+                        {
+                            question: "Can I challenge unreasonable service charges?",
+                            answer: "Yes - you can challenge service charges through the First-tier Tribunal (Property Chamber) if you believe they're unreasonable or unnecessary. Common grounds include excessive management fees (typically should be £150-£300 per flat), lack of competitive tendering, charges for improvements rather than repairs, or unreasonable reserve demands. You must follow the Section 27A process for determination."
+                        },
+                        {
+                            question: "What are reserve funds and why are they important?",
+                            answer: "Reserve funds (or sinking funds) are money set aside annually for major future works like roof replacement, lift renewal, or external decorations. Buildings should maintain reserves of 15-25% of annual service charges. Adequate reserves avoid large Section 20 bills when major works arise. Buildings with poor reserves may hit leaseholders with £10,000-£30,000+ bills for major works."
+                        },
+                        {
+                            question: "What is a Section 20 consultation?",
+                            answer: "Section 20 of the Landlord and Tenant Act 1985 requires freeholders to consult leaseholders before carrying out major works costing over £250 per leaseholder. The consultation involves notices explaining the works, opportunity to nominate contractors, and reviewing estimates. Without proper consultation, your liability is capped at £250. Section 20 works typically include roof repairs, external redecoration, lift replacement, or window renewal."
+                        },
+                        {
+                            question: "How are service charge shares calculated?",
+                            answer: "Your share is defined in your lease, typically as a percentage or fraction. In blocks with identical flats, it's usually equal shares (e.g., 8.33% for 12 flats). In mixed blocks, it may be based on floor area, bedrooms, or rateable values. Some leases have weighted shares where larger flats pay more. Always check your lease Schedule to confirm your exact share percentage."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Leasehold service charge",
+                        "Service charge reasonableness",
+                        "Section 20 major works",
+                        "Reserve fund sinking fund",
+                        "First-tier Tribunal service charge",
+                        "Management company fees",
+                        "Buildings insurance leasehold",
+                        "Section 27A service charge",
+                        "Right to manage RTM",
+                        "Service charge consultation",
+                    ]}
+                    categoryColor="#06B6D4"
+                />
         </CalculatorPageLayout>
     );
 };

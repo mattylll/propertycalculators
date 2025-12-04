@@ -7,6 +7,8 @@ import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -241,6 +243,12 @@ const CommercialYieldCalculatorPage = () => {
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Commercial Yield Calculator"
+                            calculatorSlug="commercial-yield-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='Yield analysis' description='Commercial investment metrics'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -383,8 +391,66 @@ const CommercialYieldCalculatorPage = () => {
                                 </div>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="Commercial Yield Calculator"
+                    calculatorSlug="commercial-yield-calculator"
+                    description="The Commercial Yield Calculator helps UK commercial property investors calculate key yield metrics including NIY (Net Initial Yield), gross yield, equivalent yield, and cap rate. Understand your commercial property returns and compare against target yields to assess investment value and performance."
+                    howItWorks={`The Commercial Yield Calculator analyses commercial property investment returns using standard UK valuation metrics:
+
+1. Net Initial Yield (NIY) - The gross rent as a percentage of purchase price, representing the headline yield
+2. Net Yield - The rent after deducting running costs (service charges, insurance) as a percentage of purchase price
+3. Equivalent Yield - Adjusts for expected voids and lease events to show true yield over the lease term
+4. Cap Rate - The capitalisation rate, representing the net operating income as a percentage of value
+
+The calculator also shows Years Purchase (the multiple of rent paid), and calculates the implied value at your target yield. This helps you assess whether a property is fairly priced for your required return.`}
+                    whenToUse="Use this calculator when evaluating commercial property investments to understand your investment yields and compare opportunities. It's essential for assessing retail units, offices, industrial units, and other commercial assets. Use it to determine fair value at your target yield, or to analyse existing holdings and assess yield compression or expansion potential."
+                    keyFeatures={[
+                        "Calculate NIY, net yield, and equivalent yield",
+                        "Assess value at target yield levels",
+                        "Account for running costs and void periods",
+                        "Analyse years purchase and cap rates",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is a good commercial property yield in the UK?",
+                            answer: "Commercial yields vary significantly by asset class and location. Prime retail and offices in London typically yield 4-5% NIY, secondary locations 6-8% NIY. Prime industrial yields 4-6% NIY, while secondary industrial and retail parks may yield 6-9% NIY. Higher yields indicate higher perceived risk or shorter lease terms."
+                        },
+                        {
+                            question: "What is the difference between NIY and net yield?",
+                            answer: "Net Initial Yield (NIY) is the gross rent divided by the purchase price. Net yield deducts running costs (such as service charge shortfalls, insurance, void allowances) from the rent before calculating the yield. Net yield is always lower than NIY and represents your true return after property operating costs."
+                        },
+                        {
+                            question: "What does yield compression mean in commercial property?",
+                            answer: "Yield compression occurs when property values increase faster than rents, causing yields to fall. For example, if a property worth £1m at 7% yield (£70k rent) increases to £1.2m with the same rent, the yield compresses to 5.8%. This typically happens in improving markets where investors accept lower yields due to strong demand and rental growth expectations."
+                        },
+                        {
+                            question: "How do I calculate equivalent yield?",
+                            answer: "Equivalent yield accounts for lease events and voids over the lease term. It's calculated by adjusting the rent for expected vacancy periods and averaging over the full lease term. For example, a 10-year lease with 3 months void at re-letting would use 9.75 years of rent across 10 years when calculating equivalent yield."
+                        },
+                        {
+                            question: "What is a good years purchase multiple?",
+                            answer: "Years purchase is the reciprocal of yield (purchase price / annual rent). Lower years purchase indicates higher yield. Typical ranges: prime assets 12-20 years purchase (5-8% yield), secondary assets 10-15 years purchase (6.5-10% yield). Shorter lease terms or higher risk assets trade at lower multiples (higher yields)."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Net Initial Yield",
+                        "Commercial property yields",
+                        "Cap rate UK",
+                        "Equivalent yield",
+                        "Years purchase",
+                        "Yield compression",
+                        "Commercial property valuation",
+                        "Investment yield analysis",
+                        "NIY calculation",
+                        "Commercial property returns",
+                    ]}
+                    categoryColor="#6366F1"
+                />
         </CalculatorPageLayout>
     );
 };

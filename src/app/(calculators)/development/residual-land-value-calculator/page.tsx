@@ -7,6 +7,8 @@ import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -266,6 +268,12 @@ const ResidualLandValueCalculatorPage = () => {
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Residual Land Value Calculator"
+                            calculatorSlug="residual-land-value-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='Residual land value' description='Maximum land price'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -420,8 +428,68 @@ const ResidualLandValueCalculatorPage = () => {
                                 </div>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="Residual Land Value Calculator"
+                    calculatorSlug="residual-land-value-calculator"
+                    description="The Residual Land Value Calculator helps UK property developers determine maximum land purchase price for development sites. Work backwards from GDV through all costs to calculate residual land value ensuring target profit margin is achieved."
+                    howItWorks={`The Residual Land Value Calculator works backwards from end value:
+
+1. Gross Development Value (GDV) - Total sales value of completed scheme
+2. Target Profit - Your required profit on cost percentage (typically 15-25%)
+3. Total Allowable Costs - Maximum costs = GDV ÷ (1 + Target Profit %)
+4. Non-Land Costs - Sum of build costs, professional fees, finance costs, sales costs, contingency, and other costs
+5. Residual Land Value = Total Allowable Costs - Non-Land Costs
+6. Sensitivity Analysis - Shows RLV at different profit margins (15%, 20%, 25%)
+
+This is the professional method developers use to determine maximum bid price for land. Remember to deduct SDLT from the RLV figure.`}
+                    whenToUse="Use this calculator when evaluating land purchases to determine maximum viable bid price. Essential before making offers on development sites. Helps ensure you don't overpay for land which is the most common cause of development failure. Use during feasibility stage before incurring professional fees."
+                    keyFeatures={[
+                        "Residual land value calculation using industry-standard methodology",
+                        "Target profit on cost adjustment to ensure viability",
+                        "Waterfall breakdown showing how RLV is derived from GDV",
+                        "Sensitivity analysis showing RLV at different profit margins",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is residual land value and how does it work?",
+                            answer: "Residual Land Value (RLV) is the maximum you can pay for land while achieving your target profit. It's calculated by working backwards: GDV minus target profit minus all development costs = RLV. This is how professional developers value land - not by comparable land sales, but by what the land can support based on the finished scheme value. RLV changes daily as GDV and costs fluctuate."
+                        },
+                        {
+                            question: "What percentage of GDV should land cost be?",
+                            answer: "Viable schemes typically show land at 25-40% of GDV. Prime London might stretch to 40-45%, provincial cities 25-35%, suburban 20-30%. If RLV exceeds 40% of GDV, margins are tight - either increase GDV, reduce build costs, or walk away. Lenders get nervous when land exceeds 35% of GDV as there's less buffer if things go wrong. Rule of thumb: land + build should not exceed 70-75% of GDV."
+                        },
+                        {
+                            question: "How do I determine target profit on cost?",
+                            answer: "Target POC depends on risk and lender requirements: Minimum viable: 15% (marginal, hard to finance), Standard requirement: 20% (most lenders accept), Strong deal: 25%+ (easy finance, better terms), High risk: 25-30% (complex builds, untested locations, first-time developers). Always stress test - if costs increase 10% or GDV falls 10%, do you still hit minimum 15% POC? If not, increase target POC starting point."
+                        },
+                        {
+                            question: "Should I deduct SDLT from residual land value?",
+                            answer: "YES - critically important. The RLV calculator shows maximum land price BEFORE SDLT. SDLT is typically 5% for commercial/development land (3% band 1, 4% band 2, 5% on £250k+). If RLV shows £500k, you pay £24,750 SDLT, so net to vendor is £475,250. Always calculate: Offer = RLV - SDLT. Factor SDLT into your appraisal or into 'other costs' field. Don't make this expensive mistake."
+                        },
+                        {
+                            question: "What if my RLV is negative or very low?",
+                            answer: "Negative RLV means scheme is unviable at your target profit - costs exceed GDV even with no land cost. Options: 1) Increase GDV (can you add value, more units, higher spec?), 2) Reduce build costs (value engineering, different spec), 3) Accept lower profit (risky - no buffer for problems), 4) Walk away (often the right answer). Never proceed with negative or marginal RLV hoping to 'make it work' - this is how developers go bust."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Residual land value calculator",
+                        "RLV calculator UK",
+                        "Land valuation development",
+                        "Maximum land price calculator",
+                        "Development appraisal land value",
+                        "Land bid calculator",
+                        "Residual method valuation",
+                        "Development land valuation",
+                        "Site value calculator",
+                        "Land purchase price calculator",
+                    ]}
+                    categoryColor="#8B5CF6"
+                />
         </CalculatorPageLayout>
     );
 };

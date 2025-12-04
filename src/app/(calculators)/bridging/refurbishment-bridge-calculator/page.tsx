@@ -13,6 +13,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 
 // Refurbishment bridge rate guidance
 const REFURB_BRIDGE_RATES = {
@@ -24,6 +26,8 @@ type RefurbType = 'light' | 'heavy';
 type DrawdownStructure = 'upfront' | 'staged' | 'arrears';
 
 export default function RefurbishmentBridgeCalculatorPage() {
+  const [hasCalculated, setHasCalculated] = useState(false);
+
   // Property Values
   const [purchasePrice, setPurchasePrice] = useState<string>('200000');
   const [currentValue, setCurrentValue] = useState<string>('200000');
@@ -215,6 +219,7 @@ export default function RefurbishmentBridgeCalculatorPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Input Section */}
           <div className="lg:col-span-2 space-y-6">
+            <form onSubmit={(e) => { e.preventDefault(); setHasCalculated(true); }} className="space-y-6">
             {/* Property Values */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -393,10 +398,39 @@ export default function RefurbishmentBridgeCalculatorPage() {
                 </div>
               </div>
             </BentoCard>
+
+            {/* Calculate Button */}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                className="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+              >
+                <Hammer className="w-5 h-5" />
+                Calculate Refurb Bridge
+              </button>
+            </div>
+            </form>
           </div>
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="Refurbishment Bridge Calculator"
+              calculatorSlug="refurbishment-bridge-calculator"
+              formData={{
+                purchasePrice,
+                currentValue,
+                refurbCost,
+                afterRefurbValue,
+                refurbType,
+                drawdownStructure,
+                purchaseLtv,
+                refurbFundingPercent,
+                interestRate,
+                loanTerm
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Loan Summary */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Facility Summary</h2>
@@ -509,8 +543,74 @@ export default function RefurbishmentBridgeCalculatorPage() {
               highlights={[]}
               confidence={0.85}
             />
+            </CalculatorResultsGate>
           </div>
         </div>
+
+        <CalculatorSEO
+          calculatorName="Refurbishment Bridge Calculator"
+          calculatorSlug="refurbishment-bridge-calculator"
+          description="The Refurbishment Bridge Calculator helps UK property investors model light and heavy refurbishment bridging finance. Calculate GDLTV (Gross Development Loan to Value), staged drawdown costs, and project returns when adding value through renovation."
+          howItWorks={`Refurbishment bridging is specifically designed for property renovation projects. Here's how it works:
+
+Light vs Heavy Refurbishment:
+- Light Refurb: Cosmetic works only (decoration, kitchens, bathrooms) - up to 75% LTV
+- Heavy Refurb: Structural works allowed (extensions, conversions, layout changes) - up to 70% LTV
+
+Drawdown Structures:
+- Staged: Funds released in tranches as works complete (most common)
+- Upfront: All refurb funds released on Day 1 (higher interest cost)
+- In Arrears: Funds released after works certified (lowest interest cost)
+
+GDLTV (Gross Development Loan to Value):
+- This is the total facility (purchase loan + refurb funding) as a percentage of ARV (After Repair Value)
+- Most lenders require GDLTV under 70-75% depending on refurb type
+- Lower GDLTV = better rates and more attractive to lenders
+
+The calculator models your purchase loan, refurb funding, average interest cost (accounting for staged drawdown), and expected profit based on your ARV.`}
+          whenToUse="Use this calculator when planning property refurbishment projects that require bridging finance. Essential for understanding GDLTV, choosing the right drawdown structure, and calculating whether your ARV provides sufficient margin after all costs to make the project profitable."
+          keyFeatures={[
+            "Light vs heavy refurb rate comparison",
+            "Staged drawdown interest modeling",
+            "GDLTV calculations",
+            "Return on equity analysis",
+          ]}
+          faqs={[
+            {
+              question: "What is GDLTV and why does it matter?",
+              answer: "GDLTV (Gross Development Loan to Value) is the total facility including refurb funds as a percentage of the After Repair Value. For example: £150k purchase loan + £50k refurb = £200k facility on a £300k ARV = 66.7% GDLTV. Lenders use this to ensure there's sufficient equity protection if they need to complete and sell the property."
+            },
+            {
+              question: "What's the difference between light and heavy refurb bridging?",
+              answer: "Light refurb allows cosmetic works only (no structural changes) with rates from 0.75-1.1% pm and up to 75% LTV. Heavy refurb allows structural works (extensions, conversions) but at slightly higher rates (0.85-1.25% pm) and lower LTVs (typically 70% max). Heavy refurb also requires more detailed plans and monitoring."
+            },
+            {
+              question: "How does staged drawdown work?",
+              answer: "With staged drawdown, refurb funds are released in tranches (typically 3-4 stages) as works complete. A surveyor inspects and certifies each stage before releasing the next tranche. This reduces interest costs as you're only paying interest on funds actually drawn. Most lenders charge interest from drawdown date, not Day 1."
+            },
+            {
+              question: "Can I get 100% of my refurb costs funded?",
+              answer: "Yes, many refurb bridge lenders will fund up to 100% of refurbishment costs as part of the facility. However, this still needs to fit within the GDLTV limits (typically 70-75% of ARV). You'll need sufficient equity in the purchase to allow room for full refurb funding."
+            },
+            {
+              question: "What ARV uplift should I target for a refurb project?",
+              answer: "Aim for an ARV that's at least 125-130% of total project cost (purchase + refurb + finance costs). This provides sufficient margin for profit and refinancing. For example: £200k purchase + £50k refurb + £15k costs = £265k total. Target ARV: £330k+ (125% = £331k)."
+            },
+          ]}
+          relatedTerms={[
+            "Refurbishment bridging UK",
+            "GDLTV calculator",
+            "Light refurb finance",
+            "Heavy refurb bridging",
+            "Staged drawdown",
+            "Property renovation finance",
+            "ARV lending",
+            "Development bridge loan",
+            "Refurb to refinance",
+            "Value-add bridging",
+          ]}
+          categoryColor="#F59E0B"
+        />
     </CalculatorPageLayout>
   );
 }

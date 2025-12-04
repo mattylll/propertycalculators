@@ -9,6 +9,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { CalculatorStepper, ContinueToNextStep } from '@/components/property-kit/calculator-stepper';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { useDeal } from '@/lib/deal-context';
 import { Switch } from '@/registry/new-york-v4/ui/switch';
 import { ArrowRight, Building2, Compass, Layers, ShieldAlert } from 'lucide-react';
@@ -281,6 +283,12 @@ const PdCalculatorPage = () => {
                 </BentoCard>
 
                 <div className='flex flex-col gap-6'>
+                    <CalculatorResultsGate
+                        calculatorType="Permitted Development Calculator"
+                        calculatorSlug="permitted-development-calculator"
+                        formData={form}
+                        hasCalculated={hasRunAssessment}
+                    >
                     <AiOutputCard
                         status={status}
                         response={aiCopy}
@@ -314,6 +322,7 @@ const PdCalculatorPage = () => {
                             helper='Expected senior lending appetite'
                         />
                     </BentoGrid>
+                    </CalculatorResultsGate>
                 </div>
             </section>
 
@@ -328,6 +337,65 @@ const PdCalculatorPage = () => {
                     <ContinueToNextStep nextStep={2} onBeforeContinue={handleContinue} />
                 </section>
             )}
+
+            {/* SEO Content */}
+            <CalculatorSEO
+                calculatorName="Permitted Development Calculator"
+                calculatorSlug="permitted-development-calculator"
+                description="The Permitted Development Calculator helps UK property developers assess PD rights and conversion opportunities. Evaluate Article 4 directions, heritage overlays, and planning routes for office-to-residential and commercial-to-residential conversions."
+                howItWorks={`The Permitted Development Calculator assesses PD viability:
+
+1. Site Details - Enter address, local authority, existing use class, and proposed use
+2. Planning Constraints - Flag Article 4 directions, conservation areas, and heritage restrictions
+3. Development Metrics - Input GIA, storeys, target units, and market values
+4. PD Route Assessment - Determines if scheme qualifies for Class MA (office to resi), Class O (commercial to resi), or requires full planning
+5. Viability Metrics - Calculates estimated GDV, build costs, and finance leverage
+6. Deal Profile - Saves assessment to deal context for ongoing tracking
+
+The calculator provides recommended planning route, indicative costs, and finance appetite assessment.`}
+                whenToUse="Use this calculator during site sourcing and initial appraisal to determine if PD rights apply. Essential before making offers on commercial buildings. Helps filter opportunities quickly and identify red flags (Article 4, heritage constraints) before incurring professional fees."
+                keyFeatures={[
+                    "Article 4 direction checking and planning route recommendation",
+                    "Heritage and conservation area overlay assessment",
+                    "Class MA and Class O PD rights evaluation",
+                    "Preliminary GDV and build cost estimates for quick viability",
+                ]}
+                faqs={[
+                    {
+                        question: "What is Permitted Development and when does it apply?",
+                        answer: "Permitted Development (PD) allows certain changes of use without full planning permission. Key classes: Class MA (office/light industrial to residential up to new build size), Class O (office to residential - now expired in most areas), and various extensions/alterations. PD offers faster consent (typically 8-12 weeks vs 8-13 weeks for full planning) and avoids S106/affordable housing. However, prior approval still required assessing transport, contamination, flooding, and design."
+                    },
+                    {
+                        question: "What is an Article 4 Direction?",
+                        answer: "Article 4 Directions remove specific PD rights in defined areas. Common in conservation areas, town centres, and residential areas. Local authorities use Article 4 to control conversions they consider harmful (e.g., loss of office space, poor quality housing). Always check local authority planning portal - Article 4 means you need full planning permission. Many London boroughs have Article 4 on office-to-residential conversions."
+                    },
+                    {
+                        question: "Can I do PD conversion in a conservation area?",
+                        answer: "Sometimes yes, sometimes no. Conservation area designation alone doesn't block PD, but most conservation areas have Article 4 directions removing PD rights. You can still apply for full planning permission, but standards are stricter - heritage impact, materials, design quality, and amenity space all scrutinised. Prior approval route might work if no Article 4 applies, but local planning authority has stronger grounds to refuse based on design."
+                    },
+                    {
+                        question: "What are the main PD restrictions I need to know?",
+                        answer: "Key restrictions: 1) Building must have been in qualifying use for at least 2 years before application, 2) Site must not be in area with Article 4 direction, 3) Maximum floorspace limits apply (varies by class), 4) Cannot demolish and rebuild - only convert existing structure, 5) External alterations limited, 6) Minimum space standards apply (37-61sqm depending on unit size), 7) No permission for change of use if building is listed."
+                    },
+                    {
+                        question: "Is PD faster and cheaper than full planning?",
+                        answer: "Usually yes, but not always. PD prior approval determination: £334 for most schemes, 8-12 weeks decision period (but often takes longer). Full planning: £462 per unit plus £22,859 if over 50 units, 8-13 weeks statutory (often extends). However, PD still requires: transport assessment, contamination report, flood risk assessment, noise assessment. Total professional fees: £15k-£30k for PD, £30k-£60k+ for full planning on similar scheme. Main saving: no affordable housing or S106."
+                    },
+                ]}
+                relatedTerms={[
+                    "Permitted Development rights UK",
+                    "Office to residential conversion",
+                    "Class MA prior approval",
+                    "Article 4 Direction check",
+                    "Commercial to residential PD",
+                    "Prior approval calculator",
+                    "Conservation area PD",
+                    "Change of use permitted development",
+                    "PD viability calculator",
+                    "GPDO Class MA",
+                ]}
+                categoryColor="#8B5CF6"
+            />
         </CalculatorPageLayout>
     );
 };

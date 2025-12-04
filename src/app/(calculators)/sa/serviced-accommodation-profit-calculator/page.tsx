@@ -8,6 +8,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -496,6 +498,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Serviced Accommodation Profit Calculator"
+                            calculatorSlug="serviced-accommodation-profit-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='SA profitability' description='Based on your inputs'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -622,6 +630,7 @@ Respond in JSON:
                                 </div>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
 
                         {/* AI Validation Gate */}
                         <AIValidationGate
@@ -696,6 +705,64 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="Serviced Accommodation Profit Calculator"
+                    calculatorSlug="serviced-accommodation-profit-calculator"
+                    description="The Serviced Accommodation Profit Calculator helps UK SA investors analyze the full profitability of short-term rental properties. Calculate gross revenue, net operating income, cashflow, and returns based on ADR, occupancy, and comprehensive operating costs. Compare SA income potential versus traditional BTL with detailed P&L breakdown and RevPAR analysis."
+                    howItWorks={`The SA Profit Calculator works by:
+
+1. Property Investment - Enter purchase price, refurb costs, and finance terms (deposit, interest rate)
+2. Revenue Projection - Model income from nightly rates and cleaning fees based on realistic occupancy and average stay length
+3. Operating Costs - Account for platform fees (Airbnb/Booking.com), management, cleaning per booking, utilities, insurance, maintenance, and consumables
+4. P&L Calculation - Generate comprehensive annual profit & loss showing gross revenue, all operating expenses, and net cashflow
+5. Performance Metrics - Calculate ADR, RevPAR, gross yield, net yield, cash-on-cash return, and breakeven occupancy
+
+The calculator demonstrates the complete SA business model, showing both the higher income potential (typically 2-4x BTL rent) and the full cost structure required to achieve it. Essential for realistic deal analysis.`}
+                    whenToUse="Use this calculator when analyzing SA investment opportunities, comparing properties to assess profit potential, building business cases for lenders or investors, understanding full operating cost structure before committing, and setting realistic income and expense budgets. Critical for comparing SA profitability against traditional BTL to justify the additional management effort."
+                    keyFeatures={[
+                        "Complete P&L with gross revenue and all operating costs",
+                        "ADR and RevPAR calculation for performance benchmarking",
+                        "Cash-on-cash return and yield calculations",
+                        "SA vs BTL income multiplier comparison",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What profit margin should I expect from serviced accommodation?",
+                            answer: "After all operating costs and mortgage, successful UK SA properties typically achieve 30-40% net margin on gross revenue. This translates to £10,000-£20,000+ annual cashflow on properties generating £30,000-£50,000 gross revenue. However, this requires proper management, competitive pricing, and maintaining occupancy. Poorly run SAs can be unprofitable despite high revenue due to platform fees, cleaning, utilities, and management eating into margins."
+                        },
+                        {
+                            question: "How much more can SA earn versus BTL?",
+                            answer: "SA properties typically generate 2-4x the gross income of equivalent BTL rentals. A property that might rent for £800/month BTL (£9,600/year) could generate £25,000-£40,000 gross revenue as SA at £120/night and 60% occupancy. However, SA operating costs are also much higher (40-60% of gross vs 20-30% for BTL), so net profit is typically 1.5-2.5x higher than BTL, not 2-4x."
+                        },
+                        {
+                            question: "What are typical operating costs for serviced accommodation?",
+                            answer: "Total operating costs typically run 40-60% of gross revenue: Platform fees 15-20% (Airbnb/Booking.com), Management 15-25% (if outsourced, 0% self-managed), Cleaning £30-50 per booking (£3,000-£6,000/year at 100 bookings), Utilities £200-400/month (guests use more than tenants), Insurance £100-200/month (specialist SA cover), Maintenance/Consumables £200-400/month. Plus mortgage interest on top of these costs."
+                        },
+                        {
+                            question: "What's a good cash-on-cash return for SA investments?",
+                            answer: "Target 15-25%+ cash-on-cash return on your deposit to justify the additional effort versus BTL (typically 5-8%). At 20% CoC, a £50,000 deposit generates £10,000 annual cashflow. Returns above 25% are excellent but may not be sustainable (check occupancy assumptions). Below 15%, question whether the additional management burden of SA is worthwhile versus easier BTL investment."
+                        },
+                        {
+                            question: "Should I include refurb costs in my SA profitability calculation?",
+                            answer: "Yes, always include full setup costs. SA properties require higher specification than BTL - quality furnishings, fully equipped kitchen, hotel-standard beds/bedding, smart TVs, fast WiFi, professional photography, and initial consumables stock. Budget £8,000-£15,000 for a 1-bed, £15,000-£25,000 for a 2-bed. These upfront costs affect your true return on investment and should be factored into CoC calculations."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Serviced accommodation profit",
+                        "SA cashflow calculator",
+                        "Airbnb profit calculator UK",
+                        "Holiday let profitability",
+                        "SA operating costs",
+                        "Short-term rental income",
+                        "SA vs BTL comparison",
+                        "Cash on cash return SA",
+                        "SA net yield",
+                        "Serviced accommodation ROI",
+                    ]}
+                    categoryColor="#F97316"
+                />
         </CalculatorPageLayout>
     );
 };

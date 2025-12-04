@@ -8,6 +8,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { formatCurrency } from '@/lib/calculators/format';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { Card, CardContent } from '@/components/ui/card';
 import {
     ArrowRight,
@@ -277,6 +279,12 @@ const Section24CalculatorPage = () => {
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Section 24 Tax Impact Calculator"
+                            calculatorSlug="section-24-tax-impact-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Impact Summary */}
                         <BentoCard variant='secondary' title='Section 24 impact' description='Before vs after comparison'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -489,8 +497,66 @@ const Section24CalculatorPage = () => {
                                 </div>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
                     </div>
                 </div>
+
+                <CalculatorSEO
+                    calculatorName="Section 24 Tax Impact Calculator"
+                    calculatorSlug="section-24-tax-impact-calculator"
+                    description="The Section 24 Tax Impact Calculator shows UK landlords how mortgage interest relief restrictions affect their rental income tax. Section 24 phased out the ability to deduct mortgage interest as an expense, replacing it with a 20% tax credit. Our calculator compares old vs new rules and shows potential savings through limited company ownership."
+                    howItWorks={`Section 24 (Finance Act 2015) changed mortgage interest tax relief for UK landlords:
+
+**Old Rules (Pre-2017)**: Mortgage interest was fully deductible from rental income before calculating tax. If you earned £20,000 rent with £12,000 interest and £3,000 other costs, your taxable profit was £5,000.
+
+**New Rules (Section 24)**: Mortgage interest is NO LONGER deductible. Instead, you get a 20% tax credit on the interest. Using the same example, your taxable profit is now £17,000 (rent minus other costs only), taxed at your marginal rate, then you claim back 20% of the £12,000 interest (£2,400 credit).
+
+**Impact**: Higher and additional rate taxpayers lose significantly because they're taxed at 40-45% on the full profit but only get 20% relief. This can push landlords into higher tax bands and make previously profitable properties cashflow negative.
+
+**Limited Company Alternative**: Properties held in limited companies avoid Section 24 entirely, as companies can still fully deduct mortgage interest. However, you'll pay corporation tax and potentially dividend tax when extracting profits.`}
+                    whenToUse="Use this calculator when assessing the true tax impact of your rental portfolio, deciding whether to transfer properties to a limited company, or evaluating new purchases under personal or company ownership. Essential for tax planning and understanding your real after-tax returns."
+                    keyFeatures={[
+                        "Calculate additional tax due to Section 24 restrictions",
+                        "Compare before and after Section 24 implementation",
+                        "Model limited company alternative with corporation and dividend tax",
+                        "See effective tax rates for personal vs company ownership",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is Section 24 and how does it affect landlords?",
+                            answer: "Section 24 restricts tax relief on mortgage interest for personal landlords to 20%, regardless of your tax band. Previously, interest was fully deductible. Now, you're taxed on rental income minus only allowable expenses (not interest), at your marginal rate (20/40/45%), then get a 20% tax credit on interest. Higher rate taxpayers effectively lose 20-25% of interest relief, significantly increasing tax bills."
+                        },
+                        {
+                            question: "Should I transfer my properties to a limited company?",
+                            answer: "It depends. Limited companies avoid Section 24 and can deduct full mortgage interest, paying only 19-25% corporation tax. However, transferring triggers SDLT (potentially 5% surcharge) and capital gains tax. Company mortgages often have higher rates and lower LTV. It's typically beneficial for higher rate taxpayers with substantial portfolios, but seek professional advice—each situation differs."
+                        },
+                        {
+                            question: "How much extra tax will Section 24 cost me?",
+                            answer: "The impact varies by your tax band and mortgage interest. Higher rate (40%) taxpayers with large mortgages suffer most. Example: £20k rent, £12k interest, £3k costs. Old rules: tax on £5k profit = £2k. New rules: tax on £17k profit (£6,800) minus 20% interest credit (£2,400) = £4,400 tax. That's £2,400 extra tax annually."
+                        },
+                        {
+                            question: "Can Section 24 push me into a higher tax band?",
+                            answer: "Yes! Because mortgage interest is no longer deductible before calculating taxable profit, your reported income increases dramatically. This can push basic rate taxpayers into higher rate (40%) or higher rate into additional rate (45%), compounding the Section 24 impact. You're taxed at a higher rate on artificially inflated profits."
+                        },
+                        {
+                            question: "Are there any alternatives to limited companies?",
+                            answer: "Limited options exist: use offset mortgages to reduce interest, maximise other allowable expenses, ensure rent increases keep pace with tax rises, consider selling loss-making properties, or incorporate spouse/family in ownership if they're lower rate taxpayers. However, for higher rate landlords with mortgages, limited companies remain the most effective Section 24 mitigation."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Section 24 calculator",
+                        "Mortgage interest tax relief",
+                        "Landlord tax calculator UK",
+                        "Section 24 impact",
+                        "BTL limited company",
+                        "Finance Act 2015 landlords",
+                        "20% mortgage tax credit",
+                        "Landlord tax planning",
+                        "Property company tax",
+                        "Higher rate taxpayer landlord",
+                    ]}
+                    categoryColor="#10B981"
+                />
         </CalculatorPageLayout>
     );
 };

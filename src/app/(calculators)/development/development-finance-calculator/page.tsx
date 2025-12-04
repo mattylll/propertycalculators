@@ -9,6 +9,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { CalculatorStepper } from '@/components/property-kit/calculator-stepper';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency, formatCurrencyCompact, formatPercent, formatMonths } from '@/lib/calculators/format';
 import { Switch } from '@/registry/new-york-v4/ui/switch';
 import { ArrowRight, Banknote, PiggyBank, TrendingUp } from 'lucide-react';
@@ -115,6 +117,7 @@ const FinanceCalculatorPage = () => {
     const [form, setForm] = useState<FinanceFormState>(initialForm);
     const [status, setStatus] = useState<'ready' | 'thinking' | 'streaming'>('ready');
     const [aiCopy, setAiCopy] = useState(defaultSummary);
+    const [hasCalculated, setHasCalculated] = useState(false);
 
     const metrics = useMemo(() => deriveFinanceMetrics(form), [form]);
 
@@ -124,6 +127,7 @@ const FinanceCalculatorPage = () => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setHasCalculated(true);
         setStatus('thinking');
 
         setTimeout(() => {
@@ -244,6 +248,12 @@ const FinanceCalculatorPage = () => {
                 </BentoCard>
 
                 <div className='flex flex-col gap-6'>
+                    <CalculatorResultsGate
+                        calculatorType="Development Finance Calculator"
+                        calculatorSlug="development-finance-calculator"
+                        formData={form}
+                        hasCalculated={hasCalculated}
+                    >
                     <AiOutputCard
                         title='Finance Recommendation'
                         status={status}
@@ -288,6 +298,7 @@ const FinanceCalculatorPage = () => {
                             </div>
                         </div>
                     </BentoCard>
+                    </CalculatorResultsGate>
                 </div>
             </section>
 
@@ -317,6 +328,64 @@ const FinanceCalculatorPage = () => {
                     />
                 </BentoGrid>
             </section>
+
+            {/* SEO Content */}
+            <CalculatorSEO
+                calculatorName="Development Finance Calculator"
+                calculatorSlug="development-finance-calculator"
+                description="The Development Finance Calculator helps UK property developers structure optimal capital stacks for development projects. Calculate senior debt, mezzanine finance, and equity requirements with indicative rates and lender appetite assessments."
+                howItWorks={`The Development Finance Calculator structures your capital stack:
+
+1. Total Development Cost (TDC) - Combines purchase price and build costs
+2. Senior Debt - Calculates senior facility based on target LTC (typically 55-70% of total costs) and LTGDV (typically 60-70% of GDV)
+3. Mezzanine Finance - Optional layer to increase leverage to 80-85% LTC at higher rates (15-18%)
+4. Equity Requirement - The balance required from developer or equity partners
+5. Lender Appetite - Assesses deal strength based on profit on cost, LTGDV, and risk profile
+
+Rates are indicative and adjust based on leverage levels. Higher LTGDV typically attracts higher rates and arrangement fees.`}
+                whenToUse="Use this calculator during feasibility stage to understand funding requirements, structure joint ventures, and assess deal viability. Essential before approaching lenders or equity partners. Helps determine optimal leverage and whether mezzanine finance is needed to bridge equity gap."
+                keyFeatures={[
+                    "Senior debt structuring with LTC and LTGDV analysis",
+                    "Mezzanine finance layering for increased leverage",
+                    "Indicative interest rates and arrangement fees by leverage tier",
+                    "Lender appetite assessment based on deal metrics",
+                ]}
+                faqs={[
+                    {
+                        question: "What is typical development finance LTC?",
+                        answer: "Senior lenders typically offer 60-70% loan-to-cost (LTC) for residential development. Experienced developers with strong track records may secure 70%+ on prime schemes. First-time developers often limited to 60% LTC. LTC also depends on LTGDV - lenders prefer to stay below 70-75% of Gross Development Value to maintain comfortable buffer."
+                    },
+                    {
+                        question: "How does mezzanine finance work?",
+                        answer: "Mezzanine finance sits between senior debt and equity, allowing developers to increase leverage to 80-85% LTC. It's secured by a second charge and commands higher rates (15-20%+) due to increased risk. Mezzanine is useful when you're equity-constrained but have a strong deal. Exit fees of 1-3% are common. Calculate carefully - high mezzanine costs can erode profit margins."
+                    },
+                    {
+                        question: "What rates should I expect for development finance?",
+                        answer: "Current UK development finance rates (2024): Senior debt 9-13% annually plus 1.5-2.5% arrangement fee. Rates vary by LTGDV - under 65% LTGDV might secure 9-11%, while 70%+ LTGDV commands 11-13%. Exit fees typically 1-2%. Mezzanine rates 15-20%+ with higher fees. Always factor in all costs including monitoring fees, valuation fees, and legal costs."
+                    },
+                    {
+                        question: "What is LTGDV and why do lenders care?",
+                        answer: "Loan-to-Gross Development Value (LTGDV) measures total debt against end value. Lenders typically prefer 65-70% LTGDV maximum, providing 30-35% safety buffer if sales prices fall. Lower LTGDV means lower risk, better rates, and easier approval. LTGDV is often more important than LTC - a deal with high LTC but low LTGDV is safer than high LTGDV with lower LTC."
+                    },
+                    {
+                        question: "What do lenders look for in strong development deals?",
+                        answer: "Lenders assess: 1) Profit on Cost (minimum 15-20%, preferably 20%+), 2) LTGDV (preferably under 70%), 3) Developer experience and track record, 4) Location and demand evidence, 5) Planning status (secured permission preferred), 6) Exit strategy (pre-sales reduce risk), 7) Cash flow coverage through build period. Strong deals on these metrics achieve better rates and higher leverage."
+                    },
+                ]}
+                relatedTerms={[
+                    "Development finance UK",
+                    "LTC loan to cost",
+                    "LTGDV calculator",
+                    "Mezzanine finance development",
+                    "Senior debt property",
+                    "Development equity requirements",
+                    "Construction finance rates",
+                    "Bridging to development finance",
+                    "Joint venture equity",
+                    "Development appraisal funding",
+                ]}
+                categoryColor="#8B5CF6"
+            />
         </CalculatorPageLayout>
     );
 };

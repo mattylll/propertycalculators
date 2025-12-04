@@ -13,6 +13,8 @@ import { BentoCard } from '@/components/property-kit/bento-card';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 
 // Sample HMO licence fees by council (2024 estimates)
 // In reality, these vary significantly - this is for illustration
@@ -47,6 +49,8 @@ type LicenceType = 'mandatory' | 'additional' | 'selective';
 type ApplicationType = 'new' | 'renewal';
 
 export default function HMOLicenceFeeCalculatorPage() {
+  const [hasCalculated, setHasCalculated] = useState(false);
+
   // Property Details
   const [council, setCouncil] = useState<string>('average-uk');
   const [licenceType, setLicenceType] = useState<LicenceType>('mandatory');
@@ -194,6 +198,7 @@ export default function HMOLicenceFeeCalculatorPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Input Section */}
           <div className="lg:col-span-2 space-y-6">
+            <form onSubmit={(e) => { e.preventDefault(); setHasCalculated(true); }}>
             {/* Location & Type */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -361,10 +366,54 @@ export default function HMOLicenceFeeCalculatorPage() {
                 </div>
               </div>
             </BentoCard>
+
+            {/* Calculate Button */}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+              >
+                <FileCheck className="w-5 h-5" />
+                Calculate Fees
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setCouncil('average-uk');
+                  setLicenceType('mandatory');
+                  setApplicationType('new');
+                  setNumberOfProperties('1');
+                  setNumberOfRooms('5');
+                  setNumberOfOccupants('5');
+                  setIsAccreditedLandlord(false);
+                  setEarlyBirdDiscount(false);
+                  setMultiPropertyDiscount(false);
+                  setCustomFee('');
+                  setHasCalculated(false);
+                }}
+                className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
+              >
+                Reset
+              </button>
+            </div>
+            </form>
           </div>
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="HMO Licence Fee Calculator"
+              calculatorSlug="hmo-licence-fee-calculator"
+              formData={{
+                council,
+                licenceType,
+                applicationType,
+                numberOfProperties,
+                numberOfRooms,
+                numberOfOccupants
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Total Cost */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Total Licence Cost</h2>
@@ -443,8 +492,68 @@ export default function HMOLicenceFeeCalculatorPage() {
               highlights={[]}
               confidence={0.85}
             />
+            </CalculatorResultsGate>
           </div>
         </div>
+
+        {/* SEO Content */}
+        <CalculatorSEO
+          calculatorName="HMO Licence Fee Calculator"
+          calculatorSlug="hmo-licence-fee-calculator"
+          description="The HMO Licence Fee Calculator helps UK landlords estimate mandatory HMO licensing costs across different local authorities. Calculate fees for mandatory, additional, and selective licensing schemes, factor in available discounts, and understand the annual cost per property and per room for accurate HMO investment budgeting."
+          howItWorks={`The HMO Licence Fee Calculator provides accurate licensing cost estimates:
+
+1. Location Selection - Choose your local authority from major UK councils to see area-specific fees
+2. Licence Type - Select mandatory HMO licensing, additional licensing, or selective licensing schemes
+3. Application Details - Specify whether it's a new application or renewal (renewals are typically cheaper)
+4. Portfolio Scale - Enter number of properties and rooms to calculate total portfolio licensing costs
+5. Discount Application - Apply discounts for accredited landlord status, early applications, or multi-property portfolios
+6. Cost Breakdown - View total fees, annual equivalent costs, and per-room charges
+
+The calculator includes data from 20+ UK local authorities and calculates the amortized annual cost over the typical 5-year licence period. Factor these costs into your HMO cashflow calculations to understand their impact on returns.`}
+          whenToUse="Use this calculator when budgeting for HMO investments, comparing costs across different local authorities, or planning portfolio expansion. Essential for understanding the true operating costs of HMO properties and factoring licensing fees into your investment analysis and cashflow projections."
+          keyFeatures={[
+            "Compare HMO licence fees across 20+ UK councils",
+            "Calculate costs for mandatory and additional licensing",
+            "Apply discounts for accreditation and early applications",
+            "Calculate annual cost per property and per room",
+          ]}
+          faqs={[
+            {
+              question: "How much does an HMO licence cost in the UK?",
+              answer: "HMO licence fees vary significantly by local authority, ranging from approximately £700-£1,750 for new applications. London boroughs typically charge £1,300-£1,750, while other major cities charge £950-£1,400. Renewals are usually 15-25% cheaper. Licences are valid for 5 years, so the annual equivalent cost is 20% of the total fee."
+            },
+            {
+              question: "What's the difference between mandatory and additional HMO licensing?",
+              answer: "Mandatory licensing applies nationwide to properties with 5+ occupants from 2+ households sharing facilities, or any size HMO of 3+ storeys. Additional licensing is discretionary and implemented by some councils for smaller HMOs (3-4 occupants) in specific designated areas. Fees are typically similar, around £800-£1,500 depending on the council."
+            },
+            {
+              question: "Can I get discounts on HMO licence fees?",
+              answer: "Many councils offer discounts: accredited landlords (NLA, RLA, or local schemes) typically receive 10% off, early applications before scheme implementation can save 5-10%, and some councils offer multi-property portfolio discounts of 5-15% when licensing multiple properties. Always check your local authority's specific discount schemes."
+            },
+            {
+              question: "What happens if I don't licence my HMO?",
+              answer: "Operating an unlicensed HMO is a criminal offence punishable by unlimited fines. Councils can prosecute landlords, issue civil penalties of up to £30,000 per offence, make Rent Repayment Orders forcing you to repay up to 12 months rent to tenants, and issue Management Orders taking control of your property. Always check if your property requires licensing."
+            },
+            {
+              question: "How do I know if my property needs an HMO licence?",
+              answer: "Your property needs mandatory HMO licensing if it has 5+ occupants from 2+ households sharing facilities (bathroom/kitchen). Some areas also have additional or selective licensing covering smaller HMOs or all rented properties. Check your local council's website - many have online tools to determine if your property needs licensing. Article 4 directions also affect HMO regulations in certain areas."
+            },
+          ]}
+          relatedTerms={[
+            "HMO licence fees UK",
+            "Mandatory HMO licensing costs",
+            "Additional licensing scheme fees",
+            "Selective licensing HMO",
+            "HMO licence application cost",
+            "Article 4 HMO licence",
+            "Accredited landlord discounts",
+            "HMO licence renewal fees",
+            "Local authority HMO licensing",
+            "HMO licensing calculator UK",
+          ]}
+          categoryColor="#EC4899"
+        />
     </CalculatorPageLayout>
   );
 }

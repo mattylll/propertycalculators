@@ -8,6 +8,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -392,6 +394,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="SA Occupancy Calculator"
+                            calculatorSlug="sa-occupancy-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='Occupancy analysis' description='Breakeven and profit targets'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -525,6 +533,7 @@ Respond in JSON:
                                 </Card>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
 
                         {/* Info Box */}
                         <div className='p-4 rounded-xl bg-blue-50 border border-blue-200'>
@@ -615,6 +624,64 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="SA Occupancy Calculator"
+                    calculatorSlug="sa-occupancy-calculator"
+                    description="The SA Occupancy Calculator helps UK serviced accommodation operators model occupancy rates and understand breakeven thresholds. Calculate the minimum occupancy needed to cover costs, project cashflow at different booking levels, and understand your safety margin. Essential for pricing strategy, market assessment, and stress-testing your SA business model."
+                    howItWorks={`The SA Occupancy Calculator works by:
+
+1. Revenue Modeling - Enter your Average Daily Rate (ADR), platform fees (Airbnb/Booking.com), and cleaning fees to calculate net revenue per night
+2. Cost Structure - Split costs into fixed (utilities, insurance, mortgage) and variable (cleaning, consumables) for accurate breakeven analysis
+3. Breakeven Calculation - Determine the exact occupancy percentage needed to cover all operating costs and mortgage payments
+4. Scenario Modeling - View cashflow projections at 40%, 50%, 60%, 70%, and 80% occupancy to understand profit potential
+5. RevPAR Analysis - Calculate Revenue Per Available Room at different occupancy levels to benchmark against market
+
+The calculator accounts for the unique cost structure of SA properties, including per-booking cleaning costs, platform commission on gross revenue, and the importance of average stay length in spreading fixed costs.`}
+                    whenToUse="Use this calculator when setting initial ADR and assessing market viability, comparing different properties' breakeven requirements, stress-testing against seasonal downturns, planning budget for low-season sustainability, and optimizing pricing to maximize profit above breakeven. Critical for understanding the relationship between ADR, occupancy, and profitability."
+                    keyFeatures={[
+                        "Breakeven occupancy calculation accounting for all costs",
+                        "Profit scenarios at 40%, 50%, 60%, 70%, 80% occupancy",
+                        "RevPAR analysis at different occupancy levels",
+                        "Safety margin calculation showing buffer above breakeven",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What's a realistic occupancy rate for serviced accommodation?",
+                            answer: "UK SA occupancy varies significantly by location and type. City centres (Manchester, Bristol) achieve 55-70% annual average, tourist hotspots (Cornwall, Lake District) reach 60-75% but with high seasonality, and contractor accommodation can hit 70-85% year-round. Urban Airbnbs typically see 50-65%, while professional SA with multi-OTA strategy achieves higher. Always factor in seasonal variation - winter can drop 20-30% below summer peaks."
+                        },
+                        {
+                            question: "What breakeven occupancy should I aim for?",
+                            answer: "Target breakeven occupancy below 50% for sustainable operation. Under 40% is excellent, giving strong margin for market fluctuations. 40-50% is acceptable with solid cash reserves. Above 50% breakeven is risky, leaving little room for seasonal dips, maintenance periods, or market softening. Your breakeven should be significantly below your realistic occupancy projection."
+                        },
+                        {
+                            question: "How do I calculate my actual net revenue per night?",
+                            answer: "Net revenue per night = ADR after discounts - platform fees (15-20% of ADR) - management fees (if applicable) - variable costs per night (laundry, consumables) + cleaning profit spread across average stay. For example: £120 ADR - £18 platform fee (15%) - £15 variable costs + £6 cleaning profit (£15 profit on 2.5-night stay) = £93 net per night."
+                        },
+                        {
+                            question: "What's RevPAR and why does it matter for SA?",
+                            answer: "RevPAR (Revenue Per Available Room) = ADR x Occupancy. It measures revenue efficiency across all days, not just booked nights. A £150 ADR at 60% occupancy = £90 RevPAR. This is more meaningful than ADR alone for comparing properties or tracking performance. You can increase RevPAR by raising ADR (premium strategy) or increasing occupancy (volume strategy) - most successful SAs optimize both."
+                        },
+                        {
+                            question: "How much safety margin should I have above breakeven?",
+                            answer: "Aim for at least 5-10 nights per month above breakeven at typical occupancy. This safety margin cushions against cancellations, low seasons, unexpected maintenance, or market changes. If you project 65% occupancy (19.5 nights) with 45% breakeven (13.5 nights), you have 6 nights buffer - acceptable but not generous. More than 10 nights margin provides comfortable security for sustainable operation."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "SA occupancy rate",
+                        "Breakeven occupancy",
+                        "RevPAR calculation",
+                        "Average Daily Rate ADR",
+                        "Serviced accommodation bookings",
+                        "Airbnb occupancy",
+                        "Holiday let occupancy",
+                        "OTA platform fees",
+                        "SA cashflow modeling",
+                        "Seasonal occupancy variation",
+                    ]}
+                    categoryColor="#F97316"
+                />
         </CalculatorPageLayout>
     );
 };

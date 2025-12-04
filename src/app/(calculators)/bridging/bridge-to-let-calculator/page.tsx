@@ -13,8 +13,12 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 
 export default function BridgeToLetCalculatorPage() {
+  const [hasCalculated, setHasCalculated] = useState(false);
+
   // Property Details
   const [purchasePrice, setPurchasePrice] = useState<string>('250000');
   const [currentValue, setCurrentValue] = useState<string>('250000');
@@ -219,6 +223,7 @@ export default function BridgeToLetCalculatorPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Input Section */}
           <div className="lg:col-span-2 space-y-6">
+            <form onSubmit={(e) => { e.preventDefault(); setHasCalculated(true); }} className="space-y-6">
             {/* Property Details */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -415,10 +420,39 @@ export default function BridgeToLetCalculatorPage() {
                 </div>
               </div>
             </BentoCard>
+
+            {/* Calculate Button */}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                className="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+              >
+                <Calculator className="w-5 h-5" />
+                Calculate Bridge to Let
+              </button>
+            </div>
+            </form>
           </div>
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="Bridge to Let Calculator"
+              calculatorSlug="bridge-to-let-calculator"
+              formData={{
+                purchasePrice,
+                currentValue,
+                targetValue,
+                refurbCost,
+                monthlyRent,
+                bridgingLtv,
+                bridgingRate,
+                bridgingTerm,
+                btlLtv,
+                btlRate
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Bridging Costs */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Bridging Phase</h2>
@@ -528,8 +562,72 @@ export default function BridgeToLetCalculatorPage() {
               highlights={[]}
               confidence={0.85}
             />
+            </CalculatorResultsGate>
           </div>
         </div>
+
+        <CalculatorSEO
+          calculatorName="Bridge to Let Calculator"
+          calculatorSlug="bridge-to-let-calculator"
+          description="The Bridge to Let Calculator helps UK property investors model bridge-to-let exit strategies. Calculate capital recycling, refinance options, and ongoing cashflow when transitioning from bridging finance to a buy-to-let mortgage after refurbishment."
+          howItWorks={`Bridge to let is a two-phase financing strategy:
+
+Phase 1: Bridging Finance
+- Purchase property with bridging loan (typically 70-80% LTV)
+- Complete refurbishment works (3-9 months typical)
+- Fund works through staged drawdown or upfront facility
+- Pay monthly bridging interest during refurb period
+
+Phase 2: BTL Refinance
+- Property revalued at higher post-refurb value
+- Take out buy-to-let mortgage (typically 75% of new value)
+- Use BTL proceeds to repay bridge loan
+- Generate monthly rental income going forward
+
+The calculator shows you how much capital you can recycle through refinancing, what cash will be left in the deal, and your ongoing cashflow from rental income after mortgage payments.`}
+          whenToUse="Use this calculator when planning value-add property investments where you intend to hold as a rental. It's ideal for properties requiring refurbishment where you want to refinance onto a long-term BTL mortgage rather than selling. Essential for understanding if the refinance will release enough capital and if the rent covers the mortgage."
+          keyFeatures={[
+            "Two-phase cost modeling (bridge + BTL)",
+            "Capital recycling analysis",
+            "ICR stress test calculations",
+            "Monthly cashflow projections",
+          ]}
+          faqs={[
+            {
+              question: "What is bridge to let financing?",
+              answer: "Bridge to let is a property investment strategy where you use short-term bridging finance to purchase and refurbish a property, then refinance onto a long-term buy-to-let mortgage once works are complete. This allows you to add value during the bridge period, then refinance at the higher value."
+            },
+            {
+              question: "How much can I recycle with bridge to let?",
+              answer: "If you add sufficient value through refurbishment, you can often recycle 75-100% of your initial capital. For example: buy at £200k, spend £30k on refurb, refinance at £300k (75% LTV = £225k advance). This returns most of your £230k investment."
+            },
+            {
+              question: "What is ICR and why does it matter?",
+              answer: "Interest Coverage Ratio (ICR) is the rental income divided by the mortgage interest cost. Most BTL lenders require 125-145% ICR, meaning the rent must be 25-45% higher than the mortgage payment. This ensures you can afford the mortgage even if interest rates rise."
+            },
+            {
+              question: "How long does a typical bridge to let take?",
+              answer: "Bridge to let projects typically take 6-12 months from purchase to BTL refinance. This includes 3-6 months for refurbishment, plus 2-3 months for tenant placement and BTL mortgage application. Plan for 9-12 months of bridging costs in your budget."
+            },
+            {
+              question: "Can I get 100% of refurb costs from the bridge?",
+              answer: "Many bridging lenders will fund up to 100% of refurbishment costs as part of the facility. This is typically drawn in staged payments as works are completed and inspected. Some lenders offer upfront release, while others require works to be certified before releasing funds."
+            },
+          ]}
+          relatedTerms={[
+            "Bridge to let UK",
+            "Capital recycling property",
+            "BTL refinance strategy",
+            "Refurbishment bridging",
+            "Interest coverage ratio",
+            "Staged drawdown",
+            "Buy refurbish rent",
+            "Value-add property",
+            "Bridge to BTL mortgage",
+            "Property refinancing UK",
+          ]}
+          categoryColor="#F59E0B"
+        />
     </CalculatorPageLayout>
   );
 }

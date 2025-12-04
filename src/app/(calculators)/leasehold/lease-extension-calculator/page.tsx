@@ -8,6 +8,8 @@ import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -467,6 +469,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Lease Extension Calculator"
+                            calculatorSlug="lease-extension-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='Extension cost estimate' description='Based on statutory formula'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -603,6 +611,7 @@ Respond in JSON:
                                 </div>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
 
                         {/* AI Validation Gate */}
                         <AIValidationGate
@@ -677,6 +686,63 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="Lease Extension Calculator"
+                    calculatorSlug="lease-extension-calculator"
+                    description="The Lease Extension Calculator estimates the statutory premium to extend your lease under Section 42 of the Leasehold Reform Act 1993. For leases under 80 years, marriage value becomes payable to the freeholder, significantly increasing costs. This calculator uses the statutory valuation formula including capitalised ground rent, reversion value, and marriage value (if applicable) to estimate your total extension cost including professional fees."
+                    howItWorks={`The calculator uses the statutory lease extension formula:
+
+1. Capitalised Ground Rent - Calculates the present value of ground rent payments over the remaining lease term using a capitalisation rate (typically 6-7%)
+2. Reversion Value - Determines the present value of the property reverting to the freeholder at lease expiry, discounted at the deferment rate (5% for flats per Sportelli case)
+3. Marriage Value - For leases under 80 years, calculates 50% of the uplift in value created by extending the lease (extended value minus current value minus freeholder's loss)
+4. Professional Costs - Adds surveyor fees, legal fees, and the freeholder's reasonable costs
+
+The calculator uses relativity graphs based on Savills/RICS data to determine the percentage of freehold value your current lease represents.`}
+                    whenToUse="Use this calculator when your lease has fallen below 90 years to understand the cost of extending. It's particularly critical for leases approaching or below 80 years, as marriage value adds significant cost. Essential for purchase negotiations on short leases, planning lease extension timing, and understanding whether to extend before selling. Always extend before 80 years if possible to avoid marriage value."
+                    keyFeatures={[
+                        "Calculate statutory premium under Section 42 notice",
+                        "Include marriage value for leases under 80 years",
+                        "Estimate total costs including professional fees",
+                        "Show value uplift and ROI from extending",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is the 80-year rule for lease extensions?",
+                            answer: "When a lease drops below 80 years, 'marriage value' becomes payable. Marriage value is the increase in property value created by extending the lease, and leaseholders must pay 50% of this to the freeholder. This can add tens of thousands to the extension cost. Above 80 years, no marriage value is payable, making extensions significantly cheaper."
+                        },
+                        {
+                            question: "How much does a lease extension typically cost?",
+                            answer: "Costs vary dramatically based on lease length, property value, and ground rent. For a £350k flat with 82 years remaining, expect £8-15k. At 72 years, this could rise to £30-50k due to marriage value. Professional fees add £4-8k. Always extend before 80 years if possible - the cost increases exponentially as the lease shortens further."
+                        },
+                        {
+                            question: "What is Section 42 and the statutory process?",
+                            answer: "Section 42 of the Leasehold Reform Act 1993 gives qualifying leaseholders the statutory right to extend their lease by 90 years at a peppercorn (zero) ground rent. You must have owned the flat for 2+ years. The process involves serving a Section 42 notice with your premium offer, the freeholder's counter-notice, negotiation, and potentially First-tier Tribunal if you can't agree on price."
+                        },
+                        {
+                            question: "What happens if the freeholder disputes my valuation?",
+                            answer: "If you can't agree on the premium, either party can apply to the First-tier Tribunal (Property Chamber) to determine the price. You'll need a RICS surveyor's valuation report. The Tribunal will consider comparable evidence and technical valuation arguments. Most cases settle before Tribunal through negotiation, as Tribunal proceedings add time and legal costs."
+                        },
+                        {
+                            question: "Will leasehold reform change extension costs?",
+                            answer: "Yes - the Leasehold and Freehold Reform Act 2024 is set to abolish marriage value, cap ground rent at peppercorn rates, and simplify the valuation formula. This will significantly reduce extension costs, especially for leases under 80 years. However, existing Section 42 rights remain available under current rules until the reforms are fully implemented."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Section 42 lease extension",
+                        "Marriage value calculation",
+                        "Lease extension premium",
+                        "80 year lease rule",
+                        "First-tier Tribunal",
+                        "Relativity valuation",
+                        "Capitalised ground rent",
+                        "Deferment rate Sportelli",
+                        "Section 42 notice",
+                        "Leasehold Reform Act 1993",
+                    ]}
+                    categoryColor="#06B6D4"
+                />
         </CalculatorPageLayout>
     );
 };

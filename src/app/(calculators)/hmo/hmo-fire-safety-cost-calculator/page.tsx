@@ -13,6 +13,8 @@ import { BentoCard } from '@/components/property-kit/bento-card';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 
 // Fire safety cost estimates (2024 prices)
 const FIRE_SAFETY_COSTS = {
@@ -31,6 +33,8 @@ const FIRE_SAFETY_COSTS = {
 };
 
 export default function HMOFireSafetyCostCalculatorPage() {
+  const [hasCalculated, setHasCalculated] = useState(false);
+
   // Property Details
   const [propertyStoreys, setPropertyStoreys] = useState<string>('2');
   const [numberOfRooms, setNumberOfRooms] = useState<string>('5');
@@ -242,6 +246,7 @@ export default function HMOFireSafetyCostCalculatorPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Input Section */}
           <div className="lg:col-span-2 space-y-6">
+            <form onSubmit={(e) => { e.preventDefault(); setHasCalculated(true); }}>
             {/* Property Details */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -446,10 +451,58 @@ export default function HMOFireSafetyCostCalculatorPage() {
                 )}
               </BentoCard>
             )}
+
+            {/* Calculate Button */}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+              >
+                <Flame className="w-5 h-5" />
+                Calculate Costs
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setPropertyStoreys('2');
+                  setNumberOfRooms('5');
+                  setHasBasement(false);
+                  setBuildingAge('pre-1990');
+                  setExistingFireDoors('0');
+                  setHasInterlinkedAlarms(false);
+                  setHasEmergencyLighting(false);
+                  setHasFireAlarmPanel(false);
+                  setHasFireExtinguishers(false);
+                  setHasFireRiskAssessment(false);
+                  setDoorSpecification('FD30');
+                  setAlarmType('mains');
+                  setUseHighEstimates(false);
+                  setHasCalculated(false);
+                }}
+                className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
+              >
+                Reset
+              </button>
+            </div>
+            </form>
           </div>
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="HMO Fire Safety Cost Calculator"
+              calculatorSlug="hmo-fire-safety-cost-calculator"
+              formData={{
+                propertyStoreys,
+                numberOfRooms,
+                hasBasement,
+                buildingAge,
+                existingFireDoors,
+                doorSpecification,
+                alarmType
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Total Cost */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Total Estimated Cost</h2>
@@ -549,8 +602,67 @@ export default function HMOFireSafetyCostCalculatorPage() {
               highlights={[]}
               confidence={0.85}
             />
+            </CalculatorResultsGate>
           </div>
         </div>
+
+        {/* SEO Content */}
+        <CalculatorSEO
+          calculatorName="HMO Fire Safety Cost Calculator"
+          calculatorSlug="hmo-fire-safety-cost-calculator"
+          description="The HMO Fire Safety Cost Calculator helps UK landlords estimate the costs of bringing an HMO property into fire safety compliance. Calculate expenses for fire doors, interlinked smoke alarms, emergency lighting, fire risk assessments, and all mandatory fire safety equipment required under HMO licensing regulations."
+          howItWorks={`The HMO Fire Safety Cost Calculator assesses compliance requirements and costs:
+
+1. Property Assessment - Enter property storeys, room count, building age, and existing fire safety features
+2. Current Status - Indicate which fire safety measures are already in place (fire doors, alarms, etc.)
+3. Specification Options - Choose fire door specifications (FD30S or FD60), alarm types (battery, mains, or addressable), and cost estimates (standard or premium)
+4. Mandatory Requirements - The calculator identifies mandatory items based on HMO regulations
+5. Cost Breakdown - Receive detailed costs for each fire safety component
+
+The calculator uses 2024 UK market prices and accounts for property-specific factors like building age, number of storeys, and basement presence. Costs are broken down per room and include all major fire safety components required for HMO licensing compliance.`}
+          whenToUse="Use this calculator when budgeting for HMO conversion, planning fire safety upgrades, or preparing for mandatory HMO licensing applications. Essential for understanding the full cost implications of bringing a property into fire safety compliance before purchase or conversion."
+          keyFeatures={[
+            "Estimate costs for FD30S and FD60 fire doors",
+            "Calculate interlinked alarm system requirements",
+            "Model emergency lighting needs for 3+ storey properties",
+            "Factor in building age and existing fire safety features",
+          ]}
+          faqs={[
+            {
+              question: "What fire safety measures are mandatory for HMOs?",
+              answer: "All HMOs require FD30S (30-minute) fire doors on all habitable rooms and kitchen, mains-powered interlinked smoke alarms on each floor and in circulation spaces, heat detectors in kitchens, clear escape routes, and regular Fire Risk Assessments. Properties with 3+ storeys typically require emergency lighting. All fire doors must have intumescent strips, smoke seals, and self-closing devices."
+            },
+            {
+              question: "How much does it cost to make an HMO fire safe?",
+              answer: "Fire safety costs vary by property size and existing features, but typically range from £2,000-£6,000 for a 5-bed HMO. Budget £300-500 per fire door (including fitting), £80-150 per interlinked alarm, £150-300 per emergency light, £150-400 for a Fire Risk Assessment, and £400-1,200 for an addressable alarm panel if required for larger properties."
+            },
+            {
+              question: "What's the difference between FD30S and FD60 fire doors?",
+              answer: "FD30S doors provide 30 minutes fire resistance with smoke seals, suitable for most HMOs under 3 storeys. FD60 doors provide 60 minutes fire resistance and are typically required for taller buildings (3+ storeys) or properties with specific risk factors. FD60 doors cost approximately £450-800 vs £250-450 for FD30S doors."
+            },
+            {
+              question: "Do I need an addressable fire alarm system?",
+              answer: "Larger HMOs (typically 6+ rooms or 3+ storeys) may benefit from addressable systems where each alarm has a unique address, allowing you to identify exactly which alarm has been triggered. While basic mains interlinked alarms suffice for smaller HMOs, addressable systems (£400-1,200 for the panel plus installation) offer better monitoring and may be required by some local authorities."
+            },
+            {
+              question: "How often do fire safety components need replacing?",
+              answer: "Fire doors should last 20+ years if maintained properly. Interlinked smoke alarms have a 10-year lifespan, after which they must be replaced. Emergency lighting requires annual testing and batteries typically last 3-5 years. Fire Risk Assessments should be reviewed annually or when changes are made to the property. Factor these ongoing costs into your HMO business plan."
+            },
+          ]}
+          relatedTerms={[
+            "HMO fire safety requirements UK",
+            "FD30S fire doors cost",
+            "HMO fire door regulations",
+            "Interlinked smoke alarms HMO",
+            "Emergency lighting requirements",
+            "HMO fire risk assessment",
+            "Fire safety compliance costs",
+            "Mandatory HMO licensing fire safety",
+            "Article 4 HMO fire regulations",
+            "HMO amenity standards fire safety",
+          ]}
+          categoryColor="#EC4899"
+        />
     </CalculatorPageLayout>
   );
 }

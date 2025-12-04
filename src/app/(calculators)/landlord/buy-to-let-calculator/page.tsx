@@ -9,6 +9,8 @@ import { PropertyButton } from '@/components/property-kit/property-button';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
 import { formatCurrency, formatCurrencyCompact } from '@/lib/calculators/format';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -460,6 +462,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Buy to Let Calculator"
+                            calculatorSlug="buy-to-let-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='Investment returns' description='Based on your inputs'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -548,6 +556,7 @@ Respond in JSON:
                                 </div>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
 
                         {/* AI Validation Gate */}
                         <AIValidationGate
@@ -653,6 +662,67 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
+
+                <CalculatorSEO
+                    calculatorName="Buy to Let Calculator"
+                    calculatorSlug="buy-to-let-calculator"
+                    description="The Buy to Let Calculator helps UK landlords calculate rental yield, monthly cashflow, and return on investment for BTL properties. Input your purchase price, expected rent, mortgage details, and operating costs to see comprehensive investment returns including gross yield, net yield, DSCR, and cash-on-cash return."
+                    howItWorks={`The BTL calculator analyses investment returns across multiple metrics:
+
+**Gross Yield**: (Annual Rent ÷ Purchase Price) × 100. This is the headline yield before costs.
+
+**Net Yield**: ((Annual Rent - Operating Costs) ÷ Purchase Price) × 100. Shows yield after all costs except mortgage.
+
+**Monthly Cashflow**: (Monthly Rent - Mortgage Payment - Operating Costs ÷ 12). This is your actual monthly profit or loss.
+
+**Cash on Cash Return**: (Annual Cashflow ÷ Deposit) × 100. Shows ROI on your invested capital.
+
+**DSCR**: (Net Operating Income ÷ Annual Debt Service). Lenders require DSCR of 1.25+ for most BTL mortgages.
+
+The calculator includes realistic operating costs: management fees (typically 8-12%), insurance, maintenance allowance, void periods, and other expenses to give accurate net returns.`}
+                    whenToUse="Use this calculator when evaluating BTL purchase opportunities, comparing properties, or assessing whether a property meets your investment criteria. It's essential for understanding true profitability after all costs and whether the property meets lender DSCR requirements."
+                    keyFeatures={[
+                        "Calculate gross and net rental yields",
+                        "Forecast monthly and annual cashflow",
+                        "Assess DSCR for lender requirements",
+                        "Compare returns across different deposit sizes and interest rates",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is a good rental yield for BTL?",
+                            answer: "In the UK, gross yields vary by region. London averages 3-5%, while Northern cities like Manchester or Liverpool can achieve 6-8%. A good net yield (after all costs) is 4%+ in London, 5-7% elsewhere. However, yield alone doesn't tell the full story—also consider capital growth potential and cashflow."
+                        },
+                        {
+                            question: "What is the minimum deposit for a BTL mortgage?",
+                            answer: "Most UK BTL lenders require a minimum 25% deposit (75% LTV). Some specialist lenders offer 80-85% LTV but with higher rates and stricter criteria. Portfolio landlords and first-time BTL investors may face higher deposit requirements of 30-40%. Larger deposits secure better interest rates."
+                        },
+                        {
+                            question: "How much should I budget for BTL operating costs?",
+                            answer: "Budget 25-35% of gross rent for operating costs: management fees (8-12%), insurance (£200-500/year), maintenance (5-10% of rent), void periods (4-8% allowance), and other costs. Properties in poorer condition or problematic tenants can push costs higher. Always stress test your numbers."
+                        },
+                        {
+                            question: "What DSCR do I need for a BTL mortgage?",
+                            answer: "Most UK lenders require DSCR of 1.25-1.45, meaning your net operating income must be 125-145% of your mortgage payment at the stress test rate (typically 5.5%). Higher rate taxpayers face 1.45 requirements due to Section 24. Below 1.25, you'll struggle to secure finance."
+                        },
+                        {
+                            question: "Should I use interest-only or repayment for BTL?",
+                            answer: "Most BTL investors choose interest-only mortgages to maximize cashflow, planning to repay capital from property sale or refinancing. Interest-only keeps monthly payments low but requires an exit strategy. Repayment mortgages build equity faster but significantly reduce monthly cashflow, often making properties cashflow negative."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "BTL calculator UK",
+                        "Rental yield calculator",
+                        "Buy-to-let investment",
+                        "BTL mortgage calculator",
+                        "Rental property ROI",
+                        "Gross rental yield",
+                        "Net rental yield",
+                        "BTL cashflow",
+                        "Landlord profit calculator",
+                        "Property investment returns",
+                    ]}
+                    categoryColor="#10B981"
+                />
         </CalculatorPageLayout>
     );
 };

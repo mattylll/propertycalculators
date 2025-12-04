@@ -8,6 +8,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/new-york-v4/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
@@ -482,6 +484,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="CIL Calculator"
+                            calculatorSlug="cil-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* CIL Liability */}
                         <Card className={`border-2 ${
                             metrics.selfBuildExemption ? 'border-emerald-200 bg-emerald-50' :
@@ -577,6 +585,7 @@ Respond in JSON:
                                 </div>
                             </BentoCard>
                         )}
+                        </CalculatorResultsGate>
 
                         {/* AI Validation Gate */}
                         <AIValidationGate
@@ -651,6 +660,64 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="CIL Calculator"
+                    calculatorSlug="cil-calculator"
+                    description="The CIL Calculator helps UK property developers calculate Community Infrastructure Levy liability for planning applications. Calculate CIL including indexation, reliefs, exemptions, and payment schedules. Essential for development appraisals and cost planning."
+                    howItWorks={`The CIL Calculator determines your Community Infrastructure Levy liability:
+
+1. Net Additional Floor Area - Starts with gross internal area (GIA) and deducts existing floor area if the use has been lawful for 6+ months
+2. Reliefs & Exemptions - Apply social housing relief (typically 35-50% affordable) and self-build exemptions
+3. CIL Rate - Uses the local authority's adopted charging rate for your zone and development type
+4. Indexation - Applies BCIS All-in TPI indexation from adoption date to current year (typically adds 10-25% to base rate)
+5. Payment Schedule - Calculates instalment schedule based on total liability (£0-50k: 100% on commencement, £50k-500k: 2 instalments, £500k+: 4 instalments)
+
+The calculator provides total CIL liability, CIL per sqm, and detailed payment timeline.`}
+                    whenToUse="Use this calculator when preparing development appraisals, evaluating site purchases, or submitting planning applications. CIL is payable on commencement and must be factored into development finance arrangements. Essential for profit on cost calculations and residual land value assessments."
+                    keyFeatures={[
+                        "Accurate CIL rates for major UK local authorities and charging zones",
+                        "BCIS indexation calculator from adoption year to current year",
+                        "Social housing relief and self-build exemption calculations",
+                        "Payment schedule generator showing instalments and dates",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is CIL and who pays it?",
+                            answer: "Community Infrastructure Levy (CIL) is a planning charge on new development to fund local infrastructure like schools, parks, and transport. It's paid by the developer/landowner upon commencement of development. CIL is separate from S106 contributions and applies to most new buildings and extensions. Not all local authorities have adopted CIL - check your council's charging schedule."
+                        },
+                        {
+                            question: "How is the CIL rate determined?",
+                            answer: "Each local authority sets CIL rates per square metre (sqm) based on development viability studies. Rates vary by location, use class, and charging zone. For example, Westminster charges £200-550/sqm for residential depending on zone, while some authorities charge £50/sqm or haven't adopted CIL. Rates are indexed annually using BCIS All-in Tender Price Index."
+                        },
+                        {
+                            question: "Can I get existing floor area deducted?",
+                            answer: "Yes, if the existing building has been in lawful use for at least 6 months in the 3 years before planning permission, you can deduct that floor area from the CIL calculation. The existing use must be the same as or similar to the proposed use. This can significantly reduce CIL liability for conversions and change of use schemes. Keep evidence of lawful use for at least 6 continuous months."
+                        },
+                        {
+                            question: "What reliefs and exemptions are available?",
+                            answer: "Main reliefs include: Social Housing Relief (100% relief for affordable housing provided by registered providers), Self-Build Exemption (100% relief if you build your own home and live in it for 3 years), Charitable Relief (for charitable purposes), and Exceptional Circumstances Relief (discretionary, rarely granted). You must apply BEFORE commencement. Retrospective claims are not accepted."
+                        },
+                        {
+                            question: "What happens if I don't pay CIL on time?",
+                            answer: "Late payment attracts serious penalties: 20% surcharge if not paid within 30 days of notice, then 40% surcharge plus 8% annual interest. The local authority can also impose a stop notice preventing further development and can register a local land charge. CIL is recoverable as a civil debt. Always notify the council of commencement date and pay on time."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Community Infrastructure Levy UK",
+                        "CIL calculator planning",
+                        "CIL rates by local authority",
+                        "BCIS indexation CIL",
+                        "Social housing relief CIL",
+                        "Self-build exemption",
+                        "CIL payment schedule",
+                        "S106 vs CIL",
+                        "Development contributions UK",
+                        "CIL liability notice",
+                    ]}
+                    categoryColor="#8B5CF6"
+                />
         </CalculatorPageLayout>
     );
 };

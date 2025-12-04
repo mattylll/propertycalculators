@@ -8,6 +8,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -442,6 +444,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Bridging Loan Calculator"
+                            calculatorSlug="bridging-loan-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='Loan costs' description='Total bridging costs breakdown'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -615,8 +623,71 @@ Respond in JSON:
                                 </CardContent>
                             </Card>
                         )}
+                        </CalculatorResultsGate>
                     </div>
                 </div>
+
+                <CalculatorSEO
+                    calculatorName="Bridging Loan Calculator"
+                    calculatorSlug="bridging-loan-calculator"
+                    description="The Bridging Loan Calculator helps UK property investors and developers calculate the true cost of bridging finance. Model interest costs (retained, rolled, or serviced), arrangement fees, exit fees, and see your net Day 1 advance and total redemption amount."
+                    howItWorks={`Bridging loans are short-term property finance (typically 3-24 months) designed to 'bridge' a timing gap. Here's how the costs work:
+
+Interest Types:
+- Retained: Interest deducted upfront from your advance (lower net proceeds, lower exit cost)
+- Rolled: Interest compounds monthly and added to redemption (higher net proceeds, higher exit cost)
+- Serviced: Interest paid monthly during term (highest net proceeds, manageable monthly cost)
+
+Fee Structure:
+- Arrangement fee: 1-2.5% charged upfront
+- Exit fee: 0-1.5% charged on redemption
+- Valuation fee: £500-£1,500 depending on property value
+- Legal fees: £1,500-£3,000 for lender's solicitor
+
+The calculator shows your net Day 1 advance (what you actually receive), gross redemption (what you must repay), and total cost of finance. This helps you compare lenders and choose the right interest structure for your project.`}
+                    whenToUse="Use this calculator when comparing bridging loan quotes, planning property purchases with timing constraints, funding refurbishment projects, or assessing whether you can afford bridging costs until your exit strategy completes. Essential for understanding the true cost before committing to bridging finance."
+                    keyFeatures={[
+                        "Compare retained vs rolled vs serviced interest",
+                        "LTV calculations with live rate guidance",
+                        "Net advance and redemption calculations",
+                        "Total cost of finance breakdown",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is the difference between retained and rolled interest?",
+                            answer: "Retained interest is deducted upfront from your loan advance, reducing what you receive on Day 1 but keeping your exit cost lower. Rolled interest compounds monthly and is added to your redemption amount, giving you more cash upfront but costing more overall. Retained typically saves 10-15% on total interest cost."
+                        },
+                        {
+                            question: "What are typical bridging rates in 2024?",
+                            answer: "Bridging rates range from 0.55% to 1.25% per month (6.6-15% annually) depending on LTV and property type. Lower LTVs (under 60%) get the best rates. Rates at 50% LTV: 0.55-0.75% pm. At 75% LTV: 0.85-1.10% pm. Plus arrangement fees of 1.5-2.5%."
+                        },
+                        {
+                            question: "How long can I have a bridging loan for?",
+                            answer: "Most bridging loans are 3-24 months. Some lenders offer up to 36 months. You'll typically pay the same monthly rate regardless of term, but arrangement and exit fees are based on the loan amount. Many borrowers exit early when their property sells or refinances."
+                        },
+                        {
+                            question: "What is a Day 1 advance and why does it matter?",
+                            answer: "The Day 1 advance is the actual cash you receive after all upfront fees and retained interest are deducted from the gross loan. This is critical for knowing if you have enough to complete your purchase and start works. Always budget based on net advance, not gross loan."
+                        },
+                        {
+                            question: "Can I pay off a bridging loan early?",
+                            answer: "Yes, most bridging loans allow early redemption. Some charge exit fees (typically 0-1.5% of loan amount). Others charge minimum interest terms (commonly 3 months). Always check the redemption terms before committing, as these can significantly affect your total cost if you exit early."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Bridging finance UK",
+                        "Short-term property loan",
+                        "Retained interest",
+                        "Rolled interest",
+                        "Bridging LTV",
+                        "Arrangement fee",
+                        "Exit fee bridging",
+                        "Property development finance",
+                        "Fast property finance",
+                        "Bridge loan calculator",
+                    ]}
+                    categoryColor="#F59E0B"
+                />
         </CalculatorPageLayout>
     );
 };

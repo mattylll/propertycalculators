@@ -15,8 +15,12 @@ import { BentoCard } from '@/components/property-kit/bento-card';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 
 export default function HMOFinanceCalculatorPage() {
+  const [hasCalculated, setHasCalculated] = useState(false);
+
   // Property & Loan Inputs
   const [propertyValue, setPropertyValue] = useState<string>('350000');
   const [deposit, setDeposit] = useState<string>('87500');
@@ -219,6 +223,7 @@ export default function HMOFinanceCalculatorPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Input Section */}
           <div className="lg:col-span-2 space-y-6">
+            <form onSubmit={(e) => { e.preventDefault(); setHasCalculated(true); }}>
             {/* Property & Loan */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -366,10 +371,58 @@ export default function HMOFinanceCalculatorPage() {
                 HMO mortgages typically carry a 0.5-1.5% premium over standard BTL rates. Rates are indicative only.
               </p>
             </BentoCard>
+
+            {/* Calculate Button */}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+              >
+                <Calculator className="w-5 h-5" />
+                Calculate Finance
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setPropertyValue('350000');
+                  setDeposit('87500');
+                  setNumberOfRooms('5');
+                  setRentPerRoom('650');
+                  setInterestRate('6.5');
+                  setLoanTerm('25');
+                  setStressTestRate('8.5');
+                  setIcrRequirement('145');
+                  setManagementFee('15');
+                  setVoidAllowance('8');
+                  setHasCalculated(false);
+                }}
+                className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
+              >
+                Reset
+              </button>
+            </div>
+            </form>
           </div>
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="HMO Finance Calculator"
+              calculatorSlug="hmo-finance-calculator"
+              formData={{
+                propertyValue,
+                deposit,
+                numberOfRooms,
+                rentPerRoom,
+                interestRate,
+                loanTerm,
+                stressTestRate,
+                icrRequirement,
+                managementFee,
+                voidAllowance
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Key Metrics */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Loan Summary</h2>
@@ -458,8 +511,67 @@ export default function HMOFinanceCalculatorPage() {
               highlights={[]}
               confidence={0.85}
             />
+            </CalculatorResultsGate>
           </div>
         </div>
+
+        {/* SEO Content */}
+        <CalculatorSEO
+          calculatorName="HMO Finance Calculator"
+          calculatorSlug="hmo-finance-calculator"
+          description="The HMO Finance Calculator helps UK landlords calculate mortgage affordability and stress test requirements for House in Multiple Occupation properties. Model different interest rates, loan-to-value ratios, and lender ICR requirements to understand your borrowing capacity and monthly payments for multi-let properties."
+          howItWorks={`The HMO Finance Calculator analyses your HMO mortgage options in detail:
+
+1. Property & Loan Details - Enter your property value, deposit, and proposed interest rate
+2. Rental Income - Input number of rooms and expected rent per room to calculate gross rental income
+3. Operating Costs - Factor in HMO-specific costs like management fees (typically 12-18%), voids, and other expenses
+4. Lender Stress Testing - Apply the lender's stress test interest rate (typically 7-9%) to calculate stressed ICR
+5. Affordability Assessment - Calculate whether your rental income meets the lender's ICR requirement (usually 125-145%)
+
+The calculator shows both interest-only and repayment mortgage costs, helping you understand monthly commitments and whether your HMO passes lender affordability criteria. HMO mortgages typically require higher deposits (25%+) and attract higher interest rates than standard BTL mortgages.`}
+          whenToUse="Use this calculator when planning HMO finance, comparing different mortgage products, or stress testing affordability. Essential for understanding whether lenders will approve your HMO mortgage application. Particularly useful when evaluating whether room rents will generate sufficient income to meet ICR requirements at stressed rates."
+          keyFeatures={[
+            "Calculate HMO mortgage affordability with stress testing",
+            "Model different LTV ratios and interest rate scenarios",
+            "Assess ICR compliance at lender stress test rates",
+            "Compare interest-only vs repayment mortgage costs",
+          ]}
+          faqs={[
+            {
+              question: "What is a typical HMO mortgage interest rate?",
+              answer: "HMO mortgage rates typically range from 5.5% to 7.5%, depending on your LTV ratio, experience, and the lender. Rates are usually 0.5-1.5% higher than standard BTL mortgages due to the increased complexity and perceived risk of multi-let properties. Lower LTV ratios (60-65%) attract the best rates."
+            },
+            {
+              question: "What deposit do I need for an HMO mortgage?",
+              answer: "Most HMO lenders require a minimum 25% deposit (75% LTV), though some offer up to 80% LTV for experienced HMO landlords. Lower LTV ratios like 65% or 70% typically attract better interest rates and more lender choice. First-time HMO landlords may need larger deposits."
+            },
+            {
+              question: "What is ICR and why do lenders stress test it?",
+              answer: "Interest Coverage Ratio (ICR) measures whether your rental income covers the mortgage interest. Lenders stress test by calculating ICR at a higher rate (typically 5.5-9%) to ensure you can still afford payments if rates rise. Most HMO lenders require ICR of 125-145% at the stressed rate."
+            },
+            {
+              question: "How does HMO mortgage affordability differ from BTL?",
+              answer: "HMO mortgages use gross room rents (not net) for affordability calculations, which helps as HMO rental income is typically 30-70% higher than single-let. However, lenders apply higher ICR requirements (125-145% vs 125% for BTL) and use higher stress test rates to account for the increased management complexity and void risks."
+            },
+            {
+              question: "Can I get an HMO mortgage with no HMO experience?",
+              answer: "Yes, but it's more challenging. Many specialist HMO lenders require at least one year of BTL experience. First-time HMO landlords may face higher rates, larger deposit requirements (30%+), or need to demonstrate completion of HMO-specific training courses. Some lenders offer 'first-time HMO' products specifically designed for this market."
+            },
+          ]}
+          relatedTerms={[
+            "HMO mortgage rates UK",
+            "HMO finance calculator",
+            "Interest Coverage Ratio HMO",
+            "HMO mortgage stress test",
+            "HMO loan to value",
+            "Multi-let mortgage affordability",
+            "HMO BTL mortgage",
+            "Mandatory HMO licensing finance",
+            "Room rent mortgage calculation",
+            "HMO mortgage lenders UK",
+          ]}
+          categoryColor="#EC4899"
+        />
     </CalculatorPageLayout>
   );
 }

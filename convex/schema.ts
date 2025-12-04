@@ -113,4 +113,21 @@ export default defineSchema({
   })
     .index("by_user", ["userId"])
     .index("by_status", ["status"]),
+
+  // Calculator submissions for lead capture
+  calculatorSubmissions: defineTable({
+    userId: v.optional(v.id("users")),
+    userEmail: v.optional(v.string()),
+    calculatorType: v.string(),
+    calculatorSlug: v.string(),
+    formData: v.string(), // JSON stringified form data
+    source: v.optional(v.string()), // URL where calculator was used
+    followUpStatus: v.optional(v.string()), // pending, contacted, converted
+    followUpNotes: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_calculator", ["calculatorSlug"])
+    .index("by_followup", ["followUpStatus"]),
 });

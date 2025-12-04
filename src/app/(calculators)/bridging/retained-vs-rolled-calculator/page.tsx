@@ -8,6 +8,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -381,6 +383,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Retained vs Rolled Calculator"
+                            calculatorSlug="retained-vs-rolled-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Comparison Table */}
                         <BentoCard variant='secondary' title='Side-by-side comparison' description='Retained vs Rolled interest'>
                             <div className='overflow-hidden rounded-xl border border-slate-200'>
@@ -595,8 +603,80 @@ Respond in JSON:
                                 </CardContent>
                             </Card>
                         )}
+                        </CalculatorResultsGate>
                     </div>
                 </div>
+
+                <CalculatorSEO
+                    calculatorName="Retained vs Rolled Interest Calculator"
+                    calculatorSlug="retained-vs-rolled-calculator"
+                    description="The Retained vs Rolled Interest Calculator helps UK property investors compare bridging loan interest options. See exactly how retained interest (deducted upfront) compares to rolled interest (compounded monthly) for your Day 1 cash and exit costs."
+                    howItWorks={`When taking a bridging loan, you have three interest payment options:
+
+Retained Interest:
+- Interest for the full term is calculated upfront
+- Deducted from your loan advance on Day 1
+- You receive less cash initially but owe less at exit
+- No monthly payments during term
+- Lower total interest cost (simple interest, not compounded)
+
+Rolled Interest:
+- Interest compounds monthly during the term
+- Added to your loan balance each month
+- You receive maximum cash on Day 1
+- No monthly payments during term
+- Higher total cost due to compounding effect
+
+Serviced Interest:
+- Interest paid monthly during the term
+- You receive maximum cash on Day 1
+- Monthly payment obligation
+- Total interest cost between retained and rolled
+
+The calculator compares retained vs rolled options, showing the difference in Day 1 advance, redemption amount, and total cost. Most investors choose retained if they have sufficient equity, as it saves 10-15% on total interest cost.`}
+                    whenToUse="Use this calculator when comparing bridging loan quotes or deciding which interest structure works best for your project. Essential when you need to maximize Day 1 cash (choose rolled) or minimize total finance cost (choose retained). Particularly useful when you're tight on equity and need to see if retained interest leaves you enough to complete your project."
+                    keyFeatures={[
+                        "Side-by-side retained vs rolled comparison",
+                        "Day 1 advance difference calculation",
+                        "Redemption cost comparison",
+                        "Total cost of finance analysis",
+                    ]}
+                    faqs={[
+                        {
+                            question: "When should I choose retained interest?",
+                            answer: "Choose retained interest when you have sufficient equity to cover the reduced Day 1 advance and want to minimize total cost. Retained saves 10-15% on interest costs compared to rolled. Best for projects where you're not stretched on cash and want to maximize profit margin."
+                        },
+                        {
+                            question: "When should I choose rolled interest?",
+                            answer: "Choose rolled interest when you need maximum cash on Day 1 to complete your purchase and start works. This is common for tight deals where every pound counts upfront. You'll pay more overall, but if it means the difference between completing or not, the extra cost is worthwhile."
+                        },
+                        {
+                            question: "How much more does rolled interest cost?",
+                            answer: "Rolled interest typically costs 10-20% more than retained due to monthly compounding. For example: £200k loan at 0.85% pm for 12 months = £20,400 retained vs £21,350 rolled (£950 extra). The difference grows with higher rates and longer terms."
+                        },
+                        {
+                            question: "Can I pay off early with rolled interest?",
+                            answer: "Yes, most lenders allow early redemption with rolled interest. You only pay interest on the months actually used. However, some lenders charge minimum interest periods (typically 3 months) or exit fees. Always check redemption terms before committing."
+                        },
+                        {
+                            question: "What if I can't decide between retained and rolled?",
+                            answer: "Calculate your Day 1 cash requirement including all costs (purchase, refurb, fees). If retained interest leaves you enough to complete comfortably, choose it to save money. If you'd be cutting it too close, choose rolled for the extra cash cushion. Safety margin is more important than saving on interest."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Retained interest bridging",
+                        "Rolled interest UK",
+                        "Bridging interest options",
+                        "Compounded interest",
+                        "Day one advance",
+                        "Gross redemption",
+                        "Bridging finance costs",
+                        "Interest structure",
+                        "Serviced vs rolled",
+                        "Bridge loan comparison",
+                    ]}
+                    categoryColor="#F59E0B"
+                />
         </CalculatorPageLayout>
     );
 };

@@ -8,6 +8,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -498,6 +500,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Holiday Let Tax Calculator"
+                            calculatorSlug="holiday-let-tax-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='Tax calculation' description='Based on FHL rules'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -616,6 +624,7 @@ Respond in JSON:
                                 </Card>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
 
                         {/* Info Box */}
                         <div className='p-4 rounded-xl bg-blue-50 border border-blue-200'>
@@ -706,6 +715,64 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="Holiday Let Tax Calculator"
+                    calculatorSlug="holiday-let-tax-calculator"
+                    description="The Holiday Let Tax Calculator helps UK serviced accommodation investors understand the tax implications of Furnished Holiday Lets (FHL). Calculate your tax liability, understand FHL qualification rules (210-day availability and 105-day letting test), and compare the significant tax savings versus standard Buy-to-Let properties affected by Section 24."
+                    howItWorks={`The FHL tax calculator works by:
+
+1. Checking FHL Qualification - Verify your property meets the 210-day availability test and 105-day letting test required by HMRC
+2. Calculating Allowable Expenses - Include all operating costs plus full mortgage interest deduction (unlike BTL)
+3. Applying Capital Allowances - Deduct furniture, fixtures, and equipment costs
+4. Computing Tax Liability - Calculate income tax at your marginal rate plus Class 4 National Insurance
+5. Comparing with BTL Treatment - Show the tax saving from full mortgage interest relief versus Section 24 restrictions
+
+The calculator demonstrates the substantial tax advantages of FHL status, including full mortgage interest deduction (not restricted to 20% tax credit like BTL), capital allowances on furnishings, and potential Business Asset Disposal Relief on sale.`}
+                    whenToUse="Use this calculator when evaluating holiday let investments to understand your after-tax returns. Essential for comparing FHL properties with standard BTL investments, planning your SA tax strategy, and ensuring your letting pattern qualifies for FHL status. Particularly valuable for higher-rate taxpayers who benefit most from full mortgage interest relief."
+                    keyFeatures={[
+                        "FHL qualification checker (210/105-day test)",
+                        "Full mortgage interest deduction calculation",
+                        "Capital allowances on furniture and equipment",
+                        "Side-by-side comparison with BTL Section 24 treatment",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is the 210-day test for FHL status?",
+                            answer: "Your property must be available for commercial letting for at least 210 days per year to qualify as an FHL. Personal use doesn't count towards this total. The property must also be actually let for at least 105 days (excluding lettings of more than 31 consecutive days). Meeting both tests qualifies you for FHL tax benefits."
+                        },
+                        {
+                            question: "How much tax do I save with FHL status versus BTL?",
+                            answer: "FHL status allows full mortgage interest deduction against rental income, while BTL landlords only get 20% tax credit under Section 24. For a higher-rate (40%) taxpayer with £10,000 mortgage interest, FHL saves £4,000 in tax versus £2,000 BTL relief - a £2,000 annual saving. Additional-rate taxpayers (45%) save even more."
+                        },
+                        {
+                            question: "Can I claim capital allowances on my holiday let?",
+                            answer: "Yes, FHL properties qualify for capital allowances on furniture, fixtures, equipment, and white goods. You can typically claim 18% annual writing down allowance or use the Annual Investment Allowance (£1 million limit 2024/25) for immediate relief. This is a major advantage over BTL where these items are revenue expenses."
+                        },
+                        {
+                            question: "Do I need to register as self-employed for my FHL?",
+                            answer: "Yes, FHL income is treated as business income, not property income. You'll need to register as self-employed and complete a Self Assessment tax return. You'll also pay Class 2 (£3.45/week if profits exceed £6,725) and Class 4 National Insurance (6% on profits over £12,570), but gain access to business tax reliefs."
+                        },
+                        {
+                            question: "What happens if I don't meet the FHL tests in a year?",
+                            answer: "If you fail the 210/105-day tests, you can elect to average over 2-3 years if one year was exceptional. Otherwise, HMRC will treat that year as normal property income under Section 24 rules, losing mortgage interest relief and capital allowances. It's crucial to track lettings carefully and market actively to maintain qualification."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Furnished Holiday Let FHL",
+                        "210-day test",
+                        "105-day letting requirement",
+                        "FHL mortgage interest relief",
+                        "Capital allowances holiday let",
+                        "Section 24 tax",
+                        "Business Asset Disposal Relief",
+                        "Holiday let tax planning",
+                        "Short-term rental tax UK",
+                        "Airbnb tax calculator",
+                    ]}
+                    categoryColor="#F97316"
+                />
         </CalculatorPageLayout>
     );
 };

@@ -8,6 +8,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -425,6 +427,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="BRRR Calculator"
+                            calculatorSlug="brrr-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='BRRR analysis' description='Value-add and refinance metrics'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -565,6 +573,7 @@ Respond in JSON:
                                 </div>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
 
                         {/* AI Validation Gate */}
                         <AIValidationGate
@@ -639,6 +648,63 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="BRRR Calculator"
+                    calculatorSlug="brrr-calculator"
+                    description="The BRRR Calculator helps UK property investors model Buy-Refurbish-Refinance-Rent strategies. This value-add investment approach allows you to purchase undervalued properties, add value through renovation, refinance to release capital, and generate rental income. Our calculator shows you exactly how much capital you can recycle and your expected returns."
+                    howItWorks={`The BRRR strategy works in four stages:
+
+1. Buy - Purchase a property below market value, typically one that needs work
+2. Refurbish - Renovate the property to increase its value (ARV - After Repair Value)
+3. Refinance - Take out a buy-to-let mortgage against the new higher value
+4. Rent - Let the property to generate monthly cashflow
+
+The calculator analyses your total investment (purchase + refurb + costs + bridging interest) against your refinance amount (typically 75% of ARV) to show how much capital you recover. The goal is to recycle all or most of your investment while retaining equity and cashflow.`}
+                    whenToUse="Use this calculator when evaluating value-add property opportunities. It's ideal for properties requiring renovation where you can add significant value. The BRRR strategy works best when you can purchase at least 20-25% below the ARV to cover refurb costs and still refinance out your capital."
+                    keyFeatures={[
+                        "Calculate capital recycled through refinancing",
+                        "Model bridging finance costs during refurb period",
+                        "Analyse post-refinance cashflow and yields",
+                        "Assess DSCR for lender requirements",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is a good BRRR deal?",
+                            answer: "A good BRRR deal typically allows you to recycle 75-100% of your capital through refinancing while maintaining positive cashflow. Ideally, you want a purchase price that's 20-30% below the After Repair Value (ARV), realistic refurb costs, and rent that covers the mortgage with comfortable margin (DSCR of 1.25+)."
+                        },
+                        {
+                            question: "How much deposit do I need for a BRRR?",
+                            answer: "Initially, you'll need funds for the full purchase (often via bridging finance at 70-75% LTV), refurb costs, and all associated fees. After refinancing, most BTL lenders offer 75% LTV, meaning you'll have 25% equity remaining in the property. The goal is for the refinance to return your initial cash investment."
+                        },
+                        {
+                            question: "What is a typical bridging rate for BRRR?",
+                            answer: "Bridging rates in the UK typically range from 0.55% to 1.5% per month, depending on the lender, loan-to-value, and your experience. Most BRRR investors budget around 0.75-0.95% per month. Remember to factor in arrangement fees (typically 1-2%) and exit fees."
+                        },
+                        {
+                            question: "How long does a typical BRRR project take?",
+                            answer: "A typical BRRR project takes 3-9 months from purchase to refinance. Light refurbishments might complete in 3-4 months, while more extensive renovations can take 6-9 months. It's important to factor in realistic timescales when calculating bridging costs."
+                        },
+                        {
+                            question: "What ARV should I aim for compared to purchase price?",
+                            answer: "Aim for an ARV that's at least 125-135% of your total investment (purchase + refurb + costs). This typically means buying at 70-75% of the end value to ensure you can refinance out most or all of your capital at 75% LTV."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Buy Refurbish Refinance Rent",
+                        "Value-add property investment",
+                        "Property flipping UK",
+                        "Bridging finance",
+                        "BTL refinance",
+                        "After Repair Value",
+                        "Capital recycling",
+                        "Property renovation",
+                        "Cash on cash return",
+                        "Property investment strategy",
+                    ]}
+                    categoryColor="#10B981"
+                />
         </CalculatorPageLayout>
     );
 };

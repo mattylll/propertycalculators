@@ -9,6 +9,8 @@ import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
 import { CalculatorStepper, ContinueToNextStep } from '@/components/property-kit/calculator-stepper';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { useDeal } from '@/lib/deal-context';
 import { formatCurrency, formatCurrencyCompact } from '@/lib/calculators/format';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/new-york-v4/ui/select';
@@ -474,6 +476,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="GDV Calculator"
+                            calculatorSlug="gdv-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Basic Results */}
                         <BentoCard variant='secondary' title='Your GDV Estimate' description='Based on your inputs'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -508,6 +516,7 @@ Respond in JSON:
                                 </div>
                             )}
                         </BentoCard>
+                        </CalculatorResultsGate>
 
                         {/* AI Validation Gate */}
                         <AIValidationGate
@@ -660,6 +669,64 @@ Respond in JSON:
                     <ContinueToNextStep nextStep={3} />
                 </section>
             )}
+
+            {/* SEO Content */}
+            <CalculatorSEO
+                calculatorName="GDV Calculator"
+                calculatorSlug="gdv-calculator"
+                description="The GDV Calculator helps UK property developers estimate Gross Development Value for residential schemes. Calculate total sales value based on unit mix, comparable sales, and market pricing with AI-powered validation using Land Registry data."
+                howItWorks={`The GDV Calculator estimates total development value:
+
+1. Unit Mix - Define your scheme by bedroom types (studio to 5+ bed), quantity of each type, and typical sizes (sqft)
+2. Price per Sqft - Enter estimated sales price per sqft for each unit type based on local comparables
+3. New Build Premium - Apply 10-20% premium that new builds typically command over second-hand stock
+4. Total GDV - Calculates total sales value across all units
+5. AI Validation - Optionally validate assumptions with AI analysis using Land Registry data and local market comparables
+
+The calculator provides GDV per unit, GDV per sqft, and total scheme value with full unit mix breakdown.`}
+                whenToUse="Use this calculator during site appraisal and feasibility stage to estimate total sales value. Essential for calculating profit on cost, residual land value, and structuring development finance. Use before acquiring sites to determine maximum viable bid price."
+                keyFeatures={[
+                    "Flexible unit mix configuration for multi-unit schemes",
+                    "Price per sqft calculation for accurate valuations",
+                    "New build premium adjustment (typically 10-20%)",
+                    "AI validation with Land Registry comparables and market context",
+                ]}
+                faqs={[
+                    {
+                        question: "What is GDV and why is it important?",
+                        answer: "GDV (Gross Development Value) is the total sales value of a completed development before any costs are deducted. It's the foundation of every development appraisal - you work backwards from GDV to calculate profit on cost, residual land value, and assess viability. Lenders use GDV to determine maximum loan size (typically 65-70% LTGDV). Accurate GDV is critical - overestimate by 10% and your land bid could be 30%+ too high."
+                    },
+                    {
+                        question: "How do I estimate price per sqft accurately?",
+                        answer: "Use Land Registry sold price data for recent comparables (last 6-12 months) in your postcode area. Filter by property type and bedrooms. Calculate £/sqft from sale price ÷ property size. New builds command 10-20% premium over second-hand. Prime locations (zones 1-2, city centres) achieve higher £/sqft. Remember: sales values fall during build, so use conservative assumptions. It's better to underestimate GDV than overestimate."
+                    },
+                    {
+                        question: "What new build premium should I use?",
+                        answer: "New build premium varies by location and market: Prime London 15-20%, Provincial cities 10-15%, Suburban areas 8-12%. Premium reflects buyers paying for modern spec, warranties, Help to Buy eligibility, and no chain. However, premiums compress in weaker markets. Use conservative assumptions - factor in sales incentives (3-5% of GDV for agents, Help to Buy, stamp duty contributions)."
+                    },
+                    {
+                        question: "How should I plan unit mix?",
+                        answer: "Research local demand using agents and Rightmove data. Most schemes need balanced mix: 1-beds for investors/FTBs (25-35%), 2-beds as core offering (40-50%), 3-beds for families (15-25%). Avoid heavy weighting to one type - market absorption is slower. Consider: local demographics, commuter patterns, school quality (for 3-beds), investor vs owner-occupier split. Speak to 3-5 local agents before finalising unit mix."
+                    },
+                    {
+                        question: "Should I use GIA or NIA for GDV calculations?",
+                        answer: "Use NIA (Net Internal Area) for sales values as this is what buyers see on particulars and rightmove. NIA excludes walls, columns, and service ducts. For flats, NIA is typically 85-90% of GIA. Marketing agents measure using RICS guidance which effectively means NIA. Don't confuse this with build costs which use GIA. Converting: roughly, NIA = GIA × 0.87 for apartments."
+                    },
+                ]}
+                relatedTerms={[
+                    "Gross Development Value calculator",
+                    "GDV calculator UK",
+                    "Property development appraisal",
+                    "Price per sqft calculator",
+                    "New build premium UK",
+                    "Unit mix calculator",
+                    "Land Registry comparables",
+                    "Development valuation",
+                    "Sales value calculator",
+                    "Residential development GDV",
+                ]}
+                categoryColor="#8B5CF6"
+            />
         </CalculatorPageLayout>
     );
 };

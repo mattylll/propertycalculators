@@ -13,6 +13,9 @@ import { BentoCard } from '@/components/property-kit/bento-card';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { DealMetric } from '@/components/property-kit/deal-metric';
 import { AiOutputCard } from '@/components/property-kit/ai-output-card';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
+import { PropertyButton } from '@/components/property-kit/property-button';
 
 // Relativity rates based on Savills/RICS graphs (approximate)
 // These show the value of a lease as % of freehold value
@@ -69,6 +72,7 @@ export default function MarriageValueCalculatorPage() {
   const [capitalisationRate, setCapitalisationRate] = useState<string>('5');
   const [defermentRate, setDefermentRate] = useState<string>('5');
   const [marriageValueShare, setMarriageValueShare] = useState<string>('50');
+  const [hasCalculated, setHasCalculated] = useState(false);
 
   // Derived calculations
   const [derivedMetrics, setDerivedMetrics] = useState({
@@ -89,6 +93,7 @@ export default function MarriageValueCalculatorPage() {
 
   // Calculate derived metrics
   useEffect(() => {
+    setHasCalculated(true);
     const freehold = parseFloat(freeholdValue) || 0;
     const currentYears = parseFloat(currentLeaseYears) || 0;
     const extYears = parseFloat(extensionYears) || 90;
@@ -336,6 +341,20 @@ export default function MarriageValueCalculatorPage() {
 
           {/* Results Sidebar */}
           <div className="space-y-6">
+            <CalculatorResultsGate
+              calculatorType="Marriage Value Calculator"
+              calculatorSlug="marriage-value-calculator"
+              formData={{
+                freeholdValue,
+                currentLeaseYears,
+                extensionYears,
+                groundRent,
+                capitalisationRate,
+                defermentRate,
+                marriageValueShare,
+              }}
+              hasCalculated={hasCalculated}
+            >
             {/* Value Summary */}
             <BentoCard>
               <h2 className="text-lg font-semibold mb-4">Value Analysis</h2>
@@ -409,6 +428,7 @@ export default function MarriageValueCalculatorPage() {
                 </div>
               </div>
             </BentoCard>
+            </CalculatorResultsGate>
 
             {/* AI Validation */}
             <AiOutputCard
@@ -420,6 +440,64 @@ export default function MarriageValueCalculatorPage() {
             />
           </div>
         </div>
+
+        {/* SEO Content */}
+        <CalculatorSEO
+          calculatorName="Marriage Value Calculator"
+          calculatorSlug="marriage-value-calculator"
+          description="The Marriage Value Calculator helps UK leaseholders understand the marriage value component when extending leases under 80 years. Marriage value represents the increase in property value created when leasehold and freehold interests are combined. Under current law, leaseholders must pay 50% of this value to the freeholder. This calculator uses relativity graphs and the statutory valuation formula to estimate marriage value based on Savills/RICS data."
+          howItWorks={`The calculator determines marriage value through the following process:
+
+1. Relativity Assessment - Uses industry-standard relativity graphs (Savills/RICS) to determine what percentage of freehold value your current lease represents based on years remaining
+2. Current Lease Value - Calculates your property's current value as a leasehold (typically 82-92% of freehold for 70-80 year leases)
+3. Extended Lease Value - Calculates value after extension to 999 years (approximately 99% of freehold value)
+4. Marriage Value Calculation - The difference between extended and current value represents the marriage value, of which you must pay 50% to the freeholder
+5. Total Premium - Combines capitalised ground rent, reversion value, and your share of marriage value
+
+Marriage value only applies to leases under 80 years and can add £20,000-£50,000+ to extension costs.`}
+          whenToUse="Use this calculator when your lease is approaching or has fallen below 80 years to understand the marriage value impact on extension costs. Critical for financial planning before serving a Section 42 notice, evaluating whether to extend now or wait for leasehold reform, and purchase negotiations on properties with sub-80 year leases. Understanding marriage value helps you time your extension to minimize costs."
+          keyFeatures={[
+            "Calculate marriage value for leases under 80 years",
+            "Use industry-standard relativity graphs",
+            "Show leaseholder and freeholder shares",
+            "Compare value before and after extension",
+          ]}
+          faqs={[
+            {
+              question: "What exactly is marriage value?",
+              answer: "Marriage value is the increase in property value created when the leasehold and freehold interests are 'married' together through lease extension. For example, if your current 75-year lease is worth £280k but would be worth £340k with a 165-year lease (75+90), the marriage value is £60k. Under current law, you must pay 50% (£30k) of this to the freeholder as part of the extension premium."
+            },
+            {
+              question: "Why does marriage value only apply under 80 years?",
+              answer: "The 80-year threshold was established by the Leasehold Reform Act 1993 as a compromise. Above 80 years, the lease still retains substantial value and the uplift from extension is modest, so no marriage value is payable. Below 80 years, the value deteriorates significantly, creating substantial marriage value that Parliament decided should be shared 50/50 between leaseholder and freeholder."
+            },
+            {
+              question: "How much is marriage value typically?",
+              answer: "Marriage value varies based on property value and lease length. For a £350k flat at 75 years, marriage value might be £40-60k (your share: £20-30k). At 65 years, it could be £80-100k (your share: £40-50k). The shorter the lease, the higher the marriage value. This is why extending before 80 years is crucial - it can save tens of thousands."
+            },
+            {
+              question: "What are relativity graphs?",
+              answer: "Relativity graphs show the value of a leasehold property as a percentage of its freehold value, based on remaining lease length. They're produced by valuation firms (Savills, Gerald Eve, RICS) using market data. For example, a 75-year lease might have 85% relativity (worth 85% of freehold value), while a 55-year lease has 65% relativity. These graphs are used by surveyors and tribunals to calculate marriage value."
+            },
+            {
+              question: "Will leasehold reform abolish marriage value?",
+              answer: "Yes - the Leasehold and Freehold Reform Act 2024 proposes to abolish marriage value entirely. This will dramatically reduce extension costs for leases under 80 years, potentially saving leaseholders £20,000-£50,000+. However, the exact implementation date is uncertain. If your lease is under 80 years, you may wish to wait for reform, but must balance this against ongoing value deterioration and mortgage restrictions."
+            },
+          ]}
+          relatedTerms={[
+            "Marriage value calculation",
+            "Relativity graphs leasehold",
+            "80 year marriage value",
+            "Leasehold valuation relativity",
+            "RICS relativity",
+            "Savills relativity graph",
+            "Section 42 marriage value",
+            "Lease extension under 80 years",
+            "First-tier Tribunal valuation",
+            "Leasehold Reform Act marriage value",
+          ]}
+          categoryColor="#06B6D4"
+        />
     </CalculatorPageLayout>
   );
 }

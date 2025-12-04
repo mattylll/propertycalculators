@@ -7,6 +7,8 @@ import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -389,6 +391,12 @@ const RefurbCostCalculatorPage = () => {
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Refurb Cost Calculator"
+                            calculatorSlug="refurb-cost-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='Cost estimate' description='Based on your inputs'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -538,8 +546,70 @@ const RefurbCostCalculatorPage = () => {
                                 </p>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="Refurb Cost Calculator"
+                    calculatorSlug="refurb-cost-calculator"
+                    description="The Refurb Cost Calculator helps UK property developers and investors estimate renovation costs per square metre. Calculate accurate refurbishment budgets for different project levels from light cosmetic work to structural renovations. Select individual works, add regional adjustments, and plan contingency budgets for your property refurbishment."
+                    howItWorks={`The calculator estimates refurb costs through:
+
+1. Refurb Level - Choose from Light (cosmetic), Medium (full redecoration), Heavy (major refurb), or Structural (major changes)
+2. Base Costs - Applies per sqm rates: Light £250/sqm, Medium £500/sqm, Heavy £800/sqm, Structural £1,200/sqm
+3. Individual Works - Add specific items like new kitchen, bathrooms, rewiring, heating, windows
+4. Regional Adjustment - Automatic multipliers: London +40%, South East +20%, Midlands base, North -10%
+5. Contingency - Add 10-15% buffer for unexpected costs
+6. Cost Breakdown - See detailed itemization of all works and totals
+
+The calculator accounts for labour and material costs varying by region and refurb intensity. Costs are based on 2024 UK market rates.`}
+                    whenToUse="Use this calculator when planning property refurbishment projects, preparing flip or BRRR budgets, estimating tender costs before getting quotes, or analyzing value-add opportunities. Essential for property developers, landlords upgrading rental properties, and investors modeling refurb deals before purchase."
+                    keyFeatures={[
+                        "Four refurb levels with accurate per sqm costs",
+                        "Regional cost multipliers across UK",
+                        "Detailed individual works breakdown (kitchens, bathrooms, systems)",
+                        "Automatic contingency calculation",
+                        "Extension cost estimation",
+                        "Cost per sqm and sqft analysis",
+                    ]}
+                    faqs={[
+                        {
+                            question: "How much does a full refurb cost per square metre in the UK?",
+                            answer: "A full refurb in the Midlands costs £500-£800/sqm depending on specification. Light cosmetic work (paint, flooring) costs £250/sqm. Heavy refurbs with new kitchen, bathrooms, and systems cost £800-£1,200/sqm. Structural work with layout changes costs £1,200+/sqm. London costs are 40% higher, while northern regions are 10% lower."
+                        },
+                        {
+                            question: "What's included in a medium refurbishment?",
+                            answer: "A medium refurb (£500/sqm base) includes: full redecoration throughout, new flooring, upgraded kitchen and bathroom, some electrical work, new internal doors, upgraded lighting, and general repairs. It assumes the structure, roof, windows, and heating system are in reasonable condition. Major electrical/plumbing work and structural changes are extra."
+                        },
+                        {
+                            question: "How much should I budget for contingency on a refurb?",
+                            answer: "Budget 10-15% contingency for standard refurbs, 15-20% for heavy refurbs, and 20-25% for structural work or older properties. Pre-1930 properties often reveal hidden issues. Always get a structural survey before buying to reduce unknown risks. Contingency covers unexpected problems, price increases, and scope changes."
+                        },
+                        {
+                            question: "What does a full rewire cost?",
+                            answer: "A full rewire in the Midlands costs approximately £4,000 base plus £40/sqm. For a typical 100sqm property, expect £8,000-£10,000. London costs are 40% higher (£11,000-£14,000). The work includes new consumer unit, circuits, sockets, switches, and certification. Costs increase if extensive making good of walls and ceilings is required."
+                        },
+                        {
+                            question: "How do I estimate kitchen and bathroom costs?",
+                            answer: "Budget £5,000-£8,000 for a basic rental-quality kitchen, £12,000-£18,000 for mid-range owner-occupier, and £25,000+ for high-end. Bathrooms cost £3,000-£5,000 basic, £6,000-£10,000 mid-range, £12,000+ premium. These figures include units, appliances, tiling, plumbing, electrics, and labour. En-suites are slightly cheaper than main bathrooms."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Property refurb cost UK",
+                        "Refurbishment cost per sqm",
+                        "House renovation budget",
+                        "Property flip costs",
+                        "Full refurb cost calculator",
+                        "Kitchen renovation cost",
+                        "Bathroom refurb cost",
+                        "Rewiring cost UK",
+                        "Property development budget",
+                        "Renovation contingency",
+                    ]}
+                    categoryColor="#EF4444"
+                />
         </CalculatorPageLayout>
     );
 };

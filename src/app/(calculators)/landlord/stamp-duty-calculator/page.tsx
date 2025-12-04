@@ -8,6 +8,8 @@ import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { formatCurrency } from '@/lib/calculators/format';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { Card, CardContent } from '@/components/ui/card';
 import {
     Calculator,
@@ -361,6 +363,12 @@ const StampDutyCalculatorPage = () => {
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="Stamp Duty Calculator"
+                            calculatorSlug="stamp-duty-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='SDLT calculation' description={metrics.explanation}>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -504,8 +512,72 @@ const StampDutyCalculatorPage = () => {
                                 </p>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
                     </div>
                 </div>
+
+                <CalculatorSEO
+                    calculatorName="Stamp Duty Calculator"
+                    calculatorSlug="stamp-duty-calculator"
+                    description="The Stamp Duty Calculator helps UK property buyers calculate Stamp Duty Land Tax (SDLT) for England and Northern Ireland. Our calculator includes the October 2024 changes with the increased 5% additional property surcharge, first-time buyer relief, and covers all buyer types including non-residents and companies."
+                    howItWorks={`Stamp Duty Land Tax (SDLT) is calculated on a tiered system where different portions of the purchase price are taxed at different rates:
+
+**Standard Rates (England & NI):**
+- £0-£250,000: 0%
+- £250,001-£925,000: 5%
+- £925,001-£1,500,000: 10%
+- Over £1,500,000: 12%
+
+**First-Time Buyer Relief:** Properties up to £625,000 qualify for 0% on first £425,000, then 5% to £625,000.
+
+**Additional Property Surcharge:** From October 2024, buying a second home or BTL incurs an additional 5% on ALL bands (increased from 3%).
+
+**Non-Resident Surcharge:** Non-UK residents pay an extra 2% on top of other rates.
+
+The calculator works out tax for each band, applies relevant surcharges, and shows a complete breakdown of how the total is calculated.`}
+                    whenToUse="Use this calculator when budgeting for property purchases, comparing purchase costs across different price points, or understanding the true cost of buying second homes or BTL properties. Essential for calculating total acquisition costs and ensuring you have sufficient funds for completion."
+                    keyFeatures={[
+                        "Calculate SDLT with October 2024 updated rates",
+                        "Include 5% additional property surcharge",
+                        "Model first-time buyer relief up to £625k",
+                        "Compare tax across different buyer types and property values",
+                    ]}
+                    faqs={[
+                        {
+                            question: "How much is stamp duty on a second home?",
+                            answer: "From October 2024, second homes and BTL properties incur a 5% surcharge (increased from 3%) on TOP of standard rates. For a £300,000 property: Standard SDLT is £2,500 (5% on £50k above £250k threshold). Additional property surcharge adds £15,000 (5% of £300k). Total SDLT: £17,500. This applies even if you still own your first home."
+                        },
+                        {
+                            question: "What is first-time buyer stamp duty relief?",
+                            answer: "First-time buyers purchasing property up to £625,000 pay 0% SDLT on the first £425,000, then 5% on the portion from £425,001 to £625,000. Properties over £625,000 receive no relief and standard rates apply. To qualify, you must never have owned property worldwide and the property must be residential (not commercial)."
+                        },
+                        {
+                            question: "When do I have to pay stamp duty?",
+                            answer: "SDLT must be paid within 14 days of completion (when ownership transfers). Your solicitor typically handles payment from your completion funds. Late payment incurs penalties: £100 after day 14, then daily penalties and interest charges. Always budget for SDLT in your purchase costs—it's payable even if you're getting a mortgage."
+                        },
+                        {
+                            question: "Do I pay stamp duty when buying through a limited company?",
+                            answer: "Yes. Companies pay standard SDLT rates plus the 5% additional property surcharge on residential properties (as it's not their main residence). Properties over £500,000 may also trigger the Annual Tax on Enveloped Dwellings (ATED). For properties over £500k, companies may face 15% flat rate SDLT (complex rules apply—seek advice)."
+                        },
+                        {
+                            question: "How is stamp duty different in Scotland and Wales?",
+                            answer: "This calculator is for England and Northern Ireland only. Scotland uses Land and Buildings Transaction Tax (LBTT) with different rates and bands. Wales uses Land Transaction Tax (LTT), also with different rates. If buying in Scotland or Wales, use their respective calculators. Rates and thresholds vary significantly between the three systems."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "Stamp duty calculator UK",
+                        "SDLT calculator 2024",
+                        "Additional property surcharge",
+                        "5% stamp duty surcharge",
+                        "First time buyer stamp duty",
+                        "BTL stamp duty",
+                        "Second home stamp duty",
+                        "SDLT rates England",
+                        "Property purchase tax UK",
+                        "Stamp duty bands 2024",
+                    ]}
+                    categoryColor="#10B981"
+                />
         </CalculatorPageLayout>
     );
 };

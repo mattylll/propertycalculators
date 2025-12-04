@@ -8,6 +8,8 @@ import { DealMetric } from '@/components/property-kit/deal-metric';
 import { FloatingField } from '@/components/property-kit/floating-field';
 import { PropertyButton } from '@/components/property-kit/property-button';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { formatCurrency } from '@/lib/calculators/format';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -483,6 +485,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="HMO Viability Calculator"
+                            calculatorSlug="hmo-viability-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Key Metrics */}
                         <BentoCard variant='secondary' title='HMO viability analysis' description='Based on your inputs'>
                             <BentoGrid className='grid-cols-2 gap-4'>
@@ -651,6 +659,7 @@ Respond in JSON:
                                 </div>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
 
                         {/* AI Validation Gate */}
                         <AIValidationGate
@@ -725,6 +734,65 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <CalculatorSEO
+                    calculatorName="HMO Viability Calculator"
+                    calculatorSlug="hmo-viability-calculator"
+                    description="The HMO Viability Calculator helps UK property investors assess whether an HMO conversion or purchase is financially viable. Calculate room-by-room rental income, factor in HMO-specific operating costs (management, utilities, licensing, insurance), and determine net yields, cashflow per room, and returns on investment for multi-let properties."
+                    howItWorks={`The HMO Viability Calculator provides comprehensive financial analysis:
+
+1. Property Costs - Enter purchase price and refurbishment/conversion costs including fire safety, ensuite installations, and HMO-specific works
+2. Room Configuration - Input number of lettable rooms and average rent per room to calculate total rental income
+3. Finance Terms - Model deposit requirements (typically 25%+) and HMO mortgage rates (typically 6-7.5%)
+4. HMO Operating Costs - Factor in management fees (12-15%), utilities (if included), cleaning, maintenance, HMO licensing, and specialist insurance
+5. Voids & Losses - Account for expected vacancy rates and rental losses
+6. Performance Metrics - Calculate gross and net yields, cashflow per room, cash-on-cash returns, DSCR, and ICR at stressed rates
+
+The calculator compares your HMO rental income to equivalent BTL rent, showing the rental multiplier advantage of multi-let properties. It also stress tests against lender requirements to ensure your HMO will secure finance.`}
+                    whenToUse="Use this calculator when evaluating potential HMO investments, comparing room rent scenarios, or assessing whether an existing single-let property should be converted to HMO. Essential for understanding if room rents in your target area will generate sufficient income to justify the additional costs and complexity of HMO operation."
+                    keyFeatures={[
+                        "Calculate per-room cashflow and total property returns",
+                        "Factor in HMO-specific costs (licensing, utilities, management)",
+                        "Compare HMO vs BTL rental income multipliers",
+                        "Stress test against lender ICR and DSCR requirements",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What is a good cashflow per room for an HMO?",
+                            answer: "A healthy HMO should generate £100-200+ cashflow per room per month after all costs including mortgage, management, utilities, maintenance, licensing, and voids. Below £50/room suggests the property is marginal or in a low-yield area. Above £150/room indicates strong HMO performance. Always factor in a buffer for unexpected costs and future rent controls."
+                        },
+                        {
+                            question: "What yields should I target for HMO properties?",
+                            answer: "Target gross yields of 8-12%+ for HMO properties, with net yields (after operating costs but before mortgage) of 6-9%. HMOs should deliver 2-3% higher yields than equivalent BTL properties to justify the additional management complexity and regulatory burden. In higher-value areas, yields may be lower but absolute cashflow per room remains strong."
+                        },
+                        {
+                            question: "How much more rent does an HMO generate vs BTL?",
+                            answer: "HMOs typically generate 30-70% more rental income than letting the same property as a single let, with the multiplier varying by location. In student areas, multipliers can reach 1.7-2x BTL rent, while in professional areas 1.3-1.5x is more typical. The calculator shows your specific HMO vs BTL rent multiplier based on your inputs."
+                        },
+                        {
+                            question: "What are typical HMO operating costs?",
+                            answer: "Expect higher operating costs than BTL: management (12-18% vs 8-10%), maintenance (8-12% vs 5-8%), HMO insurance (£1,200-2,500 vs £500-800), licensing (£200-350/year amortized), utilities if included (£200-500/month depending on rooms), and communal area cleaning (£150-300/month). Budget 35-45% of gross rent for total operating costs."
+                        },
+                        {
+                            question: "How do I know if room rents are achievable?",
+                            answer: "Research your target area thoroughly: check SpareRoom, Rightmove, and local Facebook groups for current room rents. Consider property quality (ensuite vs shared bathroom adds £50-100/month), location (near universities/hospitals/transport), and local competition. Factor in 5-10% void allowance. Professional room rents in cities range from £450-750/month, student rooms £350-550/month."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "HMO viability calculator UK",
+                        "HMO investment returns",
+                        "Room rent calculator",
+                        "HMO cashflow analysis",
+                        "Multi-let property yields",
+                        "HMO vs BTL comparison",
+                        "HMO conversion feasibility",
+                        "Professional HMO returns",
+                        "Student HMO yields",
+                        "HMO operating costs UK",
+                    ]}
+                    categoryColor="#EC4899"
+                />
         </CalculatorPageLayout>
     );
 };

@@ -9,6 +9,8 @@ import { PropertyButton } from '@/components/property-kit/property-button';
 import { AIValidationGate } from '@/components/property-kit/ai-validation-gate';
 import { formatCurrency } from '@/lib/calculators/format';
 import { CalculatorPageLayout } from '@/components/property-kit/calculator-page-layout';
+import { CalculatorResultsGate } from '@/components/property-kit/calculator-results-gate';
+import { CalculatorSEO } from '@/components/property-kit/calculator-seo';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -387,6 +389,12 @@ Respond in JSON:
 
                     {/* Right: Results */}
                     <div className='space-y-6'>
+                        <CalculatorResultsGate
+                            calculatorType="BTL ICR Calculator"
+                            calculatorSlug="btl-icr-calculator"
+                            formData={form}
+                            hasCalculated={hasCalculated}
+                        >
                         {/* Pass/Fail Status */}
                         <Card className={`border-2 ${
                             metrics.passesStressTest
@@ -545,6 +553,7 @@ Respond in JSON:
                                 </table>
                             </div>
                         </BentoCard>
+                        </CalculatorResultsGate>
 
                         {/* AI Validation Gate */}
                         <AIValidationGate
@@ -619,6 +628,64 @@ Respond in JSON:
                         )}
                     </div>
                 </div>
+
+                <CalculatorSEO
+                    calculatorName="BTL ICR Calculator"
+                    calculatorSlug="btl-icr-calculator"
+                    description="The BTL ICR Calculator helps UK landlords calculate Interest Coverage Ratio for buy-to-let mortgage applications. ICR is the key metric lenders use to assess BTL affordability, requiring your rental income to be 125-145% of mortgage interest at stress test rates. Our calculator shows whether you meet lender requirements and how much you can borrow based on rental income."
+                    howItWorks={`Interest Coverage Ratio (ICR) is calculated as: (Annual Rent ÷ Annual Interest) × 100
+
+Most UK BTL lenders assess ICR using a stress test rate (typically 5.5%) rather than your actual mortgage rate. This ensures you can still afford payments if rates rise. The required ICR varies by borrower:
+
+- Basic rate taxpayers: 125% ICR
+- Higher/additional rate taxpayers: 145% ICR
+- Limited companies: 125% ICR
+- Portfolio landlords (4+ properties): Usually 145% ICR
+
+If your rent is £1,500/month and the stressed annual interest is £15,000, your ICR would be (£18,000 ÷ £15,000) × 100 = 120%, which would fail the 125% requirement.`}
+                    whenToUse="Use this calculator before applying for BTL mortgages, when comparing properties to assess which you can finance, or when calculating maximum borrowing. It's essential for understanding if lenders will approve your application based on rental income stress testing."
+                    keyFeatures={[
+                        "Calculate ICR at actual and stress test rates",
+                        "See maximum loan amount based on rental income",
+                        "Compare personal vs limited company ICR requirements",
+                        "Identify rental income needed to pass stress tests",
+                    ]}
+                    faqs={[
+                        {
+                            question: "What ICR do I need to pass BTL lending criteria?",
+                            answer: "Most UK lenders require 125% ICR for basic rate taxpayers and limited companies, or 145% for higher/additional rate taxpayers. Portfolio landlords typically need 145% regardless. The ICR must be met at the lender's stress test rate (usually 5.5%), not your actual mortgage rate."
+                        },
+                        {
+                            question: "Why do higher rate taxpayers need 145% ICR?",
+                            answer: "Section 24 restricts mortgage interest tax relief for personal landlords to 20%, meaning higher rate taxpayers lose more income to tax. Lenders compensate by requiring higher ICR (145% vs 125%) to ensure affordability after tax. Limited companies avoid Section 24, so they only need 125%."
+                        },
+                        {
+                            question: "How is the stress test rate applied?",
+                            answer: "Even if your actual mortgage rate is 4.5%, lenders assess ICR at around 5.5% (varies by lender). This stress test ensures you can afford payments if rates rise. Your rent must cover 125-145% of the interest at this stressed rate, not your actual rate."
+                        },
+                        {
+                            question: "Can I use a limited company to get better ICR terms?",
+                            answer: "Yes. Limited companies only need 125% ICR vs 145% for higher rate personal landlords. However, BTL mortgages for companies often have higher rates, lower LTV, and you'll face corporation tax on profits. There are also costs to set up and run a company. Seek professional advice before switching."
+                        },
+                        {
+                            question: "What if I'm just short of the ICR requirement?",
+                            answer: "Options include: reducing your loan amount, increasing your deposit, finding a property with higher rent, using a limited company structure (if personal higher rate), or seeking specialist lenders with more flexible criteria. Even a small deposit increase can significantly improve ICR."
+                        },
+                    ]}
+                    relatedTerms={[
+                        "BTL ICR calculator",
+                        "Interest Coverage Ratio UK",
+                        "BTL stress test calculator",
+                        "Buy-to-let affordability",
+                        "125% ICR requirement",
+                        "145% ICR higher rate",
+                        "BTL mortgage calculator",
+                        "Rental income stress test",
+                        "Limited company BTL",
+                        "Section 24 ICR impact",
+                    ]}
+                    categoryColor="#10B981"
+                />
         </CalculatorPageLayout>
     );
 };
